@@ -1,0 +1,267 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6EF0293115ADE4E100E01C96 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF0293015ADE4E100E01C96 /* UIKit.framework */; };
+		6EF0293315ADE4E100E01C96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF0293215ADE4E100E01C96 /* Foundation.framework */; };
+		6EF0293515ADE4E100E01C96 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF0293415ADE4E100E01C96 /* CoreGraphics.framework */; };
+		6EF0293B15ADE4E100E01C96 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0293915ADE4E100E01C96 /* InfoPlist.strings */; };
+		6EF0293D15ADE4E100E01C96 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0293C15ADE4E100E01C96 /* main.m */; };
+		6EF0294115ADE4E100E01C96 /* BRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0294015ADE4E100E01C96 /* BRAppDelegate.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		6EF0292C15ADE4E100E01C96 /* BlackRaccoon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlackRaccoon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EF0293015ADE4E100E01C96 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		6EF0293215ADE4E100E01C96 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6EF0293415ADE4E100E01C96 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		6EF0293815ADE4E100E01C96 /* BlackRaccoon-Info.plist */ = {isa = PBXFileReference; path = "BlackRaccoon-Info.plist"; sourceTree = "<group>"; };
+		6EF0293A15ADE4E100E01C96 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6EF0293C15ADE4E100E01C96 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6EF0293E15ADE4E100E01C96 /* BlackRaccoon-Prefix.pch */ = {isa = PBXFileReference; path = "BlackRaccoon-Prefix.pch"; sourceTree = "<group>"; };
+		6EF0293F15ADE4E100E01C96 /* BRAppDelegate.h */ = {isa = PBXFileReference; path = BRAppDelegate.h; sourceTree = "<group>"; };
+		6EF0294015ADE4E100E01C96 /* BRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRAppDelegate.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6EF0292915ADE4E100E01C96 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EF0293115ADE4E100E01C96 /* UIKit.framework in Frameworks */,
+				6EF0293315ADE4E100E01C96 /* Foundation.framework in Frameworks */,
+				6EF0293515ADE4E100E01C96 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6EF0292115ADE4E100E01C96 = {
+			isa = PBXGroup;
+			children = (
+				6EF0293615ADE4E100E01C96 /* BlackRaccoon */,
+				6EF0292F15ADE4E100E01C96 /* Frameworks */,
+				6EF0292D15ADE4E100E01C96 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6EF0292D15ADE4E100E01C96 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6EF0292C15ADE4E100E01C96 /* BlackRaccoon.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6EF0292F15ADE4E100E01C96 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6EF0293015ADE4E100E01C96 /* UIKit.framework */,
+				6EF0293215ADE4E100E01C96 /* Foundation.framework */,
+				6EF0293415ADE4E100E01C96 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6EF0293615ADE4E100E01C96 /* BlackRaccoon */ = {
+			isa = PBXGroup;
+			children = (
+				6EF0293F15ADE4E100E01C96 /* BRAppDelegate.h */,
+				6EF0294015ADE4E100E01C96 /* BRAppDelegate.m */,
+				6EF0293715ADE4E100E01C96 /* Supporting Files */,
+			);
+			path = BlackRaccoon;
+			sourceTree = "<group>";
+		};
+		6EF0293715ADE4E100E01C96 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6EF0293815ADE4E100E01C96 /* BlackRaccoon-Info.plist */,
+				6EF0293915ADE4E100E01C96 /* InfoPlist.strings */,
+				6EF0293C15ADE4E100E01C96 /* main.m */,
+				6EF0293E15ADE4E100E01C96 /* BlackRaccoon-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6EF0292B15ADE4E100E01C96 /* BlackRaccoon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6EF0294415ADE4E100E01C96 /* Build configuration list for PBXNativeTarget "BlackRaccoon" */;
+			buildPhases = (
+				6EF0292815ADE4E100E01C96 /* Sources */,
+				6EF0292915ADE4E100E01C96 /* Frameworks */,
+				6EF0292A15ADE4E100E01C96 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BlackRaccoon;
+			productName = BlackRaccoon;
+			productReference = 6EF0292C15ADE4E100E01C96 /* BlackRaccoon.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6EF0292315ADE4E100E01C96 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = BR;
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = "Canna Software Development";
+			};
+			buildConfigurationList = 6EF0292615ADE4E100E01C96 /* Build configuration list for PBXProject "BlackRaccoon" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 6EF0292115ADE4E100E01C96;
+			productRefGroup = 6EF0292D15ADE4E100E01C96 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6EF0292B15ADE4E100E01C96 /* BlackRaccoon */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6EF0292A15ADE4E100E01C96 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EF0293B15ADE4E100E01C96 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6EF0292815ADE4E100E01C96 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EF0293D15ADE4E100E01C96 /* main.m in Sources */,
+				6EF0294115ADE4E100E01C96 /* BRAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		6EF0293915ADE4E100E01C96 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6EF0293A15ADE4E100E01C96 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6EF0294215ADE4E100E01C96 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6EF0294315ADE4E100E01C96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6EF0294515ADE4E100E01C96 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BlackRaccoon/BlackRaccoon-Prefix.pch";
+				INFOPLIST_FILE = "BlackRaccoon/BlackRaccoon-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		6EF0294615ADE4E100E01C96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BlackRaccoon/BlackRaccoon-Prefix.pch";
+				INFOPLIST_FILE = "BlackRaccoon/BlackRaccoon-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6EF0292615ADE4E100E01C96 /* Build configuration list for PBXProject "BlackRaccoon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6EF0294215ADE4E100E01C96 /* Debug */,
+				6EF0294315ADE4E100E01C96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6EF0294415ADE4E100E01C96 /* Build configuration list for PBXNativeTarget "BlackRaccoon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6EF0294515ADE4E100E01C96 /* Debug */,
+				6EF0294615ADE4E100E01C96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6EF0292315ADE4E100E01C96 /* Project object */;
+}
