@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.cannasoftware.BlackRaccoon</string>
+	<key>CFBundleName</key>
+	<string>BlackRaccoon Documentation</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	
+	
+	
+	<key>DocSetFallbackURL</key>
+	<string>http://www.Canna Software Development.com/docs/BlackRaccoonDoc/</string>
+	<key>DocSetFeedName</key>
+	<string>BlackRaccoon Documentation</string>
+	<key>DocSetFeedURL</key>
+	<string>http://www.Canna Software Development.com/docs/com.cannasoftware.BlackRaccoon.atom</string>
+	<key>DocSetMinimumXcodeVersion</key>
+	<string>3.0</string>
+	
+	<key>DocSetPublisherIdentifier</key>
+	<string>com.cannasoftware.documentation</string>
+	<key>DocSetPublisherName</key>
+	<string>Canna Software</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2012 Canna Software. All rights reserved.</string>
+</dict>
+</plist>
