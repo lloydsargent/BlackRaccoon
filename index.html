@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Blackraccoon : IOS FTP Client Code" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Blackraccoon</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/lloydsargent/BlackRaccoon">View on GitHub</a>
+
+          <h1 id="project_title">Blackraccoon</h1>
+          <h2 id="project_tagline">IOS FTP Client Code</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/lloydsargent/BlackRaccoon/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/lloydsargent/BlackRaccoon/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>General Notes</h2>
+
+<p>BlackRaccoon is a collection of routines used to act as an FTP client. It was specifically
+designed to work correctly under ARC and to "fix" a leak in the listing of directories.</p>
+
+<p>With BlackRaccoon you can:</p>
+
+<ul>
+<li>  Download a file</li>
+<li>  Upload a file</li>
+<li>  Delete a file</li>
+<li>  Create a directory</li>
+<li>  Delete a directory</li>
+<li>  List a directory</li>
+</ul><p>A function to queue requests has been left in the code, but has not been tested. As this
+is not a normal FTP function, the user should assume it is deprecated and will be removed
+from future releases.</p>
+
+<p>As with WhiteRaccoon, the user needs to assure that the <strong>CFNetwork</strong> framework has been
+added to the project.</p>
+
+<h3>License</h3>
+
+<p>License is the MIT License. Basically means you can use as you wish just keep the copyright
+notice in the source code.</p>
+
+<h3>Differences Between WhiteRaccoon and BlackRaccoon</h3>
+
+<p>BlackRaccoon works correctly with ARC. A lot of time and effort went in to assure there
+were no leaks.</p>
+
+<p>BlackRaccoon, unlike WhiteRaccoon, breaks up files by objects. This is for this author's
+convenience. If you wish to combine them again, feel free.</p>
+
+<p>BlackRaccoon has been tested with an unencrypted FTP server. However, it has NOT been
+tested with all manner of usernames and passwords.</p>
+
+<p>Added helper function <em>initWithDelegate</em> to major classes.</p>
+
+<p>All FTP operations will either call RequestCompleted for a positive response or
+RequestFailed if it is a negative response.</p>
+
+<h3>Usage</h3>
+
+<p>The following code assumes the following:</p>
+
+<pre><code>@interface myclass : NSObject &lt;BRRequestDelegate&gt;
+{
+    BRRequestCreateDirectory *createDir;
+    BRRequestDelete * deleteDir;
+    BRRequestListDirectory *listDir;
+
+    BRRequestDownload *downloadFile;
+    BRRequestUpload *uploadFile;
+    BRRequestDelete *deleteFile;
+}
+</code></pre>
+
+<h4>Create Directory</h4>
+
+<pre><code>- (IBAction) createDirectory:(id)sender
+{
+    createDir = [BRRequestCreateDirectory initWithDelegate: self];
+
+    createDir.path = @"/home/test/yourdirectory/";
+
+    createDir.hostname = @"192.168.1.5";
+    createDir.username = @"yourusername";
+    createDir.password = @"yourpassword";
+
+    //we start the request
+    [createDir start];
+}
+</code></pre>
+
+<h4>Delete Directory</h4>
+
+<pre><code>- (IBAction) deleteDirectory:(id)sender
+{
+    deleteDir = [BRRequestDelete initWithDelegate: self];
+
+    deleteDir.path = @"/home/test/yourdirectory/";
+
+    deleteDir.hostname = @"192.168.1.5";
+    deleteDir.username = @"yourusername";
+    deleteDir.password = @"yourpassword";
+
+    //we start the request
+    [deleteDir start];
+}
+</code></pre>
+
+<h4>List Directory</h4>
+
+<pre><code>- (IBAction) listDirectory:(id)sender
+{
+    listDir = [BRRequestListDirectory initWithDelegate: self];
+
+    listDir.path = @"/home/test/yourdirectory/";
+
+    listDir.hostname = @"192.168.1.5";
+    listDir.username = @"yourusername";
+    listDir.password = @"yourpassword";
+
+    [listDir start];
+}
+</code></pre>
+
+<h4>Download a File</h4>
+
+<pre><code>- (IBAction) downloadFile :(id)sender
+{
+    downloadFile = [BRRequestDownload initWithDelegate: self];
+
+    downloadFile.path = @"/home/test/yourfile";
+
+    //for anonymous login just leave the username and password nil
+    downloadFile.hostname = @"192.168.1.5";
+    downloadFile.username = @"yourusername";
+    downloadFile.password = @"yourpassword";
+
+    //we start the request
+    [downloadFile start];
+}
+</code></pre>
+
+<h4>Upload a File</h4>
+
+<pre><code>- (IBAction) uploadFile :(id)sender
+{
+    //----- get the file to upload as an NSData object
+    NSString *applicationDocumentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"image.jpg"];
+    NSData *dataToUpload = [NSData dataWithContentsOfFile: filepath];
+
+    uploadFile = [BRRequestUpload initWithDelegate: self];
+
+    uploadFile.sentData = dataToUpload;
+
+    uploadFile.path = @"/home/test/yourfile";
+
+    //for anonymous login just leave the username and password nil
+    uploadFile.hostname = @"192.168.1.5";
+    uploadFile.username = @"yourusername";
+    uploadFile.password = @"yourpassword";
+
+    //we start the request
+    [uploadFile start];
+}
+</code></pre>
+
+<h4>Delete a File</h4>
+
+<pre><code>- (IBAction) deleteFile: (id) sender
+{
+    deleteFile = [BRRequestDelete initWithDelegate: self];
+
+    deleteFile.path = @"/home/test/yourfile";
+
+    //----- for anonymous login just leave the username and password nil
+    deleteFile.hostname = @"192.168.1.5";
+    deleteFile.username = @"yourusername";
+    deleteFile.password = @"yourpassword";
+
+    //----- we start the request
+    [deleteFile start];
+}
+</code></pre>
+
+<h4>Delegate callback to determine if something should be overwritten</h4>
+
+<pre><code>-(BOOL) shouldOverwriteFileWithRequest: (BRRequest *) request
+{
+    //----- set this as appropriate if you want the file to be overwritten
+    if (request == uploadFile)
+    {
+        //----- if uploading a file, we set it to YES
+        return YES;
+    }
+
+    //----- anything else (directories, etc) we set to NO
+    return NO;
+}
+</code></pre>
+
+<h4>Request Completed</h4>
+
+<pre><code>-(void) requestCompleted: (BRRequest *) request
+{
+    //----- handle Create Directory
+    if (request == createDir)
+    {
+        NSLog(@"%@ completed!", request);
+
+        createDir = nil;
+    }
+
+    //----- handle Delete Directory
+    if (request == deleteDir)
+    {
+        NSLog(@"%@ completed!", request);
+
+        deleteDir = nil;
+    }
+
+    //----- handle List Directory
+    if (request == listDir)
+    {
+        //----- called after 'request' is completed successfully
+        NSLog(@"%@ completed!", request);
+
+        //----- we print each of the file names
+        for (NSDictionary *file in listDir.filesInfo) 
+        {
+            NSLog(@"%@", [file objectForKey: (id) kCFFTPResourceName]);
+        }
+
+        logview.text = [NSString stringWithFormat: @"%@\n", logview.text];
+        [logview scrollRangeToVisible: NSMakeRange([logview.text length] - 1, 1)];
+
+        listDir = nil;
+    }
+
+    //----- handle Download File
+    if (request == downloadFile)
+    {
+        //called after 'request' is completed successfully
+        NSLog(@"%@ completed!", request);
+
+        NSData *data = downloadFile.receivedData;
+
+        //----- save the NSData as a file object
+        NSError *error;
+        NSString *applicationDocumentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"image.jpg"];
+        [data writeToFile: filepath options: NSDataWritingFileProtectionNone error: &amp;error];
+
+        downloadFile = nil;
+    }
+
+    if (request == uploadFile)
+    {
+        NSLog(@"%@ completed!", request);
+        uploadFile = nil;
+    }
+
+    if (request == deleteFile)
+    {
+        NSLog(@"%@ completed!", request);
+        deleteFile = nil;
+    }   
+}
+</code></pre>
+
+<h4>Request Failed</h4>
+
+<pre><code>-(void) requestFailed:(BRRequest *) request
+{
+    //----- handle Create Directory
+    if (request == createDir)
+    {
+        NSLog(@"%@", request.error.message);
+
+        createDir = nil;
+    }
+
+    //----- handle Delete Directory
+    if (request == deleteDir)
+    {
+        NSLog(@"%@", request.error.message);
+
+        deleteDir = nil;
+    }
+
+    //----- handle List Directory
+    if (request == listDir)
+    {
+        NSLog(@"%@", request.error.message);
+
+        listDir = nil;
+    }
+
+    //----- handle Download a File
+    if (request == downloadFile)
+    {
+        NSLog(@"%@", request.error.message);
+
+        downloadFile = nil;
+    }
+
+    //----- handle Upload a File
+    if (request == uploadFile)
+    {
+        NSLog(@"%@", request.error.message);
+
+        uploadFile = nil;
+    }
+
+    //----- handle Delete a File
+    if (request == deleteFile)
+    {
+        NSLog(@"%@", request.error.message);
+
+        deleteFile = nil;
+    }
+}
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Blackraccoon maintained by <a href="https://github.com/lloydsargent">lloydsargent</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
