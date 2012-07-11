@@ -26,6 +26,8 @@
 		6EF0297015ADE66400E01C96 /* BRRequestUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0296515ADE66400E01C96 /* BRRequestUpload.m */; };
 		6EF0297115ADE66400E01C96 /* BRStreamInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0296715ADE66400E01C96 /* BRStreamInfo.m */; };
 		6EF0297415ADE67000E01C96 /* BRMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0297315ADE67000E01C96 /* BRMainViewController.m */; };
+		6EF0297915ADE7C800E01C96 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0297515ADE7C800E01C96 /* MainStoryboard_iPad.storyboard */; };
+		6EF0297A15ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0297715ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +66,8 @@
 		6EF0296715ADE66400E01C96 /* BRStreamInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BRStreamInfo.m; path = BlackRaccoon/BlackRaccoon/BRStreamInfo.m; sourceTree = "<group>"; };
 		6EF0297215ADE67000E01C96 /* BRMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRMainViewController.h; sourceTree = "<group>"; };
 		6EF0297315ADE67000E01C96 /* BRMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRMainViewController.m; sourceTree = "<group>"; };
+		6EF0297615ADE7C800E01C96 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = BlackRaccoon/en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		6EF0297815ADE7C800E01C96 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = BlackRaccoon/en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,8 @@
 		6EF0293615ADE4E100E01C96 /* BlackRaccoon */ = {
 			isa = PBXGroup;
 			children = (
+				6EF0297515ADE7C800E01C96 /* MainStoryboard_iPad.storyboard */,
+				6EF0297715ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard */,
 				6EF0297215ADE67000E01C96 /* BRMainViewController.h */,
 				6EF0297315ADE67000E01C96 /* BRMainViewController.m */,
 				6EF0293F15ADE4E100E01C96 /* BRAppDelegate.h */,
@@ -225,6 +231,8 @@
 			files = (
 				6EF0293B15ADE4E100E01C96 /* InfoPlist.strings in Resources */,
 				6EF0295115ADE63100E01C96 /* GreenButton.png in Resources */,
+				6EF0297915ADE7C800E01C96 /* MainStoryboard_iPad.storyboard in Resources */,
+				6EF0297A15ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +268,24 @@
 				6EF0293A15ADE4E100E01C96 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		6EF0297515ADE7C800E01C96 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6EF0297615ADE7C800E01C96 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		6EF0297715ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6EF0297815ADE7C800E01C96 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
