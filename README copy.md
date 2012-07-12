@@ -59,11 +59,11 @@ The following code assumes the following:
 	{
     	createDir = [BRRequestCreateDirectory initWithDelegate: self];
 				
-		createDir.path = path.text;
+		createDir.path = @"/home/test/yourdirectory/";
 		
-		createDir.hostname = host.text;
-		createDir.username = username.text;
-		createDir.password = password.text;
+		createDir.hostname = @"192.168.1.5";
+		createDir.username = @"yourusername";
+		createDir.password = @"yourpassword";
 		
 		//we start the request
 		[createDir start];
@@ -73,14 +73,13 @@ The following code assumes the following:
 
 	- (IBAction) deleteDirectory:(id)sender
 	{
-		deleteDir = [[BRRequestDelete alloc] init];
-		deleteDir.delegate = self;
+		deleteDir = [BRRequestDelete initWithDelegate: self];
+				
+		deleteDir.path = @"/home/test/yourdirectory/";
 		
-		deleteDir.path = path.text;
-		
-		deleteDir.hostname = host.text;
-		deleteDir.username = username.text;
-		deleteDir.password = password.text;
+		deleteDir.hostname = @"192.168.1.5";
+		deleteDir.username = @"yourusername";
+		deleteDir.password = @"yourpassword";
 		
 		//we start the request
 		[deleteDir start];
@@ -90,14 +89,13 @@ The following code assumes the following:
 
 	- (IBAction) listDirectory:(id)sender
 	{
-		listDir = [[BRRequestListDirectory alloc] init];
-		listDir.delegate = self;
+		listDir = [BRRequestListDirectory initWithDelegate: self];
 			
-		listDir.path = path.text;
+		listDir.path = @"/home/test/yourdirectory/";
 		
-		listDir.hostname = host.text;
-		listDir.username = username.text;
-		listDir.password = password.text;
+		listDir.hostname = @"192.168.1.5";
+		listDir.username = @"yourusername";
+		listDir.password = @"yourpassword";
 		
 		[listDir start];
 	}
@@ -106,15 +104,14 @@ The following code assumes the following:
 
 	- (IBAction) downloadFile :(id)sender
 	{
-		downloadFile = [[BRRequestDownload alloc] init];
-		downloadFile.delegate = self;
+		downloadFile = [BRRequestDownload initWithDelegate: self];
 		
-		downloadFile.path = path.text;
+		downloadFile.path = @"/home/test/yourfile";
 		
 		//for anonymous login just leave the username and password nil
-		downloadFile.hostname = host.text;
-		downloadFile.username = username.text;
-		downloadFile.password = password.text;
+		downloadFile.hostname = @"192.168.1.5";
+		downloadFile.username = @"yourusername";
+		downloadFile.password = @"yourpassword";
 		
 		//we start the request
 		[downloadFile start];
@@ -129,17 +126,16 @@ The following code assumes the following:
 		NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"image.jpg"];
 		NSData *dataToUpload = [NSData dataWithContentsOfFile: filepath];
 		
-		uploadFile = [[BRRequestUpload alloc] init];
-		uploadFile.delegate = self;
+		uploadFile = [BRRequestUpload initWithDelegate: self];
 		
 		uploadFile.sentData = dataToUpload;
 		
-		uploadFile.path = path.text;
+		uploadFile.path = @"/home/test/yourfile";
 		
 		//for anonymous login just leave the username and password nil
-		uploadFile.hostname = host.text;
-		uploadFile.username = username.text;
-		uploadFile.password = password.text;
+		uploadFile.hostname = @"192.168.1.5";
+		uploadFile.username = @"yourusername";
+		uploadFile.password = @"yourpassword";
 		
 		//we start the request
 		[uploadFile start];
@@ -149,15 +145,14 @@ The following code assumes the following:
 
 	- (IBAction) deleteFile: (id) sender
 	{
-		deleteFile = [[BRRequestDelete alloc] init];
-		deleteFile.delegate = self;
+		deleteFile = [BRRequestDelete initWithDelegate: self];
 		
-		deleteFile.path = path.text;
+		deleteFile.path = @"/home/test/yourfile";
 		
 		//----- for anonymous login just leave the username and password nil
-		deleteFile.hostname = host.text;
-		deleteFile.username = username.text;
-		deleteFile.password = password.text;
+		deleteFile.hostname = @"192.168.1.5";
+		deleteFile.username = @"yourusername";
+		deleteFile.password = @"yourpassword";
 		
 		//----- we start the request
 		[deleteFile start];
@@ -250,6 +245,7 @@ The following code assumes the following:
 
 	-(void) requestFailed:(BRRequest *) request
 	{
+		//----- handle Create Directory
 		if (request == createDir)
 		{
 			NSLog(@"%@", request.error.message);
@@ -257,6 +253,7 @@ The following code assumes the following:
 			createDir = nil;
 		}
 		
+		//----- handle Delete Directory
 		if (request == deleteDir)
 		{
 			NSLog(@"%@", request.error.message);
@@ -264,6 +261,7 @@ The following code assumes the following:
 			deleteDir = nil;
 		}
 		
+		//----- handle List Directory
 		if (request == listDir)
 		{
 			NSLog(@"%@", request.error.message);
@@ -271,6 +269,7 @@ The following code assumes the following:
 			listDir = nil;
 		}
 		
+		//----- handle Download a File
 		if (request == downloadFile)
 		{
 			NSLog(@"%@", request.error.message);
@@ -278,6 +277,7 @@ The following code assumes the following:
 			downloadFile = nil;
 		}
 		
+		//----- handle Upload a File
 		if (request == uploadFile)
 		{
 			NSLog(@"%@", request.error.message);
@@ -285,6 +285,7 @@ The following code assumes the following:
 			uploadFile = nil;
 		}
 		
+		//----- handle Delete a File
 		if (request == deleteFile)
 		{
 			NSLog(@"%@", request.error.message);
