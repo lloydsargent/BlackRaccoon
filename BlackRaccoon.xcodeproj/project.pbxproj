@@ -28,9 +28,9 @@
 		6EF0297415ADE67000E01C96 /* BRMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0297315ADE67000E01C96 /* BRMainViewController.m */; };
 		6EF0297915ADE7C800E01C96 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0297515ADE7C800E01C96 /* MainStoryboard_iPad.storyboard */; };
 		6EF0297A15ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0297715ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard */; };
-		6EF0298815ADEF4500E01C96 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0298515ADEF4500E01C96 /* LICENSE.txt */; };
-		6EF0298915ADEF4500E01C96 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0298615ADEF4500E01C96 /* README.md */; };
-		6EF0298A15ADEF4500E01C96 /* ReadMe.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0298715ADEF4500E01C96 /* ReadMe.txt */; };
+		6EF0298E15AF102300E01C96 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0298B15AF102300E01C96 /* LICENSE.txt */; };
+		6EF0298F15AF102300E01C96 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0298C15AF102300E01C96 /* README.md */; };
+		6EF0299015AF102300E01C96 /* ReadMe.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0298D15AF102300E01C96 /* ReadMe.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,9 +71,9 @@
 		6EF0297315ADE67000E01C96 /* BRMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRMainViewController.m; sourceTree = "<group>"; };
 		6EF0297615ADE7C800E01C96 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = BlackRaccoon/en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		6EF0297815ADE7C800E01C96 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = BlackRaccoon/en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
-		6EF0298515ADEF4500E01C96 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE.txt; path = BlackRaccoon/Documentation/LICENSE.txt; sourceTree = "<group>"; };
-		6EF0298615ADEF4500E01C96 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = BlackRaccoon/Documentation/README.md; sourceTree = "<group>"; };
-		6EF0298715ADEF4500E01C96 /* ReadMe.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ReadMe.txt; path = BlackRaccoon/Documentation/ReadMe.txt; sourceTree = "<group>"; };
+		6EF0298B15AF102300E01C96 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		6EF0298C15AF102300E01C96 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		6EF0298D15AF102300E01C96 /* ReadMe.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMe.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,9 +187,9 @@
 		6EF0297E15ADEE8100E01C96 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
-				6EF0298515ADEF4500E01C96 /* LICENSE.txt */,
-				6EF0298615ADEF4500E01C96 /* README.md */,
-				6EF0298715ADEF4500E01C96 /* ReadMe.txt */,
+				6EF0298B15AF102300E01C96 /* LICENSE.txt */,
+				6EF0298C15AF102300E01C96 /* README.md */,
+				6EF0298D15AF102300E01C96 /* ReadMe.txt */,
 			);
 			name = Documentation;
 			sourceTree = "<group>";
@@ -250,9 +250,9 @@
 				6EF0295115ADE63100E01C96 /* GreenButton.png in Resources */,
 				6EF0297915ADE7C800E01C96 /* MainStoryboard_iPad.storyboard in Resources */,
 				6EF0297A15ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard in Resources */,
-				6EF0298815ADEF4500E01C96 /* LICENSE.txt in Resources */,
-				6EF0298915ADEF4500E01C96 /* README.md in Resources */,
-				6EF0298A15ADEF4500E01C96 /* ReadMe.txt in Resources */,
+				6EF0298E15AF102300E01C96 /* LICENSE.txt in Resources */,
+				6EF0298F15AF102300E01C96 /* README.md in Resources */,
+				6EF0299015AF102300E01C96 /* ReadMe.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
