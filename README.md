@@ -59,11 +59,11 @@ The following code assumes the following:
 	{
     	createDir = [BRRequestCreateDirectory initWithDelegate: self];
 				
-		createDir.path = path.text;
-		
-		createDir.hostname = host.text;
-		createDir.username = username.text;
-		createDir.password = password.text;
+		//----- for anonymous login just leave the username and password nil
+		createDir.path = @"/home/user/newdirectory/;
+		createDir.hostname = @"192.168.1.100";
+		createDir.username = @"yourusername";
+		createDir.password = @"yourpassword";
 		
 		//we start the request
 		[createDir start];
@@ -75,11 +75,11 @@ The following code assumes the following:
 	{
 		deleteDir = [BRRequestDelete initWithDelegate: self];
 		
-		deleteDir.path = path.text;
-		
-		deleteDir.hostname = host.text;
-		deleteDir.username = username.text;
-		deleteDir.password = password.text;
+		//----- for anonymous login just leave the username and password nil
+		deleteDir.path = @"/home/user/newdirectory/;
+		deleteDir.hostname = @"192.168.1.100";
+		deleteDir.username = @"yourusername";
+		deleteDir.password = @"yourpassword";
 		
 		//we start the request
 		[deleteDir start];
@@ -89,12 +89,13 @@ The following code assumes the following:
 
 	- (IBAction) listDirectory:(id)sender
 	{
-		listDir = [BRRequestListDirectory initWithDelegate: self];			
-		listDir.path = path.text;
-		
-		listDir.hostname = host.text;
-		listDir.username = username.text;
-		listDir.password = password.text;
+		listDir = [BRRequestListDirectory initWithDelegate: self];	
+				
+		//----- for anonymous login just leave the username and password nil
+		listDir.path = @"/home/user/newdirectory/;
+		listDir.hostname = @"192.168.1.100";
+		listDir.username = @"yourusername";
+		listDir.password = @"yourpassword";
 		
 		[listDir start];
 	}
@@ -105,12 +106,11 @@ The following code assumes the following:
 	{
 		downloadFile = [BRRequestDownload initWithDelegate: self];
 		
-		downloadFile.path = path.text;
-		
-		//for anonymous login just leave the username and password nil
-		downloadFile.hostname = host.text;
-		downloadFile.username = username.text;
-		downloadFile.password = password.text;
+		//----- for anonymous login just leave the username and password nil
+		downloadFile.path = @"/home/user/myfile.txt";	
+		downloadFile.hostname = @"192.168.1.100";
+		downloadFile.username = @"yourusername";
+		downloadFile.password = @"yourpassword";
 		
 		//we start the request
 		[downloadFile start];
@@ -122,19 +122,17 @@ The following code assumes the following:
 	{
 		//----- get the file to upload as an NSData object
 		NSString *applicationDocumentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-		NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"image.jpg"];
+		NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"file.text"];
 		NSData *dataToUpload = [NSData dataWithContentsOfFile: filepath];
 		
 		uploadFile = [BRRequestUpload initWithDelegate: self];
 		
-		uploadFile.sentData = dataToUpload;
-		
-		uploadFile.path = path.text;
-		
-		//for anonymous login just leave the username and password nil
-		uploadFile.hostname = host.text;
-		uploadFile.username = username.text;
-		uploadFile.password = password.text;
+		//----- for anonymous login just leave the username and password nil
+		uploadFile.sentData = dataToUpload;		
+		uploadFile.path = @"/home/user/myfile.txt";		
+		uploadFile.hostname = @"192.168.1.100";
+		uploadFile.username = @"yourusername";
+		uploadFile.password = @"yourpassword";
 		
 		//we start the request
 		[uploadFile start];
@@ -145,13 +143,12 @@ The following code assumes the following:
 	- (IBAction) deleteFile: (id) sender
 	{
 		deleteFile = [BRRequestDelete initWithDelegate: self];
-		
-		deleteFile.path = path.text;
-		
+				
 		//----- for anonymous login just leave the username and password nil
-		deleteFile.hostname = host.text;
-		deleteFile.username = username.text;
-		deleteFile.password = password.text;
+		deleteFile.path = @"/home/user/myfile.txt";
+		deleteFile.hostname = @"192.168.1.100";
+		deleteFile.username = @"yourusername";
+		deleteFile.password = @"yourpassword";
 		
 		//----- we start the request
 		[deleteFile start];
