@@ -73,8 +73,7 @@ The following code assumes the following:
 
 	- (IBAction) deleteDirectory:(id)sender
 	{
-		deleteDir = [[BRRequestDelete alloc] init];
-		deleteDir.delegate = self;
+		deleteDir = [BRRequestDelete initWithDelegate: self];
 		
 		deleteDir.path = path.text;
 		
@@ -90,9 +89,7 @@ The following code assumes the following:
 
 	- (IBAction) listDirectory:(id)sender
 	{
-		listDir = [[BRRequestListDirectory alloc] init];
-		listDir.delegate = self;
-			
+		listDir = [BRRequestListDirectory initWithDelegate: self];			
 		listDir.path = path.text;
 		
 		listDir.hostname = host.text;
@@ -106,8 +103,7 @@ The following code assumes the following:
 
 	- (IBAction) downloadFile :(id)sender
 	{
-		downloadFile = [[BRRequestDownload alloc] init];
-		downloadFile.delegate = self;
+		downloadFile = [BRRequestDownload initWithDelegate: self];
 		
 		downloadFile.path = path.text;
 		
@@ -129,8 +125,7 @@ The following code assumes the following:
 		NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"image.jpg"];
 		NSData *dataToUpload = [NSData dataWithContentsOfFile: filepath];
 		
-		uploadFile = [[BRRequestUpload alloc] init];
-		uploadFile.delegate = self;
+		uploadFile = [BRRequestUpload initWithDelegate: self];
 		
 		uploadFile.sentData = dataToUpload;
 		
@@ -149,8 +144,7 @@ The following code assumes the following:
 
 	- (IBAction) deleteFile: (id) sender
 	{
-		deleteFile = [[BRRequestDelete alloc] init];
-		deleteFile.delegate = self;
+		deleteFile = [BRRequestDelete initWithDelegate: self];
 		
 		deleteFile.path = path.text;
 		
