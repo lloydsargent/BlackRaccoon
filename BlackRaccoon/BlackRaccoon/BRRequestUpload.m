@@ -117,7 +117,9 @@
     return kBRUploadRequest;
 }
 
--(void) start{
+-(void) start
+{
+    self.maximumSize = [self.sentData length];
     
     if (self.hostname==nil) 
     {
@@ -192,8 +194,14 @@
 }
 
 
--(void) requestFailed:(BRRequest *) request{
+-(void) requestFailed:(BRRequest *) request
+{
     [self.delegate requestFailed:request];
+}
+
+-(BOOL) shouldOverwriteFileWithRequest:(BRRequest *) request
+{
+    return [self.delegate shouldOverwriteFileWithRequest: request];
 }
 
 -(void)upload 
@@ -281,9 +289,21 @@
                 if (self.streamInfo.bytesConsumedInTotal + self.streamInfo.bytesConsumedThisIteration<self.sentData.length) 
                 {
                     self.streamInfo.bytesConsumedInTotal += self.streamInfo.bytesConsumedThisIteration;
+                    
+                    self.percentCompleted = self.streamInfo.bytesConsumedInTotal / self.maximumSize;
+                    if ([self.delegate respondsToSelector:@selector(percentCompleted:)]) 
+                    {
+                        [self.delegate percentCompleted: self];
+                    }
                 }
                 else
                 {
+                    self.percentCompleted = 1.0;
+                    if ([self.delegate respondsToSelector:@selector(percentCompleted:)]) 
+                    {
+                        [self.delegate percentCompleted: self];
+                    }
+                    
                     [self.delegate requestCompleted:self]; 
                     self.sentData =nil;
                     [self destroy];

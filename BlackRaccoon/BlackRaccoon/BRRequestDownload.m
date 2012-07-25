@@ -131,8 +131,9 @@
     self.streamInfo.readStream = ( __bridge_transfer NSInputStream *) readStreamRef;
     
     //----- set the username and the password
-    [self.streamInfo.readStream setProperty: self.username forKey:(id)kCFStreamPropertyFTPUserName]; 
-    [self.streamInfo.readStream setProperty: self.password forKey:(id)kCFStreamPropertyFTPPassword];     
+    [self.streamInfo.readStream setProperty: (id) kCFBooleanTrue forKey: (id) kCFStreamPropertyFTPFetchResourceInfo];
+    [self.streamInfo.readStream setProperty: self.username  forKey:(id)kCFStreamPropertyFTPUserName]; 
+    [self.streamInfo.readStream setProperty: self.password  forKey:(id)kCFStreamPropertyFTPPassword];     
     
     if (self.streamInfo.readStream==nil) 
     {
@@ -169,6 +170,8 @@
     {
         case NSStreamEventOpenCompleted: 
         {
+            self.maximumSize = [[theStream propertyForKey:(id)kCFStreamPropertyFTPResourceSize] integerValue];
+            
             self.didManagedToOpenStream = YES;
             self.streamInfo.bytesConsumedInTotal = 0;
             self.receivedData = [NSMutableData data];
@@ -185,12 +188,19 @@
                 if (self.streamInfo.bytesConsumedThisIteration!=0) 
                 {
                     
-                    NSMutableData * recivedDataWithNewBytes = [self.receivedData mutableCopy];                    
-                    [recivedDataWithNewBytes appendBytes:self.streamInfo.buffer length:self.streamInfo.bytesConsumedThisIteration];
+                    NSMutableData * receivedDataWithNewBytes = [self.receivedData mutableCopy];                    
+                    [receivedDataWithNewBytes appendBytes:self.streamInfo.buffer length:self.streamInfo.bytesConsumedThisIteration];
                     
-                    self.receivedData = [NSData dataWithData:recivedDataWithNewBytes];
+                    self.receivedData = [NSData dataWithData:receivedDataWithNewBytes];
                     
-                    recivedDataWithNewBytes = nil;                  
+                    receivedDataWithNewBytes = nil;
+                    
+                    self.percentCompleted = [self.receivedData length] / self.maximumSize;
+                    
+                    if ([self.delegate respondsToSelector:@selector(percentCompleted:)]) 
+                    {
+                        [self.delegate percentCompleted: self];
+                    }
                 }
             }
             else

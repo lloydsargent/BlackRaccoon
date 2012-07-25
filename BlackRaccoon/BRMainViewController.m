@@ -382,6 +382,27 @@
 
 //-----
 //
+//				percentCompleted
+//
+// synopsis:	[self percentCompleted:request];
+//					BRRequest *request	-
+//
+// description:	percentCompleted is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void) percentCompleted: (BRRequest *) request
+{
+    NSLog(@"%f completed...", request.percentCompleted);
+}
+
+
+
+//-----
+//
 //				requestCompleted
 //
 // synopsis:	[self requestCompleted:request];

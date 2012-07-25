@@ -117,6 +117,8 @@
 @property NSString * path;
 @property (assign) BOOL passive;
 @property (strong) BRRequestError *error;
+@property float maximumSize;
+@property (assign) float percentCompleted;
 
 - (NSURL *) fullURLWithEscape;
 

@@ -101,6 +101,8 @@
 @synthesize username;
 @synthesize schemeId;
 @synthesize error;
+@synthesize maximumSize;
+@synthesize percentCompleted;
 
 
 
@@ -287,6 +289,9 @@ static NSMutableDictionary *folders;
         escapedPath = [@"/" stringByAppendingString:escapedPath];
     }
     
+    //----- now make sure that we have escaped all special characters
+    escapedPath = [self encodeString: escapedPath];
+    
     return escapedPath;
 }
 
@@ -449,7 +454,7 @@ static NSMutableDictionary *folders;
                                                          NULL, 
                                                          (__bridge CFStringRef) string, 
                                                          NULL, 
-                                                         (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ", 
+                                                         (CFStringRef)@"!*'\"();:@&=+$,?%#[]% ", 
                                                          kCFStringEncodingUTF8);    
     return urlEncoded;
 }  
@@ -491,6 +496,7 @@ static NSMutableDictionary *folders;
 -(void) destroy
 {
 }
+
 
 
 @end

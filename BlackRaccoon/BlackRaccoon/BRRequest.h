@@ -95,11 +95,12 @@
 @protocol BRRequestDelegate  <NSObject>
 
 @required
--(void) requestCompleted:(BRRequest *) request;
--(void) requestFailed:(BRRequest *) request;
+- (void) requestCompleted:(BRRequest *) request;
+- (void) requestFailed:(BRRequest *) request;
+- (BOOL) shouldOverwriteFileWithRequest: (BRRequest *) request;
 
 @optional
--(BOOL) shouldOverwriteFileWithRequest: (BRRequest *) request;
+- (void) percentCompleted: (BRRequest *) request;
 
 
 @end
