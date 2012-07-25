@@ -35,6 +35,11 @@ Added helper function *initWithDelegate* to major classes.
 All FTP operations will either call RequestCompleted for a positive response or
 RequestFailed if it is a negative response.
 
+Made the shouldOverwriteFileWithRequest a required implementation in the code. 
+
+Added an optional percentCompleted to the protocol. It also exists as a float from 0 to 1.0
+to indicate completion.
+
 
 ### Usage
 
@@ -154,7 +159,7 @@ The following code assumes the following:
 		[deleteFile start];
 	}
 
-#### Delegate callback to determine if something should be overwritten
+#### Delegate callback to determine if something should be overwritten REQUIRED
 
 	-(BOOL) shouldOverwriteFileWithRequest: (BRRequest *) request
 	{
@@ -169,7 +174,7 @@ The following code assumes the following:
 		return NO;
 	}
 
-#### Request Completed
+#### Request Completed REQUIRED
 
 	-(void) requestCompleted: (BRRequest *) request
 	{
@@ -237,7 +242,7 @@ The following code assumes the following:
 		}	
 	}
 
-#### Request Failed
+#### Request Failed REQUIRED
 
 	-(void) requestFailed:(BRRequest *) request
 	{
@@ -283,3 +288,11 @@ The following code assumes the following:
 			deleteFile = nil;
 		}
 	}
+    
+#### Percent Completed OPTIONAL
+    
+    - (void) percentCompleted: (BRRequest *) request
+    {
+        NSLog(@"%f completed...", request.percentCompleted);
+    }
+
