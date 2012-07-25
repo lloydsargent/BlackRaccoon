@@ -140,7 +140,7 @@
         return;
     }
     
-    if (CFURLDestroyResource(( __bridge CFURLRef) self.fullURL, &errorcode))
+    if (CFURLDestroyResource(( __bridge CFURLRef) self.fullURLWithEscape, &errorcode))
     {
         //----- successful
         [self.delegate requestCompleted:self];

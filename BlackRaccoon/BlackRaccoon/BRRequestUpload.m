@@ -201,6 +201,10 @@
     // a little bit of C because I was not able to make NSInputStream play nice
     CFWriteStreamRef writeStreamRef = CFWriteStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef) self.fullURL);
     self.streamInfo.writeStream = ( __bridge_transfer NSOutputStream *)writeStreamRef;
+    
+    //----- set the username and the password
+    [self.streamInfo.writeStream setProperty: self.username forKey:(id)kCFStreamPropertyFTPUserName]; 
+    [self.streamInfo.writeStream setProperty: self.password forKey:(id)kCFStreamPropertyFTPPassword];     
      
     if (self.streamInfo.writeStream == nil) 
     {

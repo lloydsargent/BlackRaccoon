@@ -116,7 +116,7 @@
 {
     //  the path will always point to a directory, so we add the final slash to it (if there was one before escaping/standardizing, it's *gone* now)
     NSString * directoryPath = [super path];
-    if (![directoryPath isEqualToString:@""]) 
+    if (![directoryPath hasSuffix: @"/"]) 
     {
         directoryPath = [directoryPath stringByAppendingString:@"/"];
     }
@@ -138,6 +138,10 @@
     CFReadStreamRef readStreamRef = CFReadStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef) self.fullURL);
     self.streamInfo.readStream = ( __bridge_transfer NSInputStream *) readStreamRef;
     
+    //----- set the username and the password
+    [self.streamInfo.readStream setProperty: self.username forKey:(id)kCFStreamPropertyFTPUserName]; 
+    [self.streamInfo.readStream setProperty: self.password forKey:(id)kCFStreamPropertyFTPPassword];     
+        
     if (self.streamInfo.readStream == nil) 
     {
         InfoLog(@"Can't open the write stream! Possibly wrong URL!");

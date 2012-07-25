@@ -106,6 +106,22 @@
 
 static NSMutableDictionary *folders;
 
+
+
+
+//-----
+//
+//				initialize
+//
+// synopsis:	[BRBase initialize];
+//
+// description:	initialize is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 + (void)initialize
 {    
     static BOOL isCacheInitalized = NO;
@@ -117,18 +133,65 @@ static NSMutableDictionary *folders;
 }
 
 
-+(NSDictionary *) cachedFolders 
+
+//-----
+//
+//				cachedFolders
+//
+// synopsis:	retval = [BRBase cachedFolders];
+//					NSDictionary *retval	-
+//
+// description:	cachedFolders is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSDictionary *
+//
+
++(NSDictionary *) cachedFolders
 {
     return folders;
 }
 
-+(void) addFoldersToCache:(NSArray *) foldersArray forParentFolderPath:(NSString *) key 
+
+
+//-----
+//
+//				addFoldersToCache
+//
+// synopsis:	[BRBase addFoldersToCache:foldersArray forParentFolderPath:key];
+//					NSArray *foldersArray	-
+//					NSString *key        	-
+//
+// description:	addFoldersToCache is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
++(void) addFoldersToCache:(NSArray *) foldersArray forParentFolderPath:(NSString *) key
 {
     [folders setObject:foldersArray forKey:key];
 }
 
 
-- (id)init 
+
+//-----
+//
+//				init
+//
+// synopsis:	retval = [self init];
+//					id retval	-
+//
+// description:	init is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type id
+//
+
+- (id)init
 {
     self = [super init];
     if (self) {
@@ -142,17 +205,76 @@ static NSMutableDictionary *folders;
     return self;
 }
 
--(NSURL*) fullURL 
+
+
+//-----
+//
+//				fullURL
+//
+// synopsis:	retval = [self fullURL];
+//					NSURL*retval	-
+//
+// description:	fullURL is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSURL*
+//
+
+-(NSURL*) fullURL
 {
-    // first we merge all the url parts into one big and beautiful url
-    NSString * fullURLString = [self.scheme stringByAppendingFormat:@"%@%@%@%@", @"://", self.credentials, self.hostname, self.path];
+    NSString * fullURLString = [self.scheme stringByAppendingFormat:@"%@%@%@", @"://", self.hostname, self.path];
     
-    NSLog(@"credentials: %@ hostname: %@ path: %@", self.credentials, self.hostname, self.path);
+    NSLog(@"fullURLString = %@", fullURLString);
     
-    return [NSURL URLWithString:[fullURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    return [NSURL URLWithString: fullURLString];
 }
 
--(NSString *)path 
+
+
+//-----
+//
+//				fullURLWithEscape
+//
+// synopsis:	retval = [self fullURLWithEscape];
+//					NSURL *retval	-
+//
+// description:	fullURLWithEscape is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSURL *
+//
+
+- (NSURL *) fullURLWithEscape
+{
+    
+    NSString * fullURLString = [self.scheme stringByAppendingFormat:@"%@%@%@%@", @"://", self.credentials, self.hostname, self.path];
+    
+    NSLog(@"fullURLString = %@", fullURLString);
+    
+    return [NSURL URLWithString: fullURLString];
+    
+}
+
+
+
+
+//-----
+//
+//				path
+//
+// synopsis:	retval = [self path];
+//					NSString *retval	-
+//
+// description:	path is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
+-(NSString *)path
 {
     //  we remove all the extra slashes from the directory path, including the last one (if there is one)
     //  we also escape it
@@ -169,14 +291,43 @@ static NSMutableDictionary *folders;
 }
 
 
--(void) setPath: (NSString *) directoryPathLocal 
+
+//-----
+//
+//				setPath
+//
+// synopsis:	[self setPath:directoryPathLocal];
+//					NSString *directoryPathLocal	-
+//
+// description:	setPath is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+-(void) setPath: (NSString *) directoryPathLocal
 {
     path = directoryPathLocal;
 }
 
 
 
--(NSString *)scheme 
+//-----
+//
+//				scheme
+//
+// synopsis:	retval = [self scheme];
+//					NSString *retval	-
+//
+// description:	scheme is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
+-(NSString *)scheme
 {
     switch (self.schemeId) 
     {
@@ -193,29 +344,78 @@ static NSMutableDictionary *folders;
     return @"";
 }
 
--(NSString *) hostname 
+
+
+//-----
+//
+//				hostname
+//
+// synopsis:	retval = [self hostname];
+//					NSString *retval	-
+//
+// description:	hostname is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
+-(NSString *) hostname
 {
     return [hostname stringByStandardizingPath];
 }
 
--(void)setHostname:(NSString *)hostnamelocal 
+
+
+//-----
+//
+//				setHostname
+//
+// synopsis:	[self setHostname:hostnamelocal];
+//					NSString *hostnamelocal	-
+//
+// description:	setHostname is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+-(void)setHostname:(NSString *)hostnamelocal
 {
     hostname = hostnamelocal;
 }
 
--(NSString *) credentials 
+
+
+//-----
+//
+//				credentials
+//
+// synopsis:	retval = [self credentials];
+//					NSString *retval	-
+//
+// description:	credentials is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
+-(NSString *) credentials
 {    
+    NSString *escapedUsername = [self encodeString: username];
+    NSString *escapedPassword = [self encodeString: password];
+    NSString *cred;
     
-    NSString * cred;
-    
-    if (self.username!=nil) 
+    if (escapedUsername != nil) 
     {
-        if (self.password!=nil) 
+        if (escapedPassword != nil) 
         {
-            cred = [NSString stringWithFormat:@"%@:%@@", self.username, self.password];
+            cred = [NSString stringWithFormat:@"%@:%@@", escapedUsername, escapedPassword];
         }else
         {
-            cred = [NSString stringWithFormat:@"%@@", self.username];
+            cred = [NSString stringWithFormat:@"%@@", escapedUsername];
         }
     }
     else
@@ -226,13 +426,70 @@ static NSMutableDictionary *folders;
     return [cred stringByStandardizingPath];
 }
 
+
+
+//-----
+//
+//				encodeString
+//
+// synopsis:	retval = [self encodeString:string];
+//					NSString *retval	-
+//					NSString *string	-
+//
+// description:	encodeString is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
+- (NSString *)encodeString: (NSString *) string;
+{
+    NSString *urlEncoded = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                         NULL, 
+                                                         (__bridge CFStringRef) string, 
+                                                         NULL, 
+                                                         (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ", 
+                                                         kCFStringEncodingUTF8);    
+    return urlEncoded;
+}  
+
+
+
+//-----
+//
+//				start
+//
+// synopsis:	[self start];
+//
+// description:	start is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 -(void) start
 {
 }
 
+
+
+//-----
+//
+//				destroy
+//
+// synopsis:	[self destroy];
+//
+// description:	destroy is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 -(void) destroy
 {
-    
 }
 
 

@@ -118,6 +118,8 @@
 @property (assign) BOOL passive;
 @property (strong) BRRequestError *error;
 
+- (NSURL *) fullURLWithEscape;
+
 -(void) start;
 -(void) destroy;
 

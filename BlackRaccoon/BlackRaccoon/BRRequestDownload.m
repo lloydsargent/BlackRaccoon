@@ -130,6 +130,10 @@
     CFReadStreamRef readStreamRef = CFReadStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef)self.fullURL);
     self.streamInfo.readStream = ( __bridge_transfer NSInputStream *) readStreamRef;
     
+    //----- set the username and the password
+    [self.streamInfo.readStream setProperty: self.username forKey:(id)kCFStreamPropertyFTPUserName]; 
+    [self.streamInfo.readStream setProperty: self.password forKey:(id)kCFStreamPropertyFTPPassword];     
+    
     if (self.streamInfo.readStream==nil) 
     {
         InfoLog(@"Can't open the read stream! Possibly wrong URL");
