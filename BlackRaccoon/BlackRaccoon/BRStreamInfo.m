@@ -119,7 +119,6 @@
 {
     self.writeStream = nil;    
     self.readStream = nil;
-//    free(self.buffer);
     bufferObject = nil;
 }
 

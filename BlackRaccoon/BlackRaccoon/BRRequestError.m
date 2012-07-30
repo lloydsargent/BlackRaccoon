@@ -189,8 +189,19 @@
 
 -(BRErrorCodes) errorCodeWithError: (NSError *) error 
 {
-    //NSLog(@"%@", error);
-    return 0;
+    //----- As suggested by RMaddy
+    NSDictionary *userInfo = error.userInfo;
+    NSNumber *code = [userInfo objectForKey:(id)kCFFTPStatusCodeKey];
+    
+    if (code)
+    {
+        return [code intValue];
+    }
+    
+    else
+    {
+        return 0;
+    }
 }
 
 

@@ -136,12 +136,16 @@
     
     //----- a little bit of C because I was not able to make NSInputStream play nice
     CFReadStreamRef readStreamRef = CFReadStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef) self.fullURL);
-    self.streamInfo.readStream = ( __bridge_transfer NSInputStream *) readStreamRef;
     
-    //----- set the username and the password
-    [self.streamInfo.readStream setProperty: self.username forKey:(id)kCFStreamPropertyFTPUserName]; 
-    [self.streamInfo.readStream setProperty: self.password forKey:(id)kCFStreamPropertyFTPPassword];     
-        
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPUsePassiveMode, kCFBooleanTrue);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPAttemptPersistentConnection, kCFBooleanFalse);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPFetchResourceInfo, kCFBooleanTrue);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPUserName, (__bridge CFStringRef) self.username);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPPassword, (__bridge CFStringRef) self.password);
+
+    self.streamInfo.readStream = ( __bridge_transfer NSInputStream *) readStreamRef;
+            
     if (self.streamInfo.readStream == nil) 
     {
         InfoLog(@"Can't open the write stream! Possibly wrong URL!");
@@ -150,7 +154,6 @@
         [self.delegate requestFailed:self];
         return;
     }
-    
     
     self.streamInfo.readStream.delegate = self;
 	[self.streamInfo.readStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];

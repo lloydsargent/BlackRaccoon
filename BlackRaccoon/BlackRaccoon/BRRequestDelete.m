@@ -144,7 +144,6 @@
     {
         //----- successful
         [self.delegate requestCompleted:self];
-        self.streamInfo = nil;
         [self destroy];
     }
     
@@ -154,7 +153,6 @@
         self.error = [[BRRequestError alloc] init];
         self.error.errorCode = kBRFTPClientCantDeleteFileOrDirectory;
         [self.delegate requestFailed:self];
-        self.streamInfo = nil;
         [self destroy];
     }
 

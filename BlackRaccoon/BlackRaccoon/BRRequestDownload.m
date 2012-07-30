@@ -128,12 +128,15 @@
     
     // a little bit of C because I was not able to make NSInputStream play nice
     CFReadStreamRef readStreamRef = CFReadStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef)self.fullURL);
-    self.streamInfo.readStream = ( __bridge_transfer NSInputStream *) readStreamRef;
+        
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPUsePassiveMode, kCFBooleanTrue);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPAttemptPersistentConnection, kCFBooleanFalse);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPFetchResourceInfo, kCFBooleanTrue);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPUserName, (__bridge CFStringRef) self.username);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPPassword, (__bridge CFStringRef) self.password);
     
-    //----- set the username and the password
-    [self.streamInfo.readStream setProperty: (id) kCFBooleanTrue forKey: (id) kCFStreamPropertyFTPFetchResourceInfo];
-    [self.streamInfo.readStream setProperty: self.username  forKey:(id)kCFStreamPropertyFTPUserName]; 
-    [self.streamInfo.readStream setProperty: self.password  forKey:(id)kCFStreamPropertyFTPPassword];     
+    self.streamInfo.readStream = ( __bridge_transfer NSInputStream *) readStreamRef;
     
     if (self.streamInfo.readStream==nil) 
     {
@@ -227,7 +230,6 @@
             self.error.errorCode = [self.error errorCodeWithError:[theStream streamError]];
             InfoLog(@"%@", self.error.message);
             [self.delegate requestFailed:self];
-            self.streamInfo = nil;
             [self destroy];
         } 
         break;
@@ -235,7 +237,6 @@
         case NSStreamEventEndEncountered: 
         {
             [self.delegate requestCompleted:self];
-            self.streamInfo = nil;
             [self destroy];
         } 
         break;

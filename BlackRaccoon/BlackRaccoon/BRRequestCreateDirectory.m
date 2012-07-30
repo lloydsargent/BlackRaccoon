@@ -124,12 +124,16 @@
 - (void) upload 
 {
     CFWriteStreamRef writeStreamRef = CFWriteStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef) self.fullURL);
+    
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPUsePassiveMode, kCFBooleanTrue);
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPAttemptPersistentConnection, kCFBooleanFalse);
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPFetchResourceInfo, kCFBooleanTrue);
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPUserName, (__bridge CFStringRef) self.username);
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPPassword, (__bridge CFStringRef) self.password);
+    
     self.streamInfo.writeStream = ( __bridge_transfer NSOutputStream *) writeStreamRef;
     
-    //----- set the username and the password
-    [self.streamInfo.writeStream setProperty: self.username forKey:(id)kCFStreamPropertyFTPUserName]; 
-    [self.streamInfo.writeStream setProperty: self.password forKey:(id)kCFStreamPropertyFTPPassword];     
-
     if (self.streamInfo.writeStream == nil) 
     {
         InfoLog(@"Can't open the write stream! Possibly wrong URL!");
