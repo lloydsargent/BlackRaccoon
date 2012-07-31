@@ -164,7 +164,7 @@
             self.error = [[BRRequestError alloc] init];
             self.error.errorCode = kBRFTPClientFileAlreadyExists;
             [self.delegate requestFailed:self];
-            [self destroy];
+            [self.streamInfo close: self];
         }
         
         else
@@ -182,7 +182,7 @@
                 self.error = [[BRRequestError alloc] init];
                 self.error.errorCode = kBRFTPClientCantOverwriteDirectory;
                 [self.delegate requestFailed:self];
-                [self destroy];
+                [self.streamInfo close: self];
             }
         }
     }
@@ -206,55 +206,19 @@
 
 -(void)upload 
 {
-    // a little bit of C because I was not able to make NSInputStream play nice
-    CFWriteStreamRef writeStreamRef = CFWriteStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef) self.fullURL);
-    
-    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
-    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPUsePassiveMode, kCFBooleanTrue);
-    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPAttemptPersistentConnection, kCFBooleanFalse);
-    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPFetchResourceInfo, kCFBooleanTrue);
-    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPUserName, (__bridge CFStringRef) self.username);
-    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPPassword, (__bridge CFStringRef) self.password);
-
-    self.streamInfo.writeStream = ( __bridge_transfer NSOutputStream *)writeStreamRef;
-     
-    if (self.streamInfo.writeStream == nil) 
+    //----- validate that the sentData object is not nil
+    if (self.sentData==nil)
     {
-        InfoLog(@"Can't open the write stream! Possibly wrong URL!");
-        self.error = [[BRRequestError alloc] init];
-        self.error.errorCode = kBRFTPClientCantOpenStream;
-        [self.delegate requestFailed:self];
-        return;
-    }
-    
-    
-    if (self.sentData==nil) 
-    {
-        InfoLog(@"Trying to send nil data? No way. Abort");
+        InfoLog(@"Trying to send nil data. Abort");
         self.error = [[BRRequestError alloc] init];
         self.error.errorCode = kBRFTPClientSentDataIsNil;
         [self.delegate requestFailed:self];
-        [self destroy];
+        return;
     }
-    else
-    {
-        self.streamInfo.writeStream.delegate = self;
-        [self.streamInfo.writeStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [self.streamInfo.writeStream open];
-    }
-    
-    
-    self.didManagedToOpenStream = NO;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kBRDefaultTimeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
-        if (!self.didManagedToOpenStream&&self.error==nil) 
-        {
-            InfoLog(@"No response from the server. Timeout.");
-            self.error = [[BRRequestError alloc] init];
-            self.error.errorCode = kBRFTPClientStreamTimedOut;
-            [self.delegate requestFailed:self];
-            [self destroy];
-        }
-    });
+
+    //----- open the write stream and check for errors calling delegate methods
+    //----- if things fail. This encapsulates the streamInfo object and cleans up our code.
+    [self.streamInfo openWrite: self];
 }
 
 
@@ -310,7 +274,7 @@
                     
                     [self.delegate requestCompleted:self]; 
                     self.sentData =nil;
-                    [self destroy];
+                    [self.streamInfo close: self];
                 }
             }
             else
@@ -319,7 +283,7 @@
                 self.error = [[BRRequestError alloc] init];
                 self.error.errorCode = kBRFTPClientCantWriteStream;
                 [self.delegate requestFailed:self];
-                [self destroy];
+                [self.streamInfo close: self];
             }
             
         } 
@@ -331,8 +295,8 @@
             self.error.errorCode = [self.error errorCodeWithError:[theStream streamError]];
             InfoLog(@"%@", self.error.message);
             [self.delegate requestFailed:self];
-            [self destroy];
-        } 
+            [self.streamInfo close: self];
+        }
         break;
             
         case NSStreamEventEndEncountered: 
@@ -341,26 +305,10 @@
             self.error = [[BRRequestError alloc] init];
             self.error.errorCode = kBRFTPServerAbortedTransfer;
             [self.delegate requestFailed:self];
-            [self destroy];
+            [self.streamInfo close: self];
         } 
         break;
     }
 }
-
-
--(void) destroy
-{    
-    if (self.streamInfo.writeStream) 
-    {
-        [self.streamInfo.writeStream close];
-        [self.streamInfo.writeStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        self.streamInfo.writeStream = nil;
-    }
-    
-    self.streamInfo = nil;
-    
-    [super destroy];
-}
-
 
 @end

@@ -201,12 +201,6 @@
     [headRequest start];
 }
 
--(void) destroy
-{    
-    [headRequest destroy];
-    headRequest.nextRequest = nil;
-    [super destroy];
-}
 
 
 // delegate methods

@@ -97,6 +97,7 @@
 @implementation BRRequestListDirectory
 
 @synthesize filesInfo;
+@synthesize receivedData;
 
 + (BRRequestListDirectory *) initWithDelegate: (id) inDelegate
 {
@@ -125,101 +126,35 @@
 
 -(void) start 
 {
-    if (self.hostname == nil) 
-    {
-        InfoLog(@"The host name is not valid!");
-        self.error = [[BRRequestError alloc] init];
-        self.error.errorCode = kBRFTPClientHostnameIsNil;
-        [self.delegate requestFailed:self];
-        return;
-    }
-    
-    //----- a little bit of C because I was not able to make NSInputStream play nice
-    CFReadStreamRef readStreamRef = CFReadStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef) self.fullURL);
-    
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPUsePassiveMode, kCFBooleanTrue);
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPAttemptPersistentConnection, kCFBooleanFalse);
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPFetchResourceInfo, kCFBooleanTrue);
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPUserName, (__bridge CFStringRef) self.username);
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPPassword, (__bridge CFStringRef) self.password);
-
-    self.streamInfo.readStream = ( __bridge_transfer NSInputStream *) readStreamRef;
-            
-    if (self.streamInfo.readStream == nil) 
-    {
-        InfoLog(@"Can't open the write stream! Possibly wrong URL!");
-        self.error = [[BRRequestError alloc] init];
-        self.error.errorCode = kBRFTPClientCantOpenStream;
-        [self.delegate requestFailed:self];
-        return;
-    }
-    
-    self.streamInfo.readStream.delegate = self;
-	[self.streamInfo.readStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	[self.streamInfo.readStream open];
-    
-    self.didManagedToOpenStream = NO;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kBRDefaultTimeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
-        if (!self.didManagedToOpenStream && self.error ==nil) 
-        {
-            InfoLog(@"No response from the server. Timeout.");
-            self.error = [[BRRequestError alloc] init];
-            self.error.errorCode = kBRFTPClientStreamTimedOut;
-            [self.delegate requestFailed:self];
-            [self destroy];
-        }
-    });
-    
+    //----- open the read stream and check for errors calling delegate methods
+    //----- if things fail. This encapsulates the streamInfo object and cleans up our code.
+    [self.streamInfo openRead: self];
 }
 
 //stream delegate
 - (void) stream: (NSStream *) theStream handleEvent: (NSStreamEvent) streamEvent 
 {
-NSLog(@"BRRequestListDir event");
     switch (streamEvent) 
     {
         case NSStreamEventOpenCompleted: 
         {
 			self.filesInfo = [NSMutableArray array];
             self.didManagedToOpenStream = YES;
+            self.receivedData = [NSMutableData data];
         } break;
             
         case NSStreamEventHasBytesAvailable: 
         {
+            //----- Rather than parse the directory bit by bit, we get the entire thing.
+            //----- This fixes an error where the original code didn't hold on to any remaining bytes
+            //----- Because of this, if the read wasn't just spot on, then directory errors occur
             self.streamInfo.bytesConsumedThisIteration = [self.streamInfo.readStream read:self.streamInfo.buffer maxLength:kBRDefaultBufferSize];
-            
-            if (self.streamInfo.bytesConsumedThisIteration != -1) 
-            {
-                if (self.streamInfo.bytesConsumedThisIteration != 0) 
-                {
-                    NSUInteger  offset = 0;
-                    CFIndex     parsedBytes;
-                    
-                    do 
-                    {        
-                        CFDictionaryRef listingEntity = NULL;
-                        
-                        parsedBytes = CFFTPCreateParsedResourceListing(NULL, &self.streamInfo.buffer[offset], self.streamInfo.bytesConsumedThisIteration - offset, &listingEntity);
-                        
-                        if (parsedBytes > 0) 
-                        {
-                            if (listingEntity != NULL) 
-                            {
-                                //----- July 10, 2012: CFFTPCreateParsedResourceListing had a bug that had the date over retained
-                                //----- in order to fix this, we release it once. However, just as a precaution, we check to see what
-                                //----- the retain count might be (this isn't guaranteed to work).
-                                id date = [(__bridge NSDictionary *) listingEntity objectForKey: (id) kCFFTPResourceModDate];
-                                if (CFGetRetainCount((__bridge CFTypeRef) date) >= 2)
-                                    CFRelease((__bridge CFTypeRef) date);
 
-                                //----- transfer the directory into an ARC maintained array
-                                self.filesInfo = [self.filesInfo arrayByAddingObject: (__bridge_transfer NSDictionary *) listingEntity];                            
-                            }            
-                            offset += parsedBytes;            
-                        }
-                        
-                    } while (parsedBytes>0); 
+            if (self.streamInfo.bytesConsumedThisIteration!=-1)
+            {
+                if (self.streamInfo.bytesConsumedThisIteration!=0)
+                {
+                    [self.receivedData appendBytes: self.streamInfo.buffer length: self.streamInfo.bytesConsumedThisIteration];
                 }
             }
             else
@@ -228,9 +163,9 @@ NSLog(@"BRRequestListDir event");
                 self.error = [[BRRequestError alloc] init];
                 self.error.errorCode = kBRFTPClientCantReadStream;
                 [self.delegate requestFailed:self];
-                [self destroy];
+                [self.streamInfo close: self];
             }
-        } 
+        }
         break;
             
         case NSStreamEventHasSpaceAvailable: 
@@ -245,15 +180,47 @@ NSLog(@"BRRequestListDir event");
             self.error.errorCode = [self.error errorCodeWithError:[theStream streamError]];
             InfoLog(@"%@", self.error.message);
             [self.delegate requestFailed:self];
-            [self destroy];
-        } 
+            [self.streamInfo close: self];
+        }
         break;
             
         case NSStreamEventEndEncountered: 
-        {            
+        {
+            NSUInteger  offset = 0;
+            CFIndex     parsedBytes;
+            uint8_t *bytes = (uint8_t *)[self.receivedData bytes];
+            int totalbytes = [self.receivedData length];
+           
+            //----- we have all the data for the directory listing. Now parse it.
+            do
+            {
+                CFDictionaryRef listingEntity = NULL;
+                
+                 parsedBytes = CFFTPCreateParsedResourceListing(NULL, &bytes[offset], totalbytes - offset, &listingEntity);
+                
+                if (parsedBytes > 0)
+                {
+                    if (listingEntity != NULL)
+                    {
+                        //----- July 10, 2012: CFFTPCreateParsedResourceListing had a bug that had the date over retained
+                        //----- in order to fix this, we release it once. However, just as a precaution, we check to see what
+                        //----- the retain count might be (this isn't guaranteed to work).
+                        id date = [(__bridge NSDictionary *) listingEntity objectForKey: (id) kCFFTPResourceModDate];
+                        if (CFGetRetainCount((__bridge CFTypeRef) date) >= 2)
+                            CFRelease((__bridge CFTypeRef) date);
+                        
+                        //----- transfer the directory into an ARC maintained array
+                        self.filesInfo = [self.filesInfo arrayByAddingObject: (__bridge_transfer NSDictionary *) listingEntity];
+                    }
+                    offset += parsedBytes;
+                }
+                
+            } while (parsedBytes > 0);
+
+            
             [BRBase addFoldersToCache:self.filesInfo forParentFolderPath:self.path];
-            [self.delegate requestCompleted:self]; 
-            [self destroy];
+            [self.delegate requestCompleted:self];             
+            [self.streamInfo close: self];
         } 
         break;
     }

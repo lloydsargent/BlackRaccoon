@@ -40,7 +40,7 @@
 
 //---------- include files
 #import "BRGlobal.h"
-#include "BRBase.h"
+#import "BRBase.h"
 
 
 
@@ -90,6 +90,8 @@
 
 //---------- classes
 
+@class BRRequest;
+
 @interface BRStreamInfo : NSObject
 {
     NSOutputStream *writeStream;    
@@ -108,6 +110,10 @@
 @property NSMutableData *bufferObject;
 @property UInt8 *buffer;
 
-- (void) destroy;
+
+- (void) openRead: (BRRequest *) request;
+- (void) openWrite: (BRRequest *) request;
+- (void) close: (BRRequest *) request;
+
 
 @end

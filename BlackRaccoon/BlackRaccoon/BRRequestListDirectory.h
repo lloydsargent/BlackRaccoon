@@ -96,12 +96,13 @@
 //---------- classes
 
 
-@interface BRRequestListDirectory : BRRequestDownload <NSStreamDelegate> 
+@interface BRRequestListDirectory : BRRequest //BRRequestDownload <NSStreamDelegate>
 {
     
 }
 
 @property NSArray * filesInfo;
+@property (strong) NSMutableData * receivedData;
 
 + (BRRequestListDirectory *) initWithDelegate: (id) inDelegate;
 

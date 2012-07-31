@@ -42,7 +42,8 @@
 
 //---------- include files
 #import "BRStreamInfo.h"
-#import "memory.h"
+//#import "memory.h"
+#import "BRRequest.h"
 
 
 
@@ -101,8 +102,21 @@
 @synthesize size;
 @synthesize bufferObject;
 
-//@synthesize buffer;
 
+
+//-----
+//
+//				init
+//
+// synopsis:	retval = [self init];
+//					id retval	-
+//
+// description:	init is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type id
+//
 
 - (id)init
 {
@@ -115,20 +129,201 @@
 }
 
 
-- (void) destroy
+
+//-----
+//
+//				openRead
+//
+// synopsis:	[self openRead:request];
+//					BRRequest *request	-
+//
+// description:	openRead is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void) openRead: (BRRequest *) request
 {
-    self.writeStream = nil;    
-    self.readStream = nil;
-    bufferObject = nil;
+    if (request.hostname==nil)
+    {
+        InfoLog(@"The host name is nil!");
+        request.error = [[BRRequestError alloc] init];
+        request.error.errorCode = kBRFTPClientHostnameIsNil;
+        [request.delegate requestFailed: request];
+        [request.streamInfo close: request];
+        return;
+    }
+    
+    // a little bit of C because I was not able to make NSInputStream play nice
+    CFReadStreamRef readStreamRef = CFReadStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef) request.fullURL);
+    
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPUsePassiveMode, kCFBooleanTrue);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPAttemptPersistentConnection, kCFBooleanFalse);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPFetchResourceInfo, kCFBooleanTrue);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPUserName, (__bridge CFStringRef) request.username);
+    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPPassword, (__bridge CFStringRef) request.password);
+    readStream = ( __bridge_transfer NSInputStream *) readStreamRef;
+    
+    if (readStream==nil)
+    {
+        InfoLog(@"Can't open the read stream! Possibly wrong URL");
+        request.error = [[BRRequestError alloc] init];
+        request.error.errorCode = kBRFTPClientCantOpenStream;
+        [request.delegate requestFailed: request];
+        [request.streamInfo close: request];
+        return;
+    }
+    
+    readStream.delegate = request;
+	[readStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[readStream open];
+    
+    request.didManagedToOpenStream = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kBRDefaultTimeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+        if (!request.didManagedToOpenStream && request.error == nil)
+        {
+            InfoLog(@"No response from the server. Timeout.");
+            request.error = [[BRRequestError alloc] init];
+            request.error.errorCode = kBRFTPClientStreamTimedOut;
+            [request.delegate requestFailed: request];
+            [request.streamInfo close: request];
+        }
+    });
 }
 
+
+
+//-----
+//
+//				openWrite
+//
+// synopsis:	[self openWrite:request];
+//					BRRequest *request	-
+//
+// description:	openWrite is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void) openWrite: (BRRequest *) request
+{
+    CFWriteStreamRef writeStreamRef = CFWriteStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef) request.fullURL);
+    
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPUsePassiveMode, kCFBooleanTrue);
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPAttemptPersistentConnection, kCFBooleanFalse);
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPFetchResourceInfo, kCFBooleanTrue);
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPUserName, (__bridge CFStringRef) request.username);
+    CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyFTPPassword, (__bridge CFStringRef) request.password);
+    
+    writeStream = ( __bridge_transfer NSOutputStream *) writeStreamRef;
+    
+    if (writeStream == nil)
+    {
+        InfoLog(@"Can't open the write stream! Possibly wrong URL!");
+        request.error = [[BRRequestError alloc] init];
+        request.error.errorCode = kBRFTPClientCantOpenStream;
+        [request.delegate requestFailed: request];
+        [request.streamInfo close: request];
+        return;
+    }
+    
+    writeStream.delegate = request;
+    [writeStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [writeStream open];
+    
+    request.didManagedToOpenStream = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kBRDefaultTimeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+        if (!request.didManagedToOpenStream && request.error==nil)
+        {
+            InfoLog(@"No response from the server. Timeout.");
+            request.error = [[BRRequestError alloc] init];
+            request.error.errorCode = kBRFTPClientStreamTimedOut;
+            [request.delegate requestFailed:request];
+            [request.streamInfo close: request];
+        }
+    });
+}
+
+
+
+//-----
+//
+//				close
+//
+// synopsis:	[self close:request];
+//					BRRequest *request	-
+//
+// description:	close is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void) close: (BRRequest *) request
+{
+    if (readStream)
+    {
+        [readStream close];
+        [readStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        readStream = nil;
+    }
+    
+    if (writeStream)
+    {
+        [writeStream close];
+        [writeStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        writeStream = nil;
+    }
+    
+    bufferObject = nil;
+    request.streamInfo = nil;
+}
+
+
+
+//-----
+//
+//				buffer
+//
+// synopsis:	retval = [self buffer];
+//					UInt8 *retval	-
+//
+// description:	buffer is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type UInt8 *
+//
 
 - (UInt8 *) buffer
 {
     return (UInt8 *) [bufferObject bytes];
 }
 
-- (void) setBuffer: (UInt8 *)buffer
+
+
+//-----
+//
+//				setBuffer
+//
+// synopsis:	[self setBuffer:buffer];
+//					UInt8 *buffer	-
+//
+// description:	setBuffer is designed to do nothing but make ARC happy.
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void) setBuffer: (UInt8 *) buffer
 {
 }
 

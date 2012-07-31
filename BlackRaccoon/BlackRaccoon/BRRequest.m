@@ -118,12 +118,4 @@
 }
 
 
--(void)destroy 
-{
-    self.streamInfo = nil;
-
-    [super destroy];
-}
-
-
 @end

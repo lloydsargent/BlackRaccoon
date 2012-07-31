@@ -109,7 +109,7 @@
 
 //---------- classes
 
-@interface BRRequest : BRBase
+@interface BRRequest : BRBase <NSStreamDelegate>
 {
     
 }

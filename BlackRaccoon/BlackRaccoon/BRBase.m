@@ -103,7 +103,7 @@
 @synthesize error;
 @synthesize maximumSize;
 @synthesize percentCompleted;
-
+@synthesize timeout;
 
 
 static NSMutableDictionary *folders;
@@ -178,7 +178,6 @@ static NSMutableDictionary *folders;
 }
 
 
-
 //-----
 //
 //				init
@@ -227,8 +226,6 @@ static NSMutableDictionary *folders;
 {
     NSString * fullURLString = [self.scheme stringByAppendingFormat:@"%@%@%@", @"://", self.hostname, self.path];
     
-    NSLog(@"fullURLString = %@", fullURLString);
-    
     return [NSURL URLWithString: fullURLString];
 }
 
@@ -252,8 +249,6 @@ static NSMutableDictionary *folders;
 {
     
     NSString * fullURLString = [self.scheme stringByAppendingFormat:@"%@%@%@%@", @"://", self.credentials, self.hostname, self.path];
-    
-    NSLog(@"fullURLString = %@", fullURLString);
     
     return [NSURL URLWithString: fullURLString];
     
@@ -477,26 +472,6 @@ static NSMutableDictionary *folders;
 -(void) start
 {
 }
-
-
-
-//-----
-//
-//				destroy
-//
-// synopsis:	[self destroy];
-//
-// description:	destroy is designed to
-//
-// errors:		none
-//
-// returns:		none
-//
-
--(void) destroy
-{
-}
-
 
 
 @end

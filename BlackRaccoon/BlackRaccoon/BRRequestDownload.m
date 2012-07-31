@@ -116,53 +116,9 @@
 
 -(void) start
 {
-    
-    if (self.hostname==nil) 
-    {
-        InfoLog(@"The host name is nil!");
-        self.error = [[BRRequestError alloc] init];
-        self.error.errorCode = kBRFTPClientHostnameIsNil;
-        [self.delegate requestFailed:self];
-        return;
-    }
-    
-    // a little bit of C because I was not able to make NSInputStream play nice
-    CFReadStreamRef readStreamRef = CFReadStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef)self.fullURL);
-        
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPUsePassiveMode, kCFBooleanTrue);
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPAttemptPersistentConnection, kCFBooleanFalse);
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPFetchResourceInfo, kCFBooleanTrue);
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPUserName, (__bridge CFStringRef) self.username);
-    CFReadStreamSetProperty(readStreamRef, kCFStreamPropertyFTPPassword, (__bridge CFStringRef) self.password);
-    
-    self.streamInfo.readStream = ( __bridge_transfer NSInputStream *) readStreamRef;
-    
-    if (self.streamInfo.readStream==nil) 
-    {
-        InfoLog(@"Can't open the read stream! Possibly wrong URL");
-        self.error = [[BRRequestError alloc] init];
-        self.error.errorCode = kBRFTPClientCantOpenStream;
-        [self.delegate requestFailed:self];
-        return;
-    }
-    
-    
-    self.streamInfo.readStream.delegate = self;
-	[self.streamInfo.readStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	[self.streamInfo.readStream open];
-    
-    self.didManagedToOpenStream = NO;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kBRDefaultTimeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
-        if (!self.didManagedToOpenStream&&self.error==nil) 
-        {
-            InfoLog(@"No response from the server. Timeout.");
-            self.error = [[BRRequestError alloc] init];
-            self.error.errorCode = kBRFTPClientStreamTimedOut;
-            [self.delegate requestFailed:self];
-            [self destroy];
-        }
-    });
+    //----- open the read stream and check for errors calling delegate methods
+    //----- if things fail. This encapsulates the streamInfo object and cleans up our code.
+    [self.streamInfo openRead: self];
 }
 
 //stream delegate
@@ -190,13 +146,7 @@
             {
                 if (self.streamInfo.bytesConsumedThisIteration!=0) 
                 {
-                    
-                    NSMutableData * receivedDataWithNewBytes = [self.receivedData mutableCopy];                    
-                    [receivedDataWithNewBytes appendBytes:self.streamInfo.buffer length:self.streamInfo.bytesConsumedThisIteration];
-                    
-                    self.receivedData = [NSData dataWithData:receivedDataWithNewBytes];
-                    
-                    receivedDataWithNewBytes = nil;
+                    [self.receivedData appendBytes: self.streamInfo.buffer length: self.streamInfo.bytesConsumedThisIteration];
                     
                     self.percentCompleted = [self.receivedData length] / self.maximumSize;
                     
@@ -212,7 +162,7 @@
                 self.error = [[BRRequestError alloc] init];
                 self.error.errorCode = kBRFTPClientCantReadStream;
                 [self.delegate requestFailed:self];
-                [self destroy];
+                [self.streamInfo close: self];
             }
             
         } 
@@ -230,29 +180,17 @@
             self.error.errorCode = [self.error errorCodeWithError:[theStream streamError]];
             InfoLog(@"%@", self.error.message);
             [self.delegate requestFailed:self];
-            [self destroy];
-        } 
+            [self.streamInfo close: self];
+        }
         break;
             
         case NSStreamEventEndEncountered: 
         {
             [self.delegate requestCompleted:self];
-            [self destroy];
-        } 
+            [self.streamInfo close: self];
+        }
         break;
     }
-}
-
--(void) destroy{
-    
-    if (self.streamInfo.readStream) 
-    {
-        [self.streamInfo.readStream close];
-        [self.streamInfo.readStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        self.streamInfo.readStream = nil;
-    }
-    
-    [super destroy];
 }
 
 

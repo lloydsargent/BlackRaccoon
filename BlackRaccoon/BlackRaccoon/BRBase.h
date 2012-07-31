@@ -118,12 +118,12 @@
 @property (assign) BOOL passive;
 @property (strong) BRRequestError *error;
 @property float maximumSize;
-@property (assign) float percentCompleted;
+@property float percentCompleted;
+@property int timeout;
 
 - (NSURL *) fullURLWithEscape;
 
 -(void) start;
--(void) destroy;
 
 +(NSDictionary *) cachedFolders;
 +(void) addFoldersToCache:(NSArray *) foldersArray forParentFolderPath:(NSString *) key;

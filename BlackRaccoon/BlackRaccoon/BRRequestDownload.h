@@ -95,11 +95,11 @@
 
 //---------- classes
 
-@interface BRRequestDownload : BRRequest <NSStreamDelegate> 
+@interface BRRequestDownload : BRRequest 
 {
 }
 
-@property (strong) NSData * receivedData;
+@property (strong) NSMutableData * receivedData;
 
 + (BRRequestDownload *) initWithDelegate: (id) inDelegate;
 
