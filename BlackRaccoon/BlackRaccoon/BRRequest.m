@@ -96,26 +96,263 @@
 
 @implementation BRRequest
 
-@synthesize type;
 @synthesize nextRequest;
 @synthesize prevRequest;
 @synthesize delegate;
 @synthesize streamInfo;
 @synthesize didManagedToOpenStream;
+@synthesize data;
+
+@synthesize passive;
+@synthesize password;
+@synthesize username;
+@synthesize error;
+@synthesize maximumSize;
+@synthesize percentCompleted;
+@synthesize timeout;
+
 
 - (id)init 
 {
     self = [super init];
     if (self) 
     {
+        self.passive = NO;
+        self.password = nil;
+        self.username = nil;
+        self.hostname = nil;
+        self.path = @"";
+        
         streamInfo = [[BRStreamInfo alloc] init];
         self.streamInfo.readStream = nil;
         self.streamInfo.writeStream = nil;
-        self.streamInfo.bytesConsumedThisIteration = 0;
-        self.streamInfo.bytesConsumedInTotal = 0;
+        self.streamInfo.bytesThisIteration = 0;
+        self.streamInfo.bytesTotal = 0;
     }
     return self;
 }
 
+
+
+
+//-----
+//
+//				fullURL
+//
+// synopsis:	retval = [self fullURL];
+//					NSURL*retval	-
+//
+// description:	fullURL is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSURL*
+//
+
+-(NSURL*) fullURL
+{
+    NSString * fullURLString = [NSString stringWithFormat: @"ftp://%@%@", self.hostname, self.path];
+    
+    return [NSURL URLWithString: fullURLString];
+}
+
+
+
+//-----
+//
+//				fullURLWithEscape
+//
+// synopsis:	retval = [self fullURLWithEscape];
+//					NSURL *retval	-
+//
+// description:	fullURLWithEscape is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSURL *
+//
+
+- (NSURL *) fullURLWithEscape
+{
+    NSString *escapedUsername = [self encodeString: username];
+    NSString *escapedPassword = [self encodeString: password];
+    NSString *cred;
+    
+    if (escapedUsername != nil)
+    {
+        if (escapedPassword != nil)
+        {
+            cred = [NSString stringWithFormat:@"%@:%@@", escapedUsername, escapedPassword];
+        }else
+        {
+            cred = [NSString stringWithFormat:@"%@@", escapedUsername];
+        }
+    }
+    else
+    {
+        cred = @"";
+    }
+    cred = [cred stringByStandardizingPath];
+    
+    NSString * fullURLString = [NSString stringWithFormat:@"ftp://%@%@%@", cred, self.hostname, self.path];
+    
+    return [NSURL URLWithString: fullURLString];
+    
+}
+
+
+
+//-----
+//
+//				path
+//
+// synopsis:	retval = [self path];
+//					NSString *retval	-
+//
+// description:	path is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
+-(NSString *)path
+{
+    //  we remove all the extra slashes from the directory path, including the last one (if there is one)
+    //  we also escape it
+    NSString * escapedPath = [path stringByStandardizingPath];
+    
+    
+    //  we need the path to be absolute, if it's not, we *make* it
+    if (![escapedPath isAbsolutePath])
+    {
+        escapedPath = [@"/" stringByAppendingString:escapedPath];
+    }
+    
+    //----- now make sure that we have escaped all special characters
+    escapedPath = [self encodeString: escapedPath];
+    
+    return escapedPath;
+}
+
+
+
+//-----
+//
+//				setPath
+//
+// synopsis:	[self setPath:directoryPathLocal];
+//					NSString *directoryPathLocal	-
+//
+// description:	setPath is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+-(void) setPath: (NSString *) directoryPathLocal
+{
+    path = directoryPathLocal;
+}
+
+
+
+//-----
+//
+//				hostname
+//
+// synopsis:	retval = [self hostname];
+//					NSString *retval	-
+//
+// description:	hostname is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
+-(NSString *) hostname
+{
+    return [hostname stringByStandardizingPath];
+}
+
+
+
+//-----
+//
+//				setHostname
+//
+// synopsis:	[self setHostname:hostnamelocal];
+//					NSString *hostnamelocal	-
+//
+// description:	setHostname is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+-(void)setHostname:(NSString *)hostnamelocal
+{
+    hostname = hostnamelocal;
+}
+
+
+
+//-----
+//
+//				encodeString
+//
+// synopsis:	retval = [self encodeString:string];
+//					NSString *retval	-
+//					NSString *string	-
+//
+// description:	encodeString is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
+- (NSString *)encodeString: (NSString *) string;
+{
+    NSString *urlEncoded = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                                                                 NULL,
+                                                                                                 (__bridge CFStringRef) string,
+                                                                                                 NULL,
+                                                                                                 (CFStringRef)@"!*'\"();:@&=+$,?%#[]% ",
+                                                                                                 kCFStringEncodingUTF8);
+    return urlEncoded;
+}  
+
+
+
+//-----
+//
+//				start
+//
+// synopsis:	[self start];
+//
+// description:	start is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+-(void) start
+{
+}
+
+- (long) bytesSent
+{
+    return self.streamInfo.bytesThisIteration;
+}
+
+- (long) totalBytesSent
+{
+    return self.streamInfo.bytesTotal;
+}
 
 @end

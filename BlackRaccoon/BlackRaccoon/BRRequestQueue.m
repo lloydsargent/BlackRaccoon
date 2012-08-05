@@ -208,13 +208,16 @@
 -(void) requestCompleted: (BRRequest *) request 
 {
     
-    [self.delegate requestCompleted:request];
+    [self.queueDelegate requestCompleted:request];
     
     headRequest = headRequest.nextRequest;
     
-    if (headRequest==nil) {
-        [self.delegate queueCompleted:self];
-    }else{
+    if (headRequest==nil)
+    {
+        [self.queueDelegate queueCompleted:self];
+    }
+    else
+    {
         [headRequest start]; 
     }
     
@@ -223,7 +226,7 @@
 
 -(void) requestFailed: (BRRequest *) request
 {    
-    [self.delegate requestFailed:request];
+    [self.queueDelegate requestFailed:request];
     
     headRequest = headRequest.nextRequest;    
     
@@ -232,13 +235,13 @@
 
 -(BOOL) shouldOverwriteFileWithRequest: (BRRequest *)request 
 {
-    if (![self.delegate respondsToSelector:@selector(shouldOverwriteFileWithRequest:)]) 
+    if (![self.queueDelegate respondsToSelector:@selector(shouldOverwriteFileWithRequest:)]) 
     {
         return NO;
     }
     else
     {
-        return [self.delegate shouldOverwriteFileWithRequest:request];
+        return [self.queueDelegate shouldOverwriteFileWithRequest:request];
     }
 }
 

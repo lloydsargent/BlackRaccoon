@@ -101,6 +101,6 @@
 @property (assign) BRErrorCodes errorCode;
 @property (readonly) NSString * message;
 
-- (BRErrorCodes) errorCodeWithError: (NSError *) error;
++(BRErrorCodes) errorCodeWithError: (NSError *) error;
 
 @end

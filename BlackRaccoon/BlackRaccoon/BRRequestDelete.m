@@ -105,10 +105,6 @@
     return deleteFileDir;
 }
 
-- (BRRequestTypes) type 
-{
-    return kBRDeleteRequest;
-}
 
 -(NSString *) path 
 {
@@ -134,26 +130,20 @@
     if (self.hostname==nil) 
     {
         InfoLog(@"The host name is nil!");
-        self.error = [[BRRequestError alloc] init];
-        self.error.errorCode = kBRFTPClientHostnameIsNil;
-        [self.delegate requestFailed:self];
+        [self.streamInfo streamError: self errorCode: kBRFTPClientHostnameIsNil];
         return;
     }
     
     if (CFURLDestroyResource(( __bridge CFURLRef) self.fullURLWithEscape, &errorcode))
     {
         //----- successful
-        [self.delegate requestCompleted:self];
-        self.streamInfo = nil;
+        [self.streamInfo streamComplete: self];
     }
     
     else 
     {
         //----- unsuccessful        
-        self.error = [[BRRequestError alloc] init];
-        self.error.errorCode = kBRFTPClientCantDeleteFileOrDirectory;
-        [self.delegate requestFailed:self];
-        self.streamInfo = nil;
+        [self.streamInfo streamError: self errorCode: kBRFTPClientCantDeleteFileOrDirectory];
     }
 }
 

@@ -99,7 +99,8 @@
 {
 }
 
-@property (strong) NSMutableData * receivedData;
+@property NSData * receivedData;
+
 
 + (BRRequestDownload *) initWithDelegate: (id) inDelegate;
 

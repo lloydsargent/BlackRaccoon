@@ -26,6 +26,8 @@
 //---------- include files
 #import "BRRequestListDirectory.h"
 #import "BRRequestCreateDirectory.h"
+#import "BRRequestUpload.h"
+#import "BRRequestDownload.h"
 #import "BRRequestDelete.h"
 
 
@@ -92,6 +94,9 @@
     IBOutlet UITextField *password;
     
     IBOutlet UITextView *logview;
+    
+    NSMutableData *downloadData;
+    NSData *uploadData;
 }
 
 

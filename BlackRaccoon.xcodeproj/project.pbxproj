@@ -15,7 +15,6 @@
 		6EF0294115ADE4E100E01C96 /* BRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0294015ADE4E100E01C96 /* BRAppDelegate.m */; };
 		6EF0294E15ADE5A600E01C96 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF0294B15ADE58700E01C96 /* CFNetwork.framework */; };
 		6EF0295115ADE63100E01C96 /* GreenButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0295015ADE63100E01C96 /* GreenButton.png */; };
-		6EF0296815ADE66400E01C96 /* BRBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0295415ADE66400E01C96 /* BRBase.m */; };
 		6EF0296915ADE66400E01C96 /* BRRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0295715ADE66400E01C96 /* BRRequest.m */; };
 		6EF0296A15ADE66400E01C96 /* BRRequestCreateDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0295915ADE66400E01C96 /* BRRequestCreateDirectory.m */; };
 		6EF0296B15ADE66400E01C96 /* BRRequestDelete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0295B15ADE66400E01C96 /* BRRequestDelete.m */; };
@@ -46,8 +45,6 @@
 		6EF0294015ADE4E100E01C96 /* BRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRAppDelegate.m; sourceTree = "<group>"; };
 		6EF0294B15ADE58700E01C96 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		6EF0295015ADE63100E01C96 /* GreenButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GreenButton.png; path = BlackRaccoon/GreenButton.png; sourceTree = "<group>"; };
-		6EF0295315ADE66400E01C96 /* BRBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BRBase.h; path = BlackRaccoon/BlackRaccoon/BRBase.h; sourceTree = "<group>"; };
-		6EF0295415ADE66400E01C96 /* BRBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BRBase.m; path = BlackRaccoon/BlackRaccoon/BRBase.m; sourceTree = "<group>"; };
 		6EF0295515ADE66400E01C96 /* BRGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BRGlobal.h; path = BlackRaccoon/BlackRaccoon/BRGlobal.h; sourceTree = "<group>"; };
 		6EF0295615ADE66400E01C96 /* BRRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BRRequest.h; path = BlackRaccoon/BlackRaccoon/BRRequest.h; sourceTree = "<group>"; };
 		6EF0295715ADE66400E01C96 /* BRRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BRRequest.m; path = BlackRaccoon/BlackRaccoon/BRRequest.m; sourceTree = "<group>"; };
@@ -158,8 +155,6 @@
 		6EF0295215ADE63A00E01C96 /* BlackRaccoonFTP */ = {
 			isa = PBXGroup;
 			children = (
-				6EF0295315ADE66400E01C96 /* BRBase.h */,
-				6EF0295415ADE66400E01C96 /* BRBase.m */,
 				6EF0295515ADE66400E01C96 /* BRGlobal.h */,
 				6EF0295615ADE66400E01C96 /* BRRequest.h */,
 				6EF0295715ADE66400E01C96 /* BRRequest.m */,
@@ -265,7 +260,6 @@
 			files = (
 				6EF0293D15ADE4E100E01C96 /* main.m in Sources */,
 				6EF0294115ADE4E100E01C96 /* BRAppDelegate.m in Sources */,
-				6EF0296815ADE66400E01C96 /* BRBase.m in Sources */,
 				6EF0296915ADE66400E01C96 /* BRRequest.m in Sources */,
 				6EF0296A15ADE66400E01C96 /* BRRequestCreateDirectory.m in Sources */,
 				6EF0296B15ADE66400E01C96 /* BRRequestDelete.m in Sources */,

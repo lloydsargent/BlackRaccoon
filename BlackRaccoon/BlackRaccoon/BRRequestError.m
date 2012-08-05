@@ -98,6 +98,20 @@
 
 @synthesize errorCode;
 
++(BRErrorCodes) errorCodeWithError: (NSError *) error
+{
+    //----- As suggested by RMaddy
+    NSDictionary *userInfo = error.userInfo;
+    NSNumber *code = [userInfo objectForKey:(id)kCFFTPStatusCodeKey];
+    
+    if (code)
+    {
+        return [code intValue];
+    }
+    
+    return 0;
+}
+
 - (id)init 
 {
     self = [super init];
@@ -109,100 +123,92 @@
 
 -(NSString *) message 
 {
-    NSString * mess;
+    NSString * errorMessage;
     switch (self.errorCode) 
     {
-            //Client errors
+        //----- Client errors
+        case kBRFTPClientSentDataIsNil:
+            errorMessage = @"Data is nil.";
+            break;
+            
         case kBRFTPClientCantOpenStream:
-            mess = @"Can't open stream, probably the URL is wrong.";
-            break;
-            
-        case kBRFTPClientStreamTimedOut:
-            mess = @"No response from the server. Timeout.";
-            break;
-            
-        case kBRFTPClientCantReadStream:
-            mess = @"Stream opened, but failed while trying to read from it.";
+            errorMessage = @"Unable to open stream.";
             break;
             
         case kBRFTPClientCantWriteStream:
-            mess = @"The write stream had opened, but it failed when we tried to write data on it!";
+            errorMessage = @"Unable to write to open stream.";
+            break;
+            
+        case kBRFTPClientCantReadStream:
+            errorMessage = @"Unable to read from open stream.";
             break;
             
         case kBRFTPClientHostnameIsNil:
-            mess = @"Hostname can't be nil.";
-            break;
-            
-        case kBRFTPClientSentDataIsNil:
-            mess = @"You need some data to send. Why is 'sentData' nil?";
-            break;
-            
-        case kBRFTPClientCantOverwriteDirectory:
-            mess = @"Can't overwrite directory!";
+            errorMessage = @"Hostname is nil.";
             break;
             
         case kBRFTPClientFileAlreadyExists:
-            mess = @"File already exists!";
+            errorMessage = @"File already exists!";
             break;
             
-            //Server errors    
+        case kBRFTPClientCantOverwriteDirectory:
+            errorMessage = @"Can't overwrite directory!";
+            break;
+            
+        case kBRFTPClientStreamTimedOut:
+            errorMessage = @"Stream timed out with no response from server.";
+            break;
+            
+        case kBRFTPClientCantDeleteFileOrDirectory:
+            errorMessage = @"Can't delete file or directory.";
+            break;
+            
+        case kBRFTPClientMissingRequestDataAvailable:
+            errorMessage = @"Delegate missing requestDataAvailable:";
+            break;
+            
+        //----- Server errors    
         case kBRFTPServerAbortedTransfer:
-            mess = @"Server connection interrupted.";
-            break;
-            
-        case kBRFTPServerCantOpenDataConnection:
-            mess = @"Server can't open data connection.";
-            break;
-            
-        case kBRFTPServerFileNotAvailable:
-            mess = @"No such file or directory on server.";
-            break;
-            
-        case kBRFTPServerIllegalFileName:
-            mess = @"File name has illegal characters.";
+            errorMessage = @"Server aborted transfer.";
             break;
             
         case kBRFTPServerResourceBusy:
-            mess = @"Resource busy! Try later!";
+            errorMessage = @"Resource is busy.";
             break;
             
-        case kBRFTPServerStorageAllocationExceeded:
-            mess = @"Server storage exceeded!";
-            break;
-            
-        case kBRFTPServerUnknownError:
-            mess = @"Unknown FTP error!";
+        case kBRFTPServerCantOpenDataConnection:
+            errorMessage = @"Server can't open data connection.";
             break;
             
         case kBRFTPServerUserNotLoggedIn:
-            mess = @"Not logged in.";
+            errorMessage = @"Not logged in.";
+            break;
+            
+        case kBRFTPServerStorageAllocationExceeded:
+            errorMessage = @"Server allocation exceeded!";
+            break;
+            
+        case kBRFTPServerIllegalFileName:
+            errorMessage = @"Illegal file name.";
+            break;
+            
+        case kBRFTPServerFileNotAvailable:
+            errorMessage = @"File or directory not available or directory already exists.";
+            break;
+            
+        case kBRFTPServerUnknownError:
+            errorMessage = @"Unknown FTP error!";
             break;
             
         default:
-            mess = @"Unknown error!";
+            errorMessage = @"Unknown error!";
             break;
     }
     
-    return mess;
+    return errorMessage;
 }
 
 
--(BRErrorCodes) errorCodeWithError: (NSError *) error 
-{
-    //----- As suggested by RMaddy
-    NSDictionary *userInfo = error.userInfo;
-    NSNumber *code = [userInfo objectForKey:(id)kCFFTPStatusCodeKey];
-    
-    if (code)
-    {
-        return [code intValue];
-    }
-    
-    else
-    {
-        return 0;
-    }
-}
 
 
 

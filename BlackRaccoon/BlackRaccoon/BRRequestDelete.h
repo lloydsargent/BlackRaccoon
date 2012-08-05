@@ -95,7 +95,7 @@
 
 //---------- classes
 
-@interface BRRequestDelete : BRRequest <NSStreamDelegate> 
+@interface BRRequestDelete : BRRequest
 {
     BOOL isDirectory;
 }

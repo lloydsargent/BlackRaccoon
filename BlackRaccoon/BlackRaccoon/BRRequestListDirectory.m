@@ -113,7 +113,24 @@
     return kBRListDirectoryRequest;
 }
 
--(NSString *)path 
+- (BOOL) fileExists: (NSString *) fileNamePath
+{
+    NSString *fileName = [[self.path lastPathComponent] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+
+    for (NSDictionary *file in self.filesInfo)
+    {
+        NSString * name = [file objectForKey:(id)kCFFTPResourceName];
+        if ([fileName isEqualToString:name])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+
+-(NSString *)path
 {
     //  the path will always point to a directory, so we add the final slash to it (if there was one before escaping/standardizing, it's *gone* now)
     NSString * directoryPath = [super path];
@@ -126,6 +143,8 @@
 
 -(void) start 
 {
+    self.maximumSize = LONG_MAX;
+    
     //----- open the read stream and check for errors calling delegate methods
     //----- if things fail. This encapsulates the streamInfo object and cleans up our code.
     [self.streamInfo openRead: self];
@@ -134,6 +153,8 @@
 //stream delegate
 - (void) stream: (NSStream *) theStream handleEvent: (NSStreamEvent) streamEvent 
 {
+    NSData *data;
+    
     switch (streamEvent) 
     {
         case NSStreamEventOpenCompleted: 
@@ -143,27 +164,19 @@
             self.receivedData = [NSMutableData data];
         } break;
             
-        case NSStreamEventHasBytesAvailable: 
+        case NSStreamEventHasBytesAvailable:
         {
-            //----- Rather than parse the directory bit by bit, we get the entire thing.
-            //----- This fixes an error where the original code didn't hold on to any remaining bytes
-            //----- Because of this, if the read wasn't just spot on, then directory errors occur
-            self.streamInfo.bytesConsumedThisIteration = [self.streamInfo.readStream read:self.streamInfo.buffer maxLength:kBRDefaultBufferSize];
-
-            if (self.streamInfo.bytesConsumedThisIteration!=-1)
+            data = [self.streamInfo read: self];
+            
+            if (data)
             {
-                if (self.streamInfo.bytesConsumedThisIteration!=0)
-                {
-                    [self.receivedData appendBytes: self.streamInfo.buffer length: self.streamInfo.bytesConsumedThisIteration];
-                }
+                [self.receivedData appendData: data];
             }
+            
             else
             {
                 InfoLog(@"Stream opened, but failed while trying to read from it.");
-                self.error = [[BRRequestError alloc] init];
-                self.error.errorCode = kBRFTPClientCantReadStream;
-                [self.delegate requestFailed:self];
-                [self.streamInfo close: self];
+                [self.streamInfo streamError: self errorCode: kBRFTPClientCantReadStream];
             }
         }
         break;
@@ -176,11 +189,8 @@
             
         case NSStreamEventErrorOccurred: 
         {
-            self.error = [[BRRequestError alloc] init];
-            self.error.errorCode = [self.error errorCodeWithError:[theStream streamError]];
+            [self.streamInfo streamError: self errorCode: [BRRequestError errorCodeWithError: [theStream streamError]]];
             InfoLog(@"%@", self.error.message);
-            [self.delegate requestFailed:self];
-            [self.streamInfo close: self];
         }
         break;
             
@@ -217,11 +227,8 @@
                 
             } while (parsedBytes > 0);
 
-            
-            [BRBase addFoldersToCache:self.filesInfo forParentFolderPath:self.path];
-            [self.delegate requestCompleted:self];             
-            [self.streamInfo close: self];
-        } 
+            [self.streamInfo streamComplete: self];                             // perform callbacks and close out streams
+        }
         break;
     }
 }

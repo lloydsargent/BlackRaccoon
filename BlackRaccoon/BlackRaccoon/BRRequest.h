@@ -45,7 +45,7 @@
 
 //---------- include files
 #import "BRGlobal.h"
-#import "BRBase.h"
+#import "BRRequestError.h"
 #import "BRStreamInfo.h"
 
 
@@ -92,6 +92,8 @@
 
 //---------- protocols
 @class BRRequest;
+@class BRRequestDownload;
+@class BRRequestUpload;
 @protocol BRRequestDelegate  <NSObject>
 
 @required
@@ -101,6 +103,9 @@
 
 @optional
 - (void) percentCompleted: (BRRequest *) request;
+- (void) requestDataAvailable: (BRRequestDownload *) request;
+- (long) requestDataSendSize: (BRRequestUpload *) request;
+- (NSData *) requestDataToSend: (BRRequestUpload *) request;
 
 
 @end
@@ -109,17 +114,40 @@
 
 //---------- classes
 
-@interface BRRequest : BRBase <NSStreamDelegate>
+@interface BRRequest : NSObject <NSStreamDelegate>
 {
+@protected
+    NSString * path;
+    NSString * hostname;
     
+    BRRequestError *error;
 }
+@property NSString * username;
+@property NSString * password;
+@property NSString * hostname;
+@property (readonly) NSString * credentials;
+@property (readonly) NSURL *fullURL;
+@property NSString * path;
+@property (assign) BOOL passive;
+@property (strong) BRRequestError *error;
+@property float maximumSize;
+@property float percentCompleted;
+@property int timeout;
+@property NSData *data;
 
 @property BRRequest *nextRequest;
 @property BRRequest *prevRequest;
-@property (readonly) BRRequestTypes type;
+//@property (readonly) BRRequestTypes type;
 @property (weak) id <BRRequestDelegate> delegate;
 @property  BRStreamInfo *streamInfo;
 @property (assign) BOOL didManagedToOpenStream;
+@property (readonly) long bytesSent;                                            // will have bytes from the last FTP call
+@property (readonly) long totalBytesSent;                                       // will have bytes total sent
+
+- (NSURL *) fullURLWithEscape;
+
+-(void) start;
+
 
 
 @end

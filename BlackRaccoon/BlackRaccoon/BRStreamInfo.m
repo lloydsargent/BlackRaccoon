@@ -97,8 +97,8 @@
 
 @synthesize writeStream;    
 @synthesize readStream;
-@synthesize bytesConsumedThisIteration;    
-@synthesize bytesConsumedInTotal;
+@synthesize bytesThisIteration;
+@synthesize bytesTotal;
 @synthesize size;
 @synthesize bufferObject;
 
@@ -212,6 +212,16 @@
 
 - (void) openWrite: (BRRequest *) request
 {
+    if (request.hostname==nil)
+    {
+        InfoLog(@"The host name is nil!");
+        request.error = [[BRRequestError alloc] init];
+        request.error.errorCode = kBRFTPClientHostnameIsNil;
+        [request.delegate requestFailed: request];
+        [request.streamInfo close: request];
+        return;
+    }
+    
     CFWriteStreamRef writeStreamRef = CFWriteStreamCreateWithFTPURL(NULL, ( __bridge CFURLRef) request.fullURL);
     
     CFWriteStreamSetProperty(writeStreamRef, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
@@ -248,6 +258,96 @@
             [request.streamInfo close: request];
         }
     });
+}
+
+
+
+//-----
+//
+//				read
+//
+// synopsis:	retval = [self read:request];
+//					NSData *retval    	-
+//					BRRequest *request	-
+//
+// description:	read is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSData *
+//
+
+- (NSData *) read: (BRRequest *) request
+{
+    NSData *data;
+    
+    bytesThisIteration = [readStream read: self.buffer maxLength:kBRDefaultBufferSize];
+    bytesTotal += bytesThisIteration;
+    
+    //----- return the data
+    if (bytesThisIteration > 0)
+    {
+        data = [NSData dataWithBytes: self.buffer length: bytesThisIteration];
+        
+        request.percentCompleted = bytesTotal / request.maximumSize;
+        
+        if ([request.delegate respondsToSelector:@selector(percentCompleted:)])
+        {
+            [request.delegate percentCompleted: request];
+        }
+        
+        return data;
+    }
+    
+    //----- return no data, but this isn't an error... just the end of the file
+    else if (bytesThisIteration == 0)
+        return [NSData data];                                                   // returns empty data object - means no error, but no data 
+    
+    //----- otherwise we had an error, return an error
+    [self streamError: request errorCode: kBRFTPClientCantReadStream];
+    InfoLog(@"%@", request.error.message);
+    
+    return nil;
+}
+
+- (BOOL) write: (BRRequest *) request data: (NSData *) data
+{
+    bytesThisIteration = [writeStream write: [data bytes] maxLength: [data length]];
+    bytesTotal += bytesThisIteration;
+            
+    if (bytesThisIteration > 0)
+    {
+        request.percentCompleted = bytesTotal / request.maximumSize;
+        if ([request.delegate respondsToSelector:@selector(percentCompleted:)])
+        {
+            [request.delegate percentCompleted: request];
+        }
+        
+        return TRUE;
+    }
+    
+    if (bytesThisIteration == 0)
+        return TRUE;
+    
+    [self streamError: request errorCode: kBRFTPClientCantWriteStream]; // perform callbacks and close out streams
+    InfoLog(@"%@", request.error.message);
+
+    return FALSE;
+}
+
+
+- (void) streamError: (BRRequest *) request errorCode: (enum BRErrorCodes) errorCode
+{
+    request.error = [[BRRequestError alloc] init];
+    request.error.errorCode = errorCode;
+    [request.delegate requestFailed: request];
+    [request.streamInfo close: request];
+}
+
+- (void) streamComplete: (BRRequest *) request
+{
+    [request.delegate requestCompleted: request];
+    [request.streamInfo close: request];
 }
 
 

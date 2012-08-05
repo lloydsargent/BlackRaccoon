@@ -45,7 +45,7 @@
 
 //---------- include files
 #import "BRGlobal.h"
-#import "BRRequestUpload.h"
+#import "BRRequestListDirectory.h"
 
 
 
@@ -96,10 +96,12 @@
 //---------- classes
 
 
-@interface BRRequestCreateDirectory : BRRequestUpload <NSStreamDelegate> 
+//@interface BRRequestCreateDirectory : BRRequestUpload <NSStreamDelegate>
+@interface BRRequestCreateDirectory : BRRequest
 {
-    
 }
+
+@property BRRequestListDirectory *listrequest;
 
 + (BRRequestCreateDirectory *) initWithDelegate: (id) inDelegate;
 

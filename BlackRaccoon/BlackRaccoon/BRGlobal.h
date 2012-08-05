@@ -64,22 +64,16 @@ typedef enum
 
 typedef enum 
 {
-    kBRFTP
-} BRSchemes;
-
-
-typedef enum 
-{
     kBRDefaultBufferSize = 32768
 } BRBufferSizes;
 
 
-typedef enum 
+typedef enum BRTimeouts
 {
     kBRDefaultTimeout = 30
 } BRTimeouts;
 
-typedef enum 
+typedef enum BRErrorCodes
 {
     //client errors
     kBRFTPClientHostnameIsNil = 901,
@@ -91,6 +85,7 @@ typedef enum
     kBRFTPClientCantOverwriteDirectory = 908,
     kBRFTPClientStreamTimedOut = 909,
     kBRFTPClientCantDeleteFileOrDirectory = 910,
+    kBRFTPClientMissingRequestDataAvailable = 911,
     
     // 400 FTP errors
     kBRFTPServerAbortedTransfer = 426,

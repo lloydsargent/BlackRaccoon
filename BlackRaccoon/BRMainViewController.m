@@ -167,16 +167,12 @@
 {
     createDir = [BRRequestCreateDirectory initWithDelegate: self];
     
-    //the path needs to be absolute to the FTP root folder.
-    createDir.path = path.text;
-    
     createDir.hostname = host.text;
+    createDir.path = path.text;
     createDir.username = username.text;
     createDir.password = password.text;
     
-    //we start the request
     [createDir start];
-
 }
 
 
@@ -199,15 +195,12 @@
 - (IBAction) deleteDirectory:(id)sender
 {
     deleteDir = [BRRequestDelete initWithDelegate: self];
-    
-    //the path needs to be absolute to the FTP root folder.
-    deleteDir.path = path.text;
-    
+        
     deleteDir.hostname = host.text;
+    deleteDir.path = path.text;
     deleteDir.username = username.text;
     deleteDir.password = password.text;
     
-    //we start the request
     [deleteDir start];
 }
 
@@ -232,10 +225,8 @@
 {
     listDir = [BRRequestListDirectory initWithDelegate: self];
     
-    //the path needs to be absolute to the FTP root folder.
-    listDir.path = path.text;
-    
     listDir.hostname = host.text;
+    listDir.path = path.text;
     listDir.username = username.text;
     listDir.password = password.text;
     
@@ -261,17 +252,14 @@
 
 - (IBAction) downloadFile :(id)sender
 {
+    downloadData = [NSMutableData dataWithCapacity: 1];
+    
     downloadFile = [BRRequestDownload initWithDelegate: self];
-    
-    //the path needs to be absolute to the FTP root folder.
-    downloadFile.path = path.text;
-    
-    //for anonymous login just leave the username and password nil
     downloadFile.hostname = host.text;
+    downloadFile.path = path.text;
     downloadFile.username = username.text;
     downloadFile.password = password.text;
     
-    //we start the request
     [downloadFile start];
 }
 
@@ -297,21 +285,14 @@
     //----- get the file to upload as an NSData object
     NSString *applicationDocumentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"image.jpg"];
-    NSData *dataToUpload = [NSData dataWithContentsOfFile: filepath];
+    uploadData = [NSData dataWithContentsOfFile: filepath];
     
     uploadFile = [BRRequestUpload initWithDelegate: self];
-    
-    uploadFile.sentData = dataToUpload;
-    
-    //the path needs to be absolute to the FTP root folder.
     uploadFile.path = path.text;
-    
-    //for anonymous login just leave the username and password nil
     uploadFile.hostname = host.text;
     uploadFile.username = username.text;
     uploadFile.password = password.text;
     
-    //we start the request
     [uploadFile start];
 }
 
@@ -334,22 +315,41 @@
 
 - (IBAction) deleteFile: (id) sender
 {
-    deleteFile = [BRRequestDelete initWithDelegate: self];
-    
-    //----- the path needs to be absolute to the FTP root folder.
-    deleteFile.path = path.text;
-    
-    //----- for anonymous login just leave the username and password nil
+    deleteFile = [BRRequestDelete initWithDelegate: self];    
     deleteFile.hostname = host.text;
+    deleteFile.path = path.text;
     deleteFile.username = username.text;
     deleteFile.password = password.text;
     
-    //----- we start the request
     [deleteFile start];
 }
 
 
 
+//-----
+//
+//				requestDataAvailable
+//
+// synopsis:	[self requestDataAvailable:request];
+//					BRRequestDownload *request	-
+//
+// description:	requestDataAvailable is used as part of the file download.
+//
+// important:   This is required to download data. If this method is missing
+//              and you attempt to download, you will get a runtime error.
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void) requestDataAvailable: (BRRequestDownload *) request;
+{
+    [downloadData appendData: request.receivedData];
+}
+     
+     
+     
 //-----
 //
 //				shouldOverwriteFileWithRequest
@@ -358,7 +358,9 @@
 //					BOOL retval       	-
 //					BRRequest *request	-
 //
-// description:	shouldOverwriteFileWithRequest is designed to
+// description:	shouldOverwriteFileWithRequest is designed to determine if it is
+//              okay to overwrite a file on the server. Currently, we can not
+//              overwrite directories.
 //
 // errors:		none
 //
@@ -397,6 +399,73 @@
 - (void) percentCompleted: (BRRequest *) request
 {
     NSLog(@"%f completed...", request.percentCompleted);
+    NSLog(@"%ld bytes this iteration", request.bytesSent);
+    NSLog(@"%ld total bytes", request.totalBytesSent);
+}
+
+
+
+//-----
+//
+//				requestDataSendSize
+//
+// synopsis:	retval = [self requestDataSendSize:request];
+//					long retval             	-
+//					BRRequestUpload *request	-
+//
+// description:	requestDataSendSize is designed to
+//
+// important:   This is an optional method when uploading. It is purely used
+//              to help calculate the percent completed.
+//
+//              If this method is missing, then the send size defaults to LONG_MAX
+//              or about 2 gig.
+//
+// errors:		none
+//
+// returns:		Variable of type long
+//
+
+- (long) requestDataSendSize: (BRRequestUpload *) request
+{
+    //----- user returns the total size of data to send. Used ONLY for percentComplete
+    return [uploadData length];
+}
+
+
+
+//-----
+//
+//				requestDataToSend
+//
+// synopsis:	retval = [self requestDataToSend:request];
+//					NSData *retval          	-
+//					BRRequestUpload *request	-
+//
+// description:	requestDataToSend is designed to hand off the BR the next block
+//              of data to upload to the FTP server. It continues to call this
+//              method for more data until nil is returned.
+//
+// important:   This is a required method for uploading data to an FTP server.
+//              If this method is missing, it you will get a runtime error indicating
+//              this method is missing.
+//
+// errors:		none
+//
+// returns:		Variable of type NSData *
+//
+
+- (NSData *) requestDataToSend: (BRRequestUpload *) request
+{
+    //----- returns data object or nil when complete
+    //----- basically, first time we return the pointer to the NSData.
+    //----- and BR will upload the data.
+    //----- Second time we return nil which means no more data to send
+    NSData *temp = uploadData;                                                  // this is a shallow copy of the pointer, not a deep copy
+    
+    uploadData = nil;                                                           // next time around, return nil...
+    
+    return temp;
 }
 
 
@@ -458,13 +527,13 @@
         NSLog(@"%@ completed!", request);
         
         NSError *error;
-        NSData *data = downloadFile.receivedData;
         
-        //----- save the NSData as a file object
+        //----- save the downloadData as a file object
         NSString *applicationDocumentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"image.jpg"];
         
-        [data writeToFile: filepath options: NSDataWritingFileProtectionNone error: &error];
+        [downloadData writeToFile: filepath options: NSDataWritingFileProtectionNone error: &error];
+        downloadData = nil;
         downloadFile = nil;
     }
     

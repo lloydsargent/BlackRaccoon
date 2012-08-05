@@ -45,7 +45,8 @@
 
 //---------- include files
 #import "BRGlobal.h"
-#import "BRRequestDownload.h"
+#import "BRRequest.h"
+//#import "BRRequestDownload.h"
 
 
 
@@ -96,7 +97,7 @@
 //---------- classes
 
 
-@interface BRRequestListDirectory : BRRequest //BRRequestDownload <NSStreamDelegate>
+@interface BRRequestListDirectory : BRRequest
 {
     
 }
@@ -105,5 +106,6 @@
 @property (strong) NSMutableData * receivedData;
 
 + (BRRequestListDirectory *) initWithDelegate: (id) inDelegate;
+- (BOOL) fileExists: (NSString *) fileNamePath;
 
 @end

@@ -94,7 +94,11 @@
 
 //---------- classes
 
+
 @implementation BRRequestCreateDirectory
+
+
+@synthesize listrequest;
 
 + (BRRequestCreateDirectory *) initWithDelegate: (id) inDelegate
 {
@@ -105,70 +109,103 @@
     return createDir;
 }
 
-- (BRRequestTypes) type 
-{
-    return kBRCreateDirectoryRequest;
-}
 
-- (NSString *)path 
+- (NSString *)path
 {
     //  the path will always point to a directory, so we add the final slash to it (if there was one before escaping/standardizing, it's *gone* now)
     NSString * directoryPath = [super path];
-    if (![directoryPath hasSuffix: @"/"]) 
+    if (![directoryPath hasSuffix: @"/"])
     {
         directoryPath = [directoryPath stringByAppendingString:@"/"];
     }
     return directoryPath;
 }
 
-- (void) upload 
+-(void) start
+{    
+    if (self.hostname==nil)
+    {
+        InfoLog(@"The host name is nil!");
+        self.error = [[BRRequestError alloc] init];
+        self.error.errorCode = kBRFTPClientHostnameIsNil;
+        [self.delegate requestFailed:self];
+        return;
+    }
+    
+    //-----we first list the directory to see if our folder is up already
+    self.listrequest = [BRRequestListDirectory initWithDelegate: self];
+    self.listrequest.path = [self.path stringByDeletingLastPathComponent];
+    self.listrequest.hostname = self.hostname;
+    self.listrequest.username = self.username;
+    self.listrequest.password = self.password;
+    [self.listrequest start];
+}
+
+-(void) requestCompleted: (BRRequest *) request
 {
-    //----- open the write stream and check for errors calling delegate methods
-    //----- if things fail. This encapsulates the streamInfo object and cleans up our code.
-    [self.streamInfo openWrite: self];
+    NSString *directoryName = [[self.path lastPathComponent] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+
+    if ([self.listrequest fileExists: directoryName])
+    {
+        InfoLog(@"Unfortunately, at this point, the library doesn't support directory overwriting.");
+        [self.streamInfo streamError: self errorCode: kBRFTPClientCantOverwriteDirectory];
+    }
+    
+    else
+    {
+        //----- open the write stream and check for errors calling delegate methods
+        //----- if things fail. This encapsulates the streamInfo object and cleans up our code.
+        [self.streamInfo openWrite: self];
+    }
+}
+
+-(void) requestFailed:(BRRequest *) request
+{
+    [self.delegate requestFailed:request];
+}
+
+- (BOOL) shouldOverwriteFileWithRequest: (BRRequest *)request
+{
+    return NO;
 }
 
 
 //stream delegate
-- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent 
+
+- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent
 {
     
-    switch (streamEvent) 
+    switch (streamEvent)
     {
-        case NSStreamEventOpenCompleted: 
+        case NSStreamEventOpenCompleted:
         {
             self.didManagedToOpenStream = YES;
-        } 
-        break;
-            
-        case NSStreamEventHasBytesAvailable: 
-        {
-        } 
-        break;
-            
-        case NSStreamEventHasSpaceAvailable: 
-        {
-        } 
-        break;
-            
-        case NSStreamEventErrorOccurred: 
-        {
-            self.error = [[BRRequestError alloc] init];
-            self.error.errorCode = [self.error errorCodeWithError:[theStream streamError]];
-            InfoLog(@"%@", self.error.message);
-            [self.delegate requestFailed:self];
-            [self.streamInfo close: self];
         }
-        break;
+            break;
             
-        case NSStreamEventEndEncountered: 
+        case NSStreamEventHasBytesAvailable:
         {
-            [self.delegate requestCompleted:self];
-            [self.streamInfo close: self];
-        } 
-        break;
+        }
+            break;
+            
+        case NSStreamEventHasSpaceAvailable:
+        {
+        }
+            break;
+            
+        case NSStreamEventErrorOccurred:
+        {
+            [self.streamInfo streamError: self errorCode: [BRRequestError errorCodeWithError: [theStream streamError]]]; // perform callbacks and close out streams
+            InfoLog(@"%@", self.error.message);
+        }
+            break;
+            
+        case NSStreamEventEndEncountered:
+        {
+            [self.streamInfo streamComplete: self];                             // perform callbacks and close out streams
+        }
+            break;
     }
 }
-
 
 @end

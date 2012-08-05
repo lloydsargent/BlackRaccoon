@@ -37,8 +37,37 @@ RequestFailed if it is a negative response.
 
 Made the shouldOverwriteFileWithRequest a required implementation in the code. 
 
-Added an optional percentCompleted to the protocol. It also exists as a float from 0 to 1.0
-to indicate completion.
+### Added Features
+
+Black Raccoon expands the delegate protocol by adding the following OPTIONAL methods:
+
+    - (void) percentCompleted: (BRRequest *) request;
+
+This is an optional method that allows Black Raccoon to send regular updates
+to the user indicating the percent completed. This is from 0.0 to 1.0 and is
+accessed via *request.percentCompleted* If you wish to know how much data was
+transfered in the last read/write then you can access *request.bytesThisIteration*.
+For total bytes it wold be *request.bytesTotal*.
+
+    - (void) requestDataAvailable: (BRRequestDownload *) request;
+    
+Download now requires a new method. Black Raccoon will have an NSData object in 
+*request.receivedData* that the user can then store in a file, another stream, 
+or log.
+    
+Uploading a file has two methods, only one of which is required.
+
+    - (long) requestDataSendSize: (BRRequestUpload *) request
+    
+This tells Black Raccoon the total size in bytes that will be sent. It is only
+used to assure that percentComplete is correct and not in actual transfer of data.
+    
+    - (NSData *) requestDataToSend: (BRRequestUpload *) request
+    
+Each block of data is returned as a block of NSData. When done, nil is returned.    
+    
+
+
 
 
 ### Usage
@@ -54,6 +83,9 @@ The following code assumes the following:
 		BRRequestDownload *downloadFile;
 		BRRequestUpload *uploadFile;
 		BRRequestDelete *deleteFile;
+        
+        NSMutableData *downloadData;
+        NSData *uploadData;
 	}
 
 
@@ -109,6 +141,8 @@ The following code assumes the following:
 
 	- (IBAction) downloadFile :(id)sender
 	{
+        downloadData = [NSMutableData dataWithCapacity: 1];
+    
 		downloadFile = [BRRequestDownload initWithDelegate: self];
 		
 		//----- for anonymous login just leave the username and password nil
@@ -128,7 +162,7 @@ The following code assumes the following:
 		//----- get the file to upload as an NSData object
 		NSString *applicationDocumentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 		NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"file.text"];
-		NSData *dataToUpload = [NSData dataWithContentsOfFile: filepath];
+		uploadData = [NSData dataWithContentsOfFile: filepath];
 		
 		uploadFile = [BRRequestUpload initWithDelegate: self];
 		
@@ -159,6 +193,15 @@ The following code assumes the following:
 		[deleteFile start];
 	}
 
+
+#### Delegate callback required to download a file REQUIRED TO DOWNLOAD
+
+    - (void) requestDataAvailable: (BRRequestDownload *) request;
+    {
+        [downloadData appendData: request.receivedData];
+    }
+
+
 #### Delegate callback to determine if something should be overwritten REQUIRED
 
 	-(BOOL) shouldOverwriteFileWithRequest: (BRRequest *) request
@@ -173,6 +216,40 @@ The following code assumes the following:
 		//----- anything else (directories, etc) we set to NO
 		return NO;
 	}
+    
+    
+#### Delegate callback to get percent upload, download or directory OPTIONAL
+    
+    - (void) percentCompleted: (BRRequest *) request
+    {
+        NSLog(@"%f completed...", request.percentCompleted);
+    }
+
+
+#### Delegate callback to upload a file OPTIONAL TO UPLOAD
+
+    - (long) requestDataSendSize: (BRRequestUpload *) request
+    {
+        //----- user returns the total size of data to send. Used ONLY for percentComplete
+        return [uploadData length];
+    }
+
+
+#### Delegate callback required to upload a file REQUIRED TO UPLOAD
+
+    - (NSData *) requestDataToSend: (BRRequestUpload *) request
+    {
+        //----- returns data object or nil when complete
+        //----- basically, first time we return the pointer to the NSData.
+        //----- and BR will upload the data.
+        //----- Second time we return nil which means no more data to send
+        NSData *temp = uploadData;   // this is a shallow copy of the pointer
+        
+        uploadData = nil;            // next time around, return nil...
+        
+        return temp;
+    }
+
 
 #### Request Completed REQUIRED
 
@@ -242,6 +319,7 @@ The following code assumes the following:
 		}	
 	}
 
+
 #### Request Failed REQUIRED
 
 	-(void) requestFailed:(BRRequest *) request
@@ -289,10 +367,3 @@ The following code assumes the following:
 		}
 	}
     
-#### Percent Completed OPTIONAL
-    
-    - (void) percentCompleted: (BRRequest *) request
-    {
-        NSLog(@"%f completed...", request.percentCompleted);
-    }
-

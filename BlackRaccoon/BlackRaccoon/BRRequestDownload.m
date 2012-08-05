@@ -116,6 +116,13 @@
 
 -(void) start
 {
+    if (![self.delegate respondsToSelector:@selector(requestDataAvailable:)])
+    {
+        [self.streamInfo streamError: self errorCode: kBRFTPClientMissingRequestDataAvailable];
+        InfoLog(@"%@", self.error.message);
+        return;
+    }
+    
     //----- open the read stream and check for errors calling delegate methods
     //----- if things fail. This encapsulates the streamInfo object and cleans up our code.
     [self.streamInfo openRead: self];
@@ -124,7 +131,6 @@
 //stream delegate
 - (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent 
 {
-    
     switch (streamEvent) 
     {
         case NSStreamEventOpenCompleted: 
@@ -132,39 +138,25 @@
             self.maximumSize = [[theStream propertyForKey:(id)kCFStreamPropertyFTPResourceSize] integerValue];
             
             self.didManagedToOpenStream = YES;
-            self.streamInfo.bytesConsumedInTotal = 0;
+            self.streamInfo.bytesTotal = 0;
             self.receivedData = [NSMutableData data];
         } 
         break;
             
         case NSStreamEventHasBytesAvailable: 
         {
+            self.receivedData = [self.streamInfo read: self];
             
-            self.streamInfo.bytesConsumedThisIteration = [self.streamInfo.readStream read:self.streamInfo.buffer maxLength:kBRDefaultBufferSize];
-            
-            if (self.streamInfo.bytesConsumedThisIteration!=-1) 
+            if (self.receivedData)
             {
-                if (self.streamInfo.bytesConsumedThisIteration!=0) 
-                {
-                    [self.receivedData appendBytes: self.streamInfo.buffer length: self.streamInfo.bytesConsumedThisIteration];
-                    
-                    self.percentCompleted = [self.receivedData length] / self.maximumSize;
-                    
-                    if ([self.delegate respondsToSelector:@selector(percentCompleted:)]) 
-                    {
-                        [self.delegate percentCompleted: self];
-                    }
-                }
+                [self.delegate requestDataAvailable: self];
             }
+            
             else
             {
                 InfoLog(@"Stream opened, but failed while trying to read from it.");
-                self.error = [[BRRequestError alloc] init];
-                self.error.errorCode = kBRFTPClientCantReadStream;
-                [self.delegate requestFailed:self];
-                [self.streamInfo close: self];
+                [self.streamInfo streamError: self errorCode: kBRFTPClientCantReadStream];
             }
-            
         } 
         break;
             
@@ -176,18 +168,14 @@
             
         case NSStreamEventErrorOccurred: 
         {
-            self.error = [[BRRequestError alloc] init];
-            self.error.errorCode = [self.error errorCodeWithError:[theStream streamError]];
+            [self.streamInfo streamError: self errorCode: [BRRequestError errorCodeWithError: [theStream streamError]]];
             InfoLog(@"%@", self.error.message);
-            [self.delegate requestFailed:self];
-            [self.streamInfo close: self];
         }
         break;
             
         case NSStreamEventEndEncountered: 
         {
-            [self.delegate requestCompleted:self];
-            [self.streamInfo close: self];
+            [self.streamInfo streamComplete: self];
         }
         break;
     }

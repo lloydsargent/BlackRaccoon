@@ -45,7 +45,6 @@
 
 //---------- include files
 #import "BRGlobal.h"
-#import "BRBase.h"
 #import "BRRequest.h"
 #import "BRRequestQueue.h"
 
@@ -106,7 +105,7 @@
 //---------- classes
 
 
-@interface BRRequestQueue : BRBase <BRRequestDelegate>
+@interface BRRequestQueue : BRRequest <BRRequestDelegate>
 {
     
 @private
@@ -115,7 +114,7 @@
     
 }
 
-@property id <BRQueueDelegate> delegate;
+@property id <BRQueueDelegate> queueDelegate;
 
 -(void) addRequest: (BRRequest *) request;
 -(void) addRequestInFront:(BRRequest *) request;

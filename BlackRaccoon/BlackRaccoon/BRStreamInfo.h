@@ -40,7 +40,6 @@
 
 //---------- include files
 #import "BRGlobal.h"
-#import "BRBase.h"
 
 
 
@@ -96,23 +95,26 @@
 {
     NSOutputStream *writeStream;    
     NSInputStream *readStream;
-    UInt32 bytesConsumedThisIteration;    
-    UInt32 bytesConsumedInTotal;
+    long bytesThisIteration;
+    long bytesTotal;
     SInt64 size;
     NSMutableData *bufferObject;
 }
 
 @property (strong) NSOutputStream *writeStream;    
 @property (strong) NSInputStream *readStream;
-@property UInt32 bytesConsumedThisIteration;    
-@property UInt32 bytesConsumedInTotal;
+@property long bytesThisIteration;
+@property long bytesTotal;
 @property SInt64 size;
 @property NSMutableData *bufferObject;
 @property UInt8 *buffer;
 
-
 - (void) openRead: (BRRequest *) request;
 - (void) openWrite: (BRRequest *) request;
+- (NSData *) read: (BRRequest *) request;
+- (BOOL) write: (BRRequest *) request data: (NSData *) data;
+- (void) streamError: (BRRequest *) request errorCode: (enum BRErrorCodes) errorCode;
+- (void) streamComplete: (BRRequest *) request;
 - (void) close: (BRRequest *) request;
 
 

@@ -96,13 +96,15 @@
 
 //---------- classes
 
-@interface BRRequestUpload : BRRequest <BRRequestDelegate, NSStreamDelegate> 
+@interface BRRequestUpload : BRRequest
 {
-    
+    long bytesIndex;
+    long bytesRemaining;
+    NSData *sentData;
 }
 
-@property (nonatomic, retain) BRRequestListDirectory *listrequest;
-@property (nonatomic, retain) NSData * sentData;
+@property BRRequestListDirectory *listrequest;
+
 
 + (BRRequestUpload *) initWithDelegate: (id) inDelegate;
 
