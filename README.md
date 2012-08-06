@@ -193,6 +193,28 @@ The following code assumes the following:
 		[deleteFile start];
 	}
 
+    
+#### Cancel Upload or Download
+
+    - (IBAction) cancelAction :(id)sender
+    {
+        if (uploadFile)
+        {
+            //----- Remove comment if you do not want success delegate called
+            //----- upon completion of the cancel
+            // uploadFile.cancelDoesNotCallDelegate = TRUE;
+            [uploadFile cancelRequest];
+        }
+        
+        if (downloadFile)
+        {
+            //----- Remove comment if you do not want success delegate called
+            //----- upon completion of the cancel
+            // downloadFile.cancelDoesNotCallDelegate = TRUE;
+            [downloadFile cancelRequest];
+        }
+    }
+
 
 #### Delegate callback required to download a file REQUIRED TO DOWNLOAD
 
