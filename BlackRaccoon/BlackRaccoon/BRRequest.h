@@ -125,7 +125,6 @@
 @property NSString * username;
 @property NSString * password;
 @property NSString * hostname;
-@property (readonly) NSString * credentials;
 @property (readonly) NSURL *fullURL;
 @property NSString * path;
 @property (assign) BOOL passive;

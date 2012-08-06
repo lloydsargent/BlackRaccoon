@@ -96,7 +96,7 @@
 
 @implementation BRRequestQueue
 
-@synthesize delegate;
+@synthesize queueDelegate;
 
 - (id)init 
 {
