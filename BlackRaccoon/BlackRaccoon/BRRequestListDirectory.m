@@ -99,6 +99,23 @@
 @synthesize filesInfo;
 @synthesize receivedData;
 
+
+
+//-----
+//
+//				initWithDelegate
+//
+// synopsis:	retval = [self initWithDelegate:inDelegate];
+//					BRRequestListDirectory *retval	-
+//					id inDelegate                 	-
+//
+// description:	initWithDelegate is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BRRequestListDirectory *
+//
+
 + (BRRequestListDirectory *) initWithDelegate: (id) inDelegate
 {
     BRRequestListDirectory *listDir = [[BRRequestListDirectory alloc] init];
@@ -108,10 +125,22 @@
     return listDir;
 }
 
-- (BRRequestTypes) type 
-{
-    return kBRListDirectoryRequest;
-}
+
+
+//-----
+//
+//				fileExists
+//
+// synopsis:	retval = [self fileExists:fileNamePath];
+//					BOOL retval           	-
+//					NSString *fileNamePath	-
+//
+// description:	fileExists is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BOOL
+//
 
 - (BOOL) fileExists: (NSString *) fileNamePath
 {
@@ -130,6 +159,21 @@
 }
 
 
+
+//-----
+//
+//				path
+//
+// synopsis:	retval = [self path];
+//					NSString *retval	-
+//
+// description:	path is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
 -(NSString *)path
 {
     //  the path will always point to a directory, so we add the final slash to it (if there was one before escaping/standardizing, it's *gone* now)
@@ -141,7 +185,22 @@
     return directoryPath;
 }
 
--(void) start 
+
+
+//-----
+//
+//				start
+//
+// synopsis:	[self start];
+//
+// description:	start is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+-(void) start
 {
     self.maximumSize = LONG_MAX;
     
@@ -150,8 +209,24 @@
     [self.streamInfo openRead: self];
 }
 
-//stream delegate
-- (void) stream: (NSStream *) theStream handleEvent: (NSStreamEvent) streamEvent 
+
+
+//-----
+//
+//				stream
+//
+// synopsis:	[self stream:theStream handleEvent:streamEvent];
+//					NSStream *theStream      	-
+//					NSStreamEvent streamEvent	-
+//
+// description:	stream is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void) stream: (NSStream *) theStream handleEvent: (NSStreamEvent) streamEvent
 {
     NSData *data;
     
@@ -160,7 +235,7 @@
         case NSStreamEventOpenCompleted: 
         {
 			self.filesInfo = [NSMutableArray array];
-            self.didManagedToOpenStream = YES;
+            self.didOpenStream = YES;
             self.receivedData = [NSMutableData data];
         } break;
             

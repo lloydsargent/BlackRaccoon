@@ -98,6 +98,23 @@
 
 @synthesize receivedData;
 
+
+
+//-----
+//
+//				initWithDelegate
+//
+// synopsis:	retval = [BRRequestDownload initWithDelegate:inDelegate];
+//					BRRequestDownload *retval	-
+//					id inDelegate            	-
+//
+// description:	initWithDelegate is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BRRequestDownload *
+//
+
 + (BRRequestDownload *) initWithDelegate: (id) inDelegate
 {
     BRRequestDownload *downloadFile = [[BRRequestDownload alloc] init];
@@ -107,12 +124,20 @@
     return downloadFile;
 }
 
--(BRRequestTypes)type 
-{
-    return kBRDownloadRequest;
-}
 
 
+//-----
+//
+//				start
+//
+// synopsis:	[self start];
+//
+// description:	start is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
 
 -(void) start
 {
@@ -128,16 +153,36 @@
     [self.streamInfo openRead: self];
 }
 
-//stream delegate
-- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent 
+
+
+//-----
+//
+//				stream
+//
+// synopsis:	[self stream:theStream handleEvent:streamEvent];
+//					NSStream *theStream      	-
+//					NSStreamEvent streamEvent	-
+//
+// description:	stream is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent
 {
+    //----- see if we have cancelled the runloop
+    if ([self.streamInfo checkCancelRequest: self])
+        return;
+    
     switch (streamEvent) 
     {
         case NSStreamEventOpenCompleted: 
         {
             self.maximumSize = [[theStream propertyForKey:(id)kCFStreamPropertyFTPResourceSize] integerValue];
             
-            self.didManagedToOpenStream = YES;
+            self.didOpenStream = YES;
             self.streamInfo.bytesTotal = 0;
             self.receivedData = [NSMutableData data];
         } 

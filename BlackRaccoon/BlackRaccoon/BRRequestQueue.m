@@ -98,7 +98,23 @@
 
 @synthesize queueDelegate;
 
-- (id)init 
+
+
+//-----
+//
+//				init
+//
+// synopsis:	retval = [self init];
+//					id retval	-
+//
+// description:	init is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type id
+//
+
+- (id)init
 {
     self = [super init];
     if (self) {
@@ -108,12 +124,26 @@
     return self;
 }
 
+
+
+//-----
+//
+//				addRequest
+//
+// synopsis:	[self addRequest:request];
+//					BRRequest *request	-
+//
+// description:	addRequest is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 -(void) addRequest: (BRRequest *) request
 {
     request.delegate = self;
     
-    if (!request.passive)
-        request.passive = self.passive;
     if (!request.password)
         request.password = self.password;
     if (!request.username)
@@ -138,11 +168,25 @@
     }    
 }
 
--(void) addRequestInFront: (BRRequest *) request 
+
+
+//-----
+//
+//				addRequestInFront
+//
+// synopsis:	[self addRequestInFront:request];
+//					BRRequest *request	-
+//
+// description:	addRequestInFront is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+-(void) addRequestInFront: (BRRequest *) request
 {
     request.delegate = self;
-    if(!request.passive)
-        request.passive = self.passive;
     if(!request.password)
         request.password = self.password;
     if(!request.username)
@@ -171,12 +215,43 @@
 }
 
 
+
+//-----
+//
+//				addRequestsFromArray
+//
+// synopsis:	[self addRequestsFromArray:array];
+//					NSArray *array	-
+//
+// description:	addRequestsFromArray is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 -(void) addRequestsFromArray: (NSArray *) array
 {
     //TBD
 }
 
--(void) removeRequestFromQueue: (BRRequest *) request 
+
+
+//-----
+//
+//				removeRequestFromQueue
+//
+// synopsis:	[self removeRequestFromQueue:request];
+//					BRRequest *request	-
+//
+// description:	removeRequestFromQueue is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+-(void) removeRequestFromQueue: (BRRequest *) request
 {
     
     if ([headRequest isEqual:request]) 
@@ -196,6 +271,21 @@
     request.prevRequest = nil;
 }
 
+
+
+//-----
+//
+//				start
+//
+// synopsis:	[self start];
+//
+// description:	start is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 -(void) start
 {
     [headRequest start];
@@ -203,9 +293,21 @@
 
 
 
-// delegate methods
+//-----
+//
+//				requestCompleted
+//
+// synopsis:	[self requestCompleted:request];
+//					BRRequest *request	-
+//
+// description:	requestCompleted is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
 
--(void) requestCompleted: (BRRequest *) request 
+-(void) requestCompleted: (BRRequest *) request
 {
     
     [self.queueDelegate requestCompleted:request];
@@ -224,8 +326,24 @@
     
 }
 
+
+
+//-----
+//
+//				requestFailed
+//
+// synopsis:	[self requestFailed:request];
+//					BRRequest *request	-
+//
+// description:	requestFailed is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 -(void) requestFailed: (BRRequest *) request
-{    
+{
     [self.queueDelegate requestFailed:request];
     
     headRequest = headRequest.nextRequest;    
@@ -233,7 +351,24 @@
     [headRequest start];
 }
 
--(BOOL) shouldOverwriteFileWithRequest: (BRRequest *)request 
+
+
+//-----
+//
+//				shouldOverwriteFileWithRequest
+//
+// synopsis:	retval = [self shouldOverwriteFileWithRequest:request];
+//					BOOL retval       	-
+//					BRRequest *request	-
+//
+// description:	shouldOverwriteFileWithRequest is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BOOL
+//
+
+-(BOOL) shouldOverwriteFileWithRequest: (BRRequest *)request
 {
     if (![self.queueDelegate respondsToSelector:@selector(shouldOverwriteFileWithRequest:)]) 
     {

@@ -100,6 +100,23 @@
 
 @synthesize listrequest;
 
+
+
+//-----
+//
+//				initWithDelegate
+//
+// synopsis:	retval = [BRRequestCreateDirectory initWithDelegate:inDelegate];
+//					BRRequestCreateDirectory *retval	-
+//					id inDelegate                   	-
+//
+// description:	initWithDelegate is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BRRequestCreateDirectory *
+//
+
 + (BRRequestCreateDirectory *) initWithDelegate: (id) inDelegate
 {
     BRRequestCreateDirectory *createDir = [[BRRequestCreateDirectory alloc] init];
@@ -109,6 +126,21 @@
     return createDir;
 }
 
+
+
+//-----
+//
+//				path
+//
+// synopsis:	retval = [self path];
+//					NSString *retval	-
+//
+// description:	path is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
 
 - (NSString *)path
 {
@@ -121,8 +153,23 @@
     return directoryPath;
 }
 
+
+
+//-----
+//
+//				start
+//
+// synopsis:	[self start];
+//
+// description:	start is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 -(void) start
-{    
+{
     if (self.hostname==nil)
     {
         InfoLog(@"The host name is nil!");
@@ -140,6 +187,22 @@
     self.listrequest.password = self.password;
     [self.listrequest start];
 }
+
+
+
+//-----
+//
+//				requestCompleted
+//
+// synopsis:	[self requestCompleted:request];
+//					BRRequest *request	-
+//
+// description:	requestCompleted is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
 
 -(void) requestCompleted: (BRRequest *) request
 {
@@ -159,10 +222,43 @@
     }
 }
 
+
+
+//-----
+//
+//				requestFailed
+//
+// synopsis:	[self requestFailed:request];
+//					BRRequest *request	-
+//
+// description:	requestFailed is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 -(void) requestFailed:(BRRequest *) request
 {
     [self.delegate requestFailed:request];
 }
+
+
+
+//-----
+//
+//				shouldOverwriteFileWithRequest
+//
+// synopsis:	retval = [self shouldOverwriteFileWithRequest:request];
+//					BOOL retval       	-
+//					BRRequest *request	-
+//
+// description:	shouldOverwriteFileWithRequest is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BOOL
+//
 
 - (BOOL) shouldOverwriteFileWithRequest: (BRRequest *)request
 {
@@ -170,7 +266,21 @@
 }
 
 
-//stream delegate
+
+//-----
+//
+//				stream
+//
+// synopsis:	[self stream:theStream handleEvent:streamEvent];
+//					NSStream *theStream      	-
+//					NSStreamEvent streamEvent	-
+//
+// description:	stream is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
 
 - (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent
 {
@@ -179,7 +289,7 @@
     {
         case NSStreamEventOpenCompleted:
         {
-            self.didManagedToOpenStream = YES;
+            self.didOpenStream = YES;
         }
             break;
             

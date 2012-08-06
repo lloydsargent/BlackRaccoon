@@ -328,6 +328,38 @@
 
 //-----
 //
+//				cancelAction
+//
+// synopsis:	retval = [self cancelAction:sender];
+//					IBAction retval	-
+//					id sender      	-
+//
+// description:	cancelAction is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type IBAction
+//
+
+- (IBAction) cancelAction :(id)sender
+{
+    if (uploadFile)
+    {
+        uploadFile.cancelDoesNotCallDelegate = TRUE;
+        [uploadFile cancelRequest];
+    }
+    
+    if (downloadFile)
+    {
+        downloadFile.cancelDoesNotCallDelegate = TRUE;
+        [downloadFile cancelRequest];
+    }
+}
+
+
+
+//-----
+//
 //				requestDataAvailable
 //
 // synopsis:	[self requestDataAvailable:request];

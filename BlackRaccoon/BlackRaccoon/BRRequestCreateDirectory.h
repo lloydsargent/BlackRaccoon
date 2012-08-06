@@ -96,7 +96,6 @@
 //---------- classes
 
 
-//@interface BRRequestCreateDirectory : BRRequestUpload <NSStreamDelegate>
 @interface BRRequestCreateDirectory : BRRequest
 {
 }

@@ -95,22 +95,19 @@
 {
     NSOutputStream *writeStream;    
     NSInputStream *readStream;
-    long bytesThisIteration;
-    long bytesTotal;
-    SInt64 size;
-    NSMutableData *bufferObject;
 }
 
 @property (strong) NSOutputStream *writeStream;    
 @property (strong) NSInputStream *readStream;
 @property long bytesThisIteration;
 @property long bytesTotal;
-@property SInt64 size;
-@property NSMutableData *bufferObject;
-@property UInt8 *buffer;
+@property long timeout;
+@property BOOL cancelRequestFlag;
+@property BOOL cancelDoesNotCallDelegate;
 
 - (void) openRead: (BRRequest *) request;
 - (void) openWrite: (BRRequest *) request;
+- (BOOL) checkCancelRequest: (BRRequest *) request;
 - (NSData *) read: (BRRequest *) request;
 - (BOOL) write: (BRRequest *) request data: (NSData *) data;
 - (void) streamError: (BRRequest *) request errorCode: (enum BRErrorCodes) errorCode;

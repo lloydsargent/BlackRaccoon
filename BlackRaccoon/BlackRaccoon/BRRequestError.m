@@ -98,6 +98,24 @@
 
 @synthesize errorCode;
 
+
+
+
+//-----
+//
+//				errorCodeWithError
+//
+// synopsis:	retval = [BRRequestError errorCodeWithError:error];
+//					BRErrorCodes retval	-
+//					NSError *error     	-
+//
+// description:	errorCodeWithError is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BRErrorCodes
+//
+
 +(BRErrorCodes) errorCodeWithError: (NSError *) error
 {
     //----- As suggested by RMaddy
@@ -112,16 +130,23 @@
     return 0;
 }
 
-- (id)init 
-{
-    self = [super init];
-    if (self) {
-        self.errorCode = 0;
-    }
-    return self;
-}
 
--(NSString *) message 
+
+//-----
+//
+//				message
+//
+// synopsis:	retval = [self message];
+//					NSString *retval	-
+//
+// description:	message is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
+-(NSString *) message
 {
     NSString * errorMessage;
     switch (self.errorCode) 
@@ -207,9 +232,5 @@
     
     return errorMessage;
 }
-
-
-
-
 
 @end

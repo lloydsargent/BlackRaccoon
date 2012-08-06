@@ -122,30 +122,29 @@
     
     BRRequestError *error;
 }
-@property NSString * username;
-@property NSString * password;
-@property NSString * hostname;
+@property NSString *username;
+@property NSString *password;
+@property NSString *hostname;
 @property (readonly) NSURL *fullURL;
-@property NSString * path;
-@property (assign) BOOL passive;
+@property NSString *path;
 @property (strong) BRRequestError *error;
 @property float maximumSize;
 @property float percentCompleted;
-@property int timeout;
-@property NSData *data;
+@property long timeout;
 
 @property BRRequest *nextRequest;
 @property BRRequest *prevRequest;
-//@property (readonly) BRRequestTypes type;
 @property (weak) id <BRRequestDelegate> delegate;
 @property  BRStreamInfo *streamInfo;
-@property (assign) BOOL didManagedToOpenStream;
+@property BOOL didOpenStream;                                                   // whether the stream opened or not
 @property (readonly) long bytesSent;                                            // will have bytes from the last FTP call
 @property (readonly) long totalBytesSent;                                       // will have bytes total sent
+@property BOOL cancelDoesNotCallDelegate;                                       // cancel closes stream without calling delegate
 
 - (NSURL *) fullURLWithEscape;
 
 -(void) start;
+- (void) cancelRequest;
 
 
 

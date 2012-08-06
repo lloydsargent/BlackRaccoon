@@ -99,8 +99,9 @@
 @synthesize readStream;
 @synthesize bytesThisIteration;
 @synthesize bytesTotal;
-@synthesize size;
-@synthesize bufferObject;
+@synthesize timeout;
+@synthesize cancelRequestFlag;
+@synthesize cancelDoesNotCallDelegate;
 
 
 
@@ -123,7 +124,6 @@
     self = [super init];
     if (self) 
     {
-        self.bufferObject = [NSMutableData dataWithLength: kBRDefaultBufferSize];
     }
     return self;
 }
@@ -181,9 +181,9 @@
 	[readStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 	[readStream open];
     
-    request.didManagedToOpenStream = NO;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kBRDefaultTimeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
-        if (!request.didManagedToOpenStream && request.error == nil)
+    request.didOpenStream = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, timeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+        if (!request.didOpenStream && request.error == nil)
         {
             InfoLog(@"No response from the server. Timeout.");
             request.error = [[BRRequestError alloc] init];
@@ -247,9 +247,9 @@
     [writeStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     [writeStream open];
     
-    request.didManagedToOpenStream = NO;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kBRDefaultTimeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
-        if (!request.didManagedToOpenStream && request.error==nil)
+    request.didOpenStream = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, timeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+        if (!request.didOpenStream && request.error==nil)
         {
             InfoLog(@"No response from the server. Timeout.");
             request.error = [[BRRequestError alloc] init];
@@ -258,6 +258,43 @@
             [request.streamInfo close: request];
         }
     });
+}
+
+
+
+//-----
+//
+//				checkCancelRequest
+//
+// synopsis:	[self checkCancelRequest:request];
+//					BRRequest *request	-
+//
+// description:	checkCancelRequest is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (BOOL) checkCancelRequest: (BRRequest *) request
+{
+    if (!cancelRequestFlag)
+        return NO;
+    
+    //----- see if we don't want to call the delegate (set and forget)
+    if (cancelDoesNotCallDelegate == YES)
+    {
+        [request.streamInfo close: request];
+    }
+    
+    //----- otherwise indicate that the request to cancel was completed
+    else
+    {
+        [request.delegate requestCompleted: request];
+        [request.streamInfo close: request];
+    }
+    
+    return YES;
 }
 
 
@@ -280,14 +317,15 @@
 - (NSData *) read: (BRRequest *) request
 {
     NSData *data;
-    
-    bytesThisIteration = [readStream read: self.buffer maxLength:kBRDefaultBufferSize];
+    NSMutableData *bufferObject = [NSMutableData dataWithLength: kBRDefaultBufferSize];
+
+    bytesThisIteration = [readStream read: (UInt8 *) [bufferObject bytes] maxLength:kBRDefaultBufferSize];
     bytesTotal += bytesThisIteration;
     
     //----- return the data
     if (bytesThisIteration > 0)
     {
-        data = [NSData dataWithBytes: self.buffer length: bytesThisIteration];
+        data = [NSData dataWithBytes: (UInt8 *) [bufferObject bytes] length: bytesThisIteration];
         
         request.percentCompleted = bytesTotal / request.maximumSize;
         
@@ -309,6 +347,24 @@
     
     return nil;
 }
+
+
+
+//-----
+//
+//				write
+//
+// synopsis:	retval = [self write:request data:data];
+//					BOOL retval       	-
+//					BRRequest *request	-
+//					NSData *data      	-
+//
+// description:	write is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BOOL
+//
 
 - (BOOL) write: (BRRequest *) request data: (NSData *) data
 {
@@ -336,6 +392,22 @@
 }
 
 
+
+//-----
+//
+//				streamError
+//
+// synopsis:	[self streamError:request errorCode:errorCode];
+//					BRRequest *request         	-
+//					enum BRErrorCodes errorCode	-
+//
+// description:	streamError is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 - (void) streamError: (BRRequest *) request errorCode: (enum BRErrorCodes) errorCode
 {
     request.error = [[BRRequestError alloc] init];
@@ -343,6 +415,22 @@
     [request.delegate requestFailed: request];
     [request.streamInfo close: request];
 }
+
+
+
+//-----
+//
+//				streamComplete
+//
+// synopsis:	[self streamComplete:request];
+//					BRRequest *request	-
+//
+// description:	streamComplete is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
 
 - (void) streamComplete: (BRRequest *) request
 {
@@ -382,49 +470,7 @@
         writeStream = nil;
     }
     
-    bufferObject = nil;
     request.streamInfo = nil;
-}
-
-
-
-//-----
-//
-//				buffer
-//
-// synopsis:	retval = [self buffer];
-//					UInt8 *retval	-
-//
-// description:	buffer is designed to
-//
-// errors:		none
-//
-// returns:		Variable of type UInt8 *
-//
-
-- (UInt8 *) buffer
-{
-    return (UInt8 *) [bufferObject bytes];
-}
-
-
-
-//-----
-//
-//				setBuffer
-//
-// synopsis:	[self setBuffer:buffer];
-//					UInt8 *buffer	-
-//
-// description:	setBuffer is designed to do nothing but make ARC happy.
-//
-// errors:		none
-//
-// returns:		none
-//
-
-- (void) setBuffer: (UInt8 *) buffer
-{
 }
 
 @end

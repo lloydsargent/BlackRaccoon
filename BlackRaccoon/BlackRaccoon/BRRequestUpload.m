@@ -101,6 +101,23 @@
 
 @synthesize listrequest;
 
+
+
+//-----
+//
+//				initWithDelegate
+//
+// synopsis:	retval = [self initWithDelegate:inDelegate];
+//					BRRequestUpload *retval	-
+//					id inDelegate          	-
+//
+// description:	initWithDelegate is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BRRequestUpload *
+//
+
 + (BRRequestUpload *) initWithDelegate: (id) inDelegate
 {
     BRRequestUpload *uploadFile = [[BRRequestUpload alloc] init];
@@ -110,6 +127,20 @@
     return uploadFile;
 }
 
+
+
+//-----
+//
+//				start
+//
+// synopsis:	[self start];
+//
+// description:	start is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
 
 -(void) start
 {
@@ -124,7 +155,7 @@
         return;
     }
     
-    //-----we first list the directory to see if our folder is up already
+    //-----we first list the directory to see if our folder is up on the server
     self.listrequest = [BRRequestListDirectory initWithDelegate: self];
     self.listrequest.path = [self.path stringByDeletingLastPathComponent];
     self.listrequest.hostname = self.hostname;
@@ -132,6 +163,22 @@
     self.listrequest.password = self.password;
     [self.listrequest start];
 }
+
+
+
+//-----
+//
+//				requestCompleted
+//
+// synopsis:	[self requestCompleted:request];
+//					BRRequest *request	-
+//
+// description:	requestCompleted is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
 
 -(void) requestCompleted: (BRRequest *) request
 {
@@ -157,10 +204,42 @@
 }
 
 
+
+//-----
+//
+//				requestFailed
+//
+// synopsis:	[self requestFailed:request];
+//					BRRequest *request	-
+//
+// description:	requestFailed is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 -(void) requestFailed:(BRRequest *) request
 {
     [self.delegate requestFailed:request];
 }
+
+
+
+//-----
+//
+//				shouldOverwriteFileWithRequest
+//
+// synopsis:	retval = [self shouldOverwriteFileWithRequest:request];
+//					BOOL retval       	-
+//					BRRequest *request	-
+//
+// description:	shouldOverwriteFileWithRequest is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BOOL
+//
 
 -(BOOL) shouldOverwriteFileWithRequest:(BRRequest *) request
 {
@@ -168,15 +247,33 @@
 }
 
 
-//stream delegate
-- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent 
+
+//-----
+//
+//				stream
+//
+// synopsis:	[self stream:theStream handleEvent:streamEvent];
+//					NSStream *theStream      	-
+//					NSStreamEvent streamEvent	-
+//
+// description:	stream is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent
 {
-    
+    //----- see if we have cancelled the runloop
+    if ([self.streamInfo checkCancelRequest: self])
+        return;
+        
     switch (streamEvent) 
     {
         case NSStreamEventOpenCompleted: 
         {
-            self.didManagedToOpenStream = YES;
+            self.didOpenStream = YES;
             self.streamInfo.bytesTotal = 0;
         } 
         break;

@@ -96,20 +96,17 @@
 
 @implementation BRRequest
 
-@synthesize nextRequest;
-@synthesize prevRequest;
-@synthesize delegate;
-@synthesize streamInfo;
-@synthesize didManagedToOpenStream;
-@synthesize data;
-
-@synthesize passive;
 @synthesize password;
 @synthesize username;
 @synthesize error;
 @synthesize maximumSize;
 @synthesize percentCompleted;
-@synthesize timeout;
+
+@synthesize nextRequest;
+@synthesize prevRequest;
+@synthesize delegate;
+@synthesize streamInfo;
+@synthesize didOpenStream;
 
 
 - (id)init 
@@ -117,7 +114,6 @@
     self = [super init];
     if (self) 
     {
-        self.passive = NO;
         self.password = nil;
         self.username = nil;
         self.hostname = nil;
@@ -128,6 +124,7 @@
         self.streamInfo.writeStream = nil;
         self.streamInfo.bytesThisIteration = 0;
         self.streamInfo.bytesTotal = 0;
+        self.streamInfo.timeout = 30;
     }
     return self;
 }
@@ -345,14 +342,103 @@
 {
 }
 
+
+
+//-----
+//
+//				bytesSent
+//
+// synopsis:	retval = [self bytesSent];
+//					long retval	-
+//
+// description:	bytesSent is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type long
+//
+
 - (long) bytesSent
 {
     return self.streamInfo.bytesThisIteration;
 }
 
+
+
+//-----
+//
+//				totalBytesSent
+//
+// synopsis:	retval = [self totalBytesSent];
+//					long retval	-
+//
+// description:	totalBytesSent is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type long
+//
+
 - (long) totalBytesSent
 {
     return self.streamInfo.bytesTotal;
 }
+
+
+
+//-----
+//
+//				timeout
+//
+// synopsis:	retval = [self timeout];
+//					long retval	-
+//
+// description:	timeout is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type long
+//
+
+- (long) timeout
+{
+    return self.streamInfo.timeout;
+}
+
+
+
+//-----
+//
+//				setTimeout
+//
+// synopsis:	[self setTimeout:timeout];
+//					long timeout	-
+//
+// description:	setTimeout is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void) setTimeout:(long)timeout
+{
+    self.streamInfo.timeout = timeout;
+}
+
+- (void) cancelRequest
+{
+    self.streamInfo.cancelRequestFlag = TRUE;
+}
+
+- (void) setCancelDoesNotCallDelegate:(BOOL)cancelDoesNotCallDelegate
+{
+    self.streamInfo.cancelDoesNotCallDelegate = cancelDoesNotCallDelegate;
+}
+- (BOOL) cancelDoesNotCallDelegate
+{
+    return self.streamInfo.cancelDoesNotCallDelegate;
+}
+
 
 @end
