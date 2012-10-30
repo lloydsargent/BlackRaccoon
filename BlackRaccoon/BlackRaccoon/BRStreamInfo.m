@@ -132,6 +132,35 @@
 
 //-----
 //
+//              dispatch_get_local_queue
+//
+// synopsis:	retval = dispatch_get_local_queue();
+//					 retval	-
+//
+// description:	dispatch_get_local_queue() is designed to get our local queue,
+//              if it exists, or create one if it doesn't exist.
+//
+// errors:		none
+//
+// returns:		queue of type dispatch_queue_t
+//
+
+
+dispatch_queue_t dispatch_get_local_queue()
+{
+    static dispatch_queue_t _queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _queue = dispatch_queue_create("com.github.blackraccoon", 0);
+        dispatch_queue_set_specific(_queue, "com.github.blackraccoon", (void*) "com.github.blackraccoon", NULL);
+    });
+    return _queue;
+}
+
+
+
+//-----
+//
 //				openRead
 //
 // synopsis:	[self openRead:request];
@@ -182,7 +211,7 @@
 	[readStream open];
     
     request.didOpenStream = NO;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, timeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, timeout * NSEC_PER_SEC), dispatch_get_local_queue(), ^{
         if (!request.didOpenStream && request.error == nil)
         {
             InfoLog(@"No response from the server. Timeout.");
@@ -248,7 +277,7 @@
     [writeStream open];
     
     request.didOpenStream = NO;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, timeout * NSEC_PER_SEC), dispatch_get_current_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, timeout * NSEC_PER_SEC), dispatch_get_local_queue(), ^{
         if (!request.didOpenStream && request.error==nil)
         {
             InfoLog(@"No response from the server. Timeout.");
