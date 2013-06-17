@@ -115,9 +115,10 @@
 // returns:		Variable of type BOOL
 //
 
-- (BOOL) fileExists: (NSString *) fileNamePath
+- (BOOL)fileExists:(NSString *)fileNamePath
 {
-    NSString *fileName = [[self.path lastPathComponent] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+    NSString *fileName = [[fileNamePath lastPathComponent] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+    //NSString *fileName = [[self.path lastPathComponent] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
 
     for (NSDictionary *file in self.filesInfo)
     {
