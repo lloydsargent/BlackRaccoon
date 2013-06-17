@@ -104,32 +104,6 @@
 @synthesize cancelDoesNotCallDelegate;
 
 
-
-//-----
-//
-//				init
-//
-// synopsis:	retval = [self init];
-//					id retval	-
-//
-// description:	init is designed to
-//
-// errors:		none
-//
-// returns:		Variable of type id
-//
-
-- (id)init
-{
-    self = [super init];
-    if (self) 
-    {
-    }
-    return self;
-}
-
-
-
 //-----
 //
 //              dispatch_get_local_queue
@@ -173,7 +147,7 @@ dispatch_queue_t dispatch_get_local_queue()
 // returns:		none
 //
 
-- (void) openRead: (BRRequest *) request
+- (void)openRead:(BRRequest *)request
 {
     if (request.hostname==nil)
     {
@@ -239,7 +213,7 @@ dispatch_queue_t dispatch_get_local_queue()
 // returns:		none
 //
 
-- (void) openWrite: (BRRequest *) request
+- (void)openWrite:(BRRequest *)request
 {
     if (request.hostname==nil)
     {
@@ -305,7 +279,7 @@ dispatch_queue_t dispatch_get_local_queue()
 // returns:		none
 //
 
-- (BOOL) checkCancelRequest: (BRRequest *) request
+- (BOOL)checkCancelRequest:(BRRequest *)request
 {
     if (!cancelRequestFlag)
         return NO;
@@ -343,7 +317,7 @@ dispatch_queue_t dispatch_get_local_queue()
 // returns:		Variable of type NSData *
 //
 
-- (NSData *) read: (BRRequest *) request
+- (NSData *)read:(BRRequest *)request
 {
     NSData *data;
     NSMutableData *bufferObject = [NSMutableData dataWithLength: kBRDefaultBufferSize];
@@ -395,7 +369,7 @@ dispatch_queue_t dispatch_get_local_queue()
 // returns:		Variable of type BOOL
 //
 
-- (BOOL) write: (BRRequest *) request data: (NSData *) data
+- (BOOL)write:(BRRequest *)request data:(NSData *)data
 {
     bytesThisIteration = [writeStream write: [data bytes] maxLength: [data length]];
     bytesTotal += bytesThisIteration;
@@ -437,7 +411,7 @@ dispatch_queue_t dispatch_get_local_queue()
 // returns:		none
 //
 
-- (void) streamError: (BRRequest *) request errorCode: (enum BRErrorCodes) errorCode
+- (void)streamError:(BRRequest *)request errorCode:(enum BRErrorCodes)errorCode
 {
     request.error = [[BRRequestError alloc] init];
     request.error.errorCode = errorCode;
@@ -461,7 +435,7 @@ dispatch_queue_t dispatch_get_local_queue()
 // returns:		none
 //
 
-- (void) streamComplete: (BRRequest *) request
+- (void)streamComplete:(BRRequest *)request
 {
     [request.delegate requestCompleted: request];
     [request.streamInfo close: request];
@@ -483,7 +457,7 @@ dispatch_queue_t dispatch_get_local_queue()
 // returns:		none
 //
 
-- (void) close: (BRRequest *) request
+- (void)close:(BRRequest *)request
 {
     if (readStream)
     {

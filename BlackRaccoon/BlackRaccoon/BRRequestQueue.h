@@ -95,7 +95,7 @@
 @protocol BRQueueDelegate  <BRRequestDelegate>
 
 @required
--(void) queueCompleted: (BRRequestQueue *) queue;
+- (void)queueCompleted:(BRRequestQueue *)queue;
 
 
 @end
@@ -111,22 +111,13 @@
 @private
     BRRequest *headRequest;
     BRRequest *tailRequest;
-    
 }
 
 @property id <BRQueueDelegate> queueDelegate;
 
--(void) addRequest: (BRRequest *) request;
--(void) addRequestInFront:(BRRequest *) request;
--(void) addRequestsFromArray: (NSArray *) array;
--(void) removeRequestFromQueue:(BRRequest *) request;
+- (void)addRequest:(BRRequest *)request;
+- (void)addRequestInFront:(BRRequest *)request;
+- (void)addRequestsFromArray:(NSArray *)array;
+- (void)removeRequestFromQueue:(BRRequest *)request;
 
 @end
-
-
-
-
-
-
-
-

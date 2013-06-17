@@ -102,33 +102,6 @@
 @synthesize listrequest;
 
 
-
-//-----
-//
-//				initWithDelegate
-//
-// synopsis:	retval = [self initWithDelegate:inDelegate];
-//					BRRequestUpload *retval	-
-//					id inDelegate          	-
-//
-// description:	initWithDelegate is designed to
-//
-// errors:		none
-//
-// returns:		Variable of type BRRequestUpload *
-//
-
-+ (BRRequestUpload *) initWithDelegate: (id) inDelegate
-{
-    BRRequestUpload *uploadFile = [[BRRequestUpload alloc] init];
-    if (uploadFile)
-        uploadFile.delegate = inDelegate;
-    
-    return uploadFile;
-}
-
-
-
 //-----
 //
 //				start
@@ -142,7 +115,7 @@
 // returns:		none
 //
 
--(void) start
+- (void)start
 {
     self.maximumSize = LONG_MAX;
     bytesIndex = 0;
@@ -156,7 +129,7 @@
     }
     
     //-----we first list the directory to see if our folder is up on the server
-    self.listrequest = [BRRequestListDirectory initWithDelegate: self];
+    self.listrequest = [[BRRequestListDirectory alloc] initWithDelegate:self];
     self.listrequest.path = [self.path stringByDeletingLastPathComponent];
     self.listrequest.hostname = self.hostname;
     self.listrequest.username = self.username;
@@ -180,11 +153,11 @@
 // returns:		none
 //
 
--(void) requestCompleted: (BRRequest *) request
+- (void)requestCompleted:(BRRequest *)request
 {
     NSString * fileName = [[self.path lastPathComponent] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
     
-    if ([self.listrequest fileExists: fileName])
+    if ([self.listrequest fileExists:fileName])
     {
         if (![self.delegate shouldOverwriteFileWithRequest:self]) 
         {
@@ -195,7 +168,7 @@
     
     if ([self.delegate respondsToSelector:@selector(requestDataSendSize:)])
     {
-        self.maximumSize = [self.delegate requestDataSendSize: self];
+        self.maximumSize = [self.delegate requestDataSendSize:self];
     }
     
     //----- open the write stream and check for errors calling delegate methods
@@ -219,7 +192,7 @@
 // returns:		none
 //
 
--(void) requestFailed:(BRRequest *) request
+- (void)requestFailed:(BRRequest *)request
 {
     [self.delegate requestFailed:request];
 }
@@ -241,9 +214,9 @@
 // returns:		Variable of type BOOL
 //
 
--(BOOL) shouldOverwriteFileWithRequest:(BRRequest *) request
+- (BOOL)shouldOverwriteFileWithRequest:(BRRequest *)request
 {
-    return [self.delegate shouldOverwriteFileWithRequest: request];
+    return [self.delegate shouldOverwriteFileWithRequest:request];
 }
 
 

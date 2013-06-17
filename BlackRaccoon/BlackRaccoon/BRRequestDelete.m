@@ -97,33 +97,6 @@
 @implementation BRRequestDelete
 
 
-
-//-----
-//
-//				initWithDelegate
-//
-// synopsis:	retval = [BRRequestDelete initWithDelegate:inDelegate];
-//					BRRequestDelete *retval	-
-//					id inDelegate          	-
-//
-// description:	initWithDelegate is designed to
-//
-// errors:		none
-//
-// returns:		Variable of type BRRequestDelete *
-//
-
-+ (BRRequestDelete *) initWithDelegate: (id) inDelegate
-{
-    BRRequestDelete *deleteFileDir = [[BRRequestDelete alloc] init];
-    if (deleteFileDir)
-        deleteFileDir.delegate = inDelegate;
-    
-    return deleteFileDir;
-}
-
-
-
 //-----
 //
 //				path
@@ -138,7 +111,7 @@
 // returns:		Variable of type NSString *
 //
 
--(NSString *) path
+- (NSString *)path
 {
     NSString * lastCharacter = [path substringFromIndex:[path length] - 1];
     isDirectory = ([lastCharacter isEqualToString:@"/"]);
@@ -170,7 +143,7 @@
 // returns:		none
 //
 
--(void) start
+- (void)start
 {
     SInt32 errorcode;
     

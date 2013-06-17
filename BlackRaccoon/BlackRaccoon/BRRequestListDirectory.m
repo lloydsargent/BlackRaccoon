@@ -100,33 +100,6 @@
 @synthesize receivedData;
 
 
-
-//-----
-//
-//				initWithDelegate
-//
-// synopsis:	retval = [self initWithDelegate:inDelegate];
-//					BRRequestListDirectory *retval	-
-//					id inDelegate                 	-
-//
-// description:	initWithDelegate is designed to
-//
-// errors:		none
-//
-// returns:		Variable of type BRRequestListDirectory *
-//
-
-+ (BRRequestListDirectory *) initWithDelegate: (id) inDelegate
-{
-    BRRequestListDirectory *listDir = [[BRRequestListDirectory alloc] init];
-    if (listDir)
-        listDir.delegate = inDelegate;
-    
-    return listDir;
-}
-
-
-
 //-----
 //
 //				fileExists
@@ -174,7 +147,7 @@
 // returns:		Variable of type NSString *
 //
 
--(NSString *)path
+- (NSString *)path
 {
     //  the path will always point to a directory, so we add the final slash to it (if there was one before escaping/standardizing, it's *gone* now)
     NSString * directoryPath = [super path];
@@ -200,7 +173,7 @@
 // returns:		none
 //
 
--(void) start
+- (void)start
 {
     self.maximumSize = LONG_MAX;
     

@@ -101,33 +101,6 @@
 @synthesize listrequest;
 
 
-
-//-----
-//
-//				initWithDelegate
-//
-// synopsis:	retval = [BRRequestCreateDirectory initWithDelegate:inDelegate];
-//					BRRequestCreateDirectory *retval	-
-//					id inDelegate                   	-
-//
-// description:	initWithDelegate is designed to
-//
-// errors:		none
-//
-// returns:		Variable of type BRRequestCreateDirectory *
-//
-
-+ (BRRequestCreateDirectory *) initWithDelegate: (id) inDelegate
-{
-    BRRequestCreateDirectory *createDir = [[BRRequestCreateDirectory alloc] init];
-    if (createDir)
-        createDir.delegate = inDelegate;
-    
-    return createDir;
-}
-
-
-
 //-----
 //
 //				path
@@ -168,7 +141,7 @@
 // returns:		none
 //
 
--(void) start
+- (void)start
 {
     if (self.hostname==nil)
     {
@@ -180,7 +153,7 @@
     }
     
     //-----we first list the directory to see if our folder is up already
-    self.listrequest = [BRRequestListDirectory initWithDelegate: self];
+    self.listrequest = [[BRRequestListDirectory alloc] initWithDelegate:self];
     self.listrequest.path = [self.path stringByDeletingLastPathComponent];
     self.listrequest.hostname = self.hostname;
     self.listrequest.username = self.username;
@@ -204,7 +177,7 @@
 // returns:		none
 //
 
--(void) requestCompleted: (BRRequest *) request
+- (void)requestCompleted:(BRRequest *)request
 {
     NSString *directoryName = [[self.path lastPathComponent] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
 
@@ -238,7 +211,7 @@
 // returns:		none
 //
 
--(void) requestFailed:(BRRequest *) request
+- (void)requestFailed:(BRRequest *)request
 {
     [self.delegate requestFailed:request];
 }

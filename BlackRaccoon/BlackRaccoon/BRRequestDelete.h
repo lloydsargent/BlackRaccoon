@@ -100,6 +100,4 @@
     BOOL isDirectory;
 }
 
-+ (BRRequestDelete *) initWithDelegate: (id) inDelegate;
-
 @end
