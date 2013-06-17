@@ -296,6 +296,9 @@
             InfoLog(@"%@", self.error.message);
         }
         break;
+        
+        default:
+            break;
     }
 }
 

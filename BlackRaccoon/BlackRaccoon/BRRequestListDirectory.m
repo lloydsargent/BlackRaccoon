@@ -279,6 +279,9 @@
             [self.streamInfo streamComplete: self];                             // perform callbacks and close out streams
         }
         break;
+        
+        default:
+            break;
     }
 }
 

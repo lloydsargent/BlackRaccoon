@@ -196,6 +196,9 @@
             [self.streamInfo streamComplete: self];
         }
         break;
+
+        default:
+            break;
     }
 }
 
