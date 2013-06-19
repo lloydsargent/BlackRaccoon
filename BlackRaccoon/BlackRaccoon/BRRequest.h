@@ -117,6 +117,7 @@
     
     BRRequestError *error;
 }
+@property NSString *uuid;
 @property NSString *username;
 @property NSString *password;
 @property NSString *hostname;

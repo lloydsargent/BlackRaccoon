@@ -96,6 +96,7 @@
 
 @implementation BRRequest
 
+@synthesize uuid;
 @synthesize password;
 @synthesize username;
 @synthesize error;
@@ -129,6 +130,7 @@
     self = [super init];
     if (self) 
     {
+        self.uuid     = nil;
         self.password = nil;
         self.username = nil;
         self.hostname = nil;
