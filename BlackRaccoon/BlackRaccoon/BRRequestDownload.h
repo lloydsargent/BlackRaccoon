@@ -99,5 +99,6 @@
 
 @property NSData *receivedData;
 @property (nonatomic, copy) NSString *localFilepath;
+@property (nonatomic, readonly) NSString *fullRemotePath;
 
 @end

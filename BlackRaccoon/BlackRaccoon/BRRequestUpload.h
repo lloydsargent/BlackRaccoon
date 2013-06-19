@@ -105,5 +105,6 @@
 
 @property BRRequestListDirectory *listrequest;
 @property (nonatomic, copy) NSString *localFilepath;
+@property (nonatomic, readonly) NSString *fullRemotePath;
 
 @end
