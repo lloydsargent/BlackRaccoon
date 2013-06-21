@@ -117,6 +117,7 @@
     
     BRRequestError *error;
 }
+@property BOOL passiveMode;
 @property NSString *uuid;
 @property NSString *username;
 @property NSString *password;
