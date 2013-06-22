@@ -96,6 +96,7 @@
 
 @implementation BRRequest
 
+@synthesize passiveMode;
 @synthesize uuid;
 @synthesize password;
 @synthesize username;
@@ -128,8 +129,9 @@
 - (id)initWithDelegate:(id<BRRequestDelegate>)aDelegate
 {
     self = [super init];
-    if (self) 
+    if (self)
     {
+		self.passiveMode = YES;
         self.uuid     = nil;
         self.password = nil;
         self.username = nil;

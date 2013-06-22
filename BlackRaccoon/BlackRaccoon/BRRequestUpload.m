@@ -130,6 +130,7 @@
     
     //-----we first list the directory to see if our folder is up on the server
     self.listrequest = [[BRRequestListDirectory alloc] initWithDelegate:self];
+	self.listrequest.passiveMode = self.passiveMode;
     self.listrequest.path = [self.path stringByDeletingLastPathComponent];
     self.listrequest.hostname = self.hostname;
     self.listrequest.username = self.username;

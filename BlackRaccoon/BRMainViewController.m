@@ -165,7 +165,7 @@
 
 - (IBAction) createDirectory:(id)sender
 {
-    createDir = [BRRequestCreateDirectory initWithDelegate: self];
+    createDir = [[BRRequestCreateDirectory alloc] initWithDelegate:self];
     
     createDir.hostname = host.text;
     createDir.path = path.text;
@@ -194,7 +194,7 @@
 
 - (IBAction) deleteDirectory:(id)sender
 {
-    deleteDir = [BRRequestDelete initWithDelegate: self];
+    deleteDir = [[BRRequestDelete alloc] initWithDelegate:self];
         
     deleteDir.hostname = host.text;
     deleteDir.path = path.text;
@@ -223,7 +223,7 @@
 
 - (IBAction) listDirectory:(id)sender
 {
-    listDir = [BRRequestListDirectory initWithDelegate: self];
+    listDir = [[BRRequestListDirectory alloc] initWithDelegate:self];
     
     listDir.hostname = host.text;
     listDir.path = path.text;
@@ -254,7 +254,7 @@
 {
     downloadData = [NSMutableData dataWithCapacity: 1];
     
-    downloadFile = [BRRequestDownload initWithDelegate: self];
+    downloadFile = [[BRRequestDownload alloc] initWithDelegate:self];
     downloadFile.hostname = host.text;
     downloadFile.path = path.text;
     downloadFile.username = username.text;
@@ -287,7 +287,7 @@
     NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"image.jpg"];
     uploadData = [NSData dataWithContentsOfFile: filepath];
     
-    uploadFile = [BRRequestUpload initWithDelegate: self];
+    uploadFile = [[BRRequestUpload alloc] initWithDelegate:self];
     uploadFile.path = path.text;
     uploadFile.hostname = host.text;
     uploadFile.username = username.text;
@@ -315,7 +315,7 @@
 
 - (IBAction) deleteFile: (id) sender
 {
-    deleteFile = [BRRequestDelete initWithDelegate: self];    
+    deleteFile = [[BRRequestDelete alloc] initWithDelegate:self];
     deleteFile.hostname = host.text;
     deleteFile.path = path.text;
     deleteFile.username = username.text;
