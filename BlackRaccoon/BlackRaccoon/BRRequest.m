@@ -96,6 +96,8 @@
 
 @implementation BRRequest
 
+@synthesize passiveMode;
+@synthesize uuid;
 @synthesize password;
 @synthesize username;
 @synthesize error;
@@ -109,11 +111,28 @@
 @synthesize didOpenStream;
 
 
-- (id)init 
+//-----
+//
+//				initWithDelegate
+//
+// synopsis:	retval = [BRRequest delegate];
+//					BRRequestCreateDirectory *retval	-
+//					id<BRRequestDelegate> delegate      -
+//
+// description:	initWithDelegate is designed to
+//
+// errors:		none
+//
+// returns:		Instance of type BRRequest or subclass
+//
+
+- (id)initWithDelegate:(id<BRRequestDelegate>)aDelegate
 {
     self = [super init];
-    if (self) 
+    if (self)
     {
+		self.passiveMode = YES;
+        self.uuid     = nil;
         self.password = nil;
         self.username = nil;
         self.hostname = nil;
@@ -125,11 +144,11 @@
         self.streamInfo.bytesThisIteration = 0;
         self.streamInfo.bytesTotal = 0;
         self.streamInfo.timeout = 30;
+        
+        self.delegate = aDelegate;
     }
     return self;
 }
-
-
 
 
 //-----
@@ -146,14 +165,12 @@
 // returns:		Variable of type NSURL*
 //
 
--(NSURL*) fullURL
+- (NSURL *)fullURL
 {
     NSString * fullURLString = [NSString stringWithFormat: @"ftp://%@%@", self.hostname, self.path];
     
     return [NSURL URLWithString: fullURLString];
 }
-
-
 
 //-----
 //
@@ -169,7 +186,7 @@
 // returns:		Variable of type NSURL *
 //
 
-- (NSURL *) fullURLWithEscape
+- (NSURL *)fullURLWithEscape
 {
     NSString *escapedUsername = [self encodeString: username];
     NSString *escapedPassword = [self encodeString: password];
@@ -194,10 +211,7 @@
     NSString * fullURLString = [NSString stringWithFormat:@"ftp://%@%@%@", cred, self.hostname, self.path];
     
     return [NSURL URLWithString: fullURLString];
-    
 }
-
-
 
 //-----
 //
@@ -213,7 +227,7 @@
 // returns:		Variable of type NSString *
 //
 
--(NSString *)path
+- (NSString *)path
 {
     //  we remove all the extra slashes from the directory path, including the last one (if there is one)
     //  we also escape it
@@ -248,7 +262,7 @@
 // returns:		none
 //
 
--(void) setPath: (NSString *) directoryPathLocal
+- (void)setPath:(NSString *)directoryPathLocal
 {
     path = directoryPathLocal;
 }
@@ -269,7 +283,7 @@
 // returns:		Variable of type NSString *
 //
 
--(NSString *) hostname
+- (NSString *)hostname
 {
     return [hostname stringByStandardizingPath];
 }
@@ -290,7 +304,7 @@
 // returns:		none
 //
 
--(void)setHostname:(NSString *)hostnamelocal
+- (void)setHostname:(NSString *)hostnamelocal
 {
     hostname = hostnamelocal;
 }
@@ -312,7 +326,7 @@
 // returns:		Variable of type NSString *
 //
 
-- (NSString *)encodeString: (NSString *) string;
+- (NSString *)encodeString:(NSString *)string;
 {
     NSString *urlEncoded = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(
                                                                                                  NULL,
@@ -338,8 +352,9 @@
 // returns:		none
 //
 
--(void) start
+- (void)start
 {
+    
 }
 
 
@@ -358,7 +373,7 @@
 // returns:		Variable of type long
 //
 
-- (long) bytesSent
+- (long)bytesSent
 {
     return self.streamInfo.bytesThisIteration;
 }
@@ -379,7 +394,7 @@
 // returns:		Variable of type long
 //
 
-- (long) totalBytesSent
+- (long)totalBytesSent
 {
     return self.streamInfo.bytesTotal;
 }
@@ -400,7 +415,7 @@
 // returns:		Variable of type long
 //
 
-- (long) timeout
+- (long)timeout
 {
     return self.streamInfo.timeout;
 }
@@ -421,21 +436,22 @@
 // returns:		none
 //
 
-- (void) setTimeout:(long)timeout
+- (void)setTimeout:(long)timeout
 {
     self.streamInfo.timeout = timeout;
 }
 
-- (void) cancelRequest
+- (void)cancelRequest
 {
     self.streamInfo.cancelRequestFlag = TRUE;
 }
 
-- (void) setCancelDoesNotCallDelegate:(BOOL)cancelDoesNotCallDelegate
+- (void)setCancelDoesNotCallDelegate:(BOOL)cancelDoesNotCallDelegate
 {
     self.streamInfo.cancelDoesNotCallDelegate = cancelDoesNotCallDelegate;
 }
-- (BOOL) cancelDoesNotCallDelegate
+
+- (BOOL)cancelDoesNotCallDelegate
 {
     return self.streamInfo.cancelDoesNotCallDelegate;
 }

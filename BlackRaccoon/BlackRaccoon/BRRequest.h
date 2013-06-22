@@ -49,7 +49,6 @@
 #import "BRStreamInfo.h"
 
 
-
 //---------- enumerated data types
 
 
@@ -97,20 +96,16 @@
 @protocol BRRequestDelegate  <NSObject>
 
 @required
-- (void) requestCompleted:(BRRequest *) request;
-- (void) requestFailed:(BRRequest *) request;
-- (BOOL) shouldOverwriteFileWithRequest: (BRRequest *) request;
+- (void)requestCompleted:(BRRequest *)request;
+- (void)requestFailed:(BRRequest *)request;
+- (BOOL)shouldOverwriteFileWithRequest:(BRRequest *)request;
 
 @optional
-- (void) percentCompleted: (BRRequest *) request;
-- (void) requestDataAvailable: (BRRequestDownload *) request;
-- (long) requestDataSendSize: (BRRequestUpload *) request;
-- (NSData *) requestDataToSend: (BRRequestUpload *) request;
-
-
+- (void)percentCompleted:(BRRequest *) request;
+- (void)requestDataAvailable:(BRRequestDownload *)request;
+- (long)requestDataSendSize:(BRRequestUpload *)request;
+- (NSData *)requestDataToSend:(BRRequestUpload *)request;
 @end
-
-
 
 //---------- classes
 
@@ -122,6 +117,8 @@
     
     BRRequestError *error;
 }
+@property BOOL passiveMode;
+@property NSString *uuid;
 @property NSString *username;
 @property NSString *password;
 @property NSString *hostname;
@@ -141,11 +138,11 @@
 @property (readonly) long totalBytesSent;                                       // will have bytes total sent
 @property BOOL cancelDoesNotCallDelegate;                                       // cancel closes stream without calling delegate
 
-- (NSURL *) fullURLWithEscape;
+- (NSURL *)fullURLWithEscape;
 
--(void) start;
-- (void) cancelRequest;
+- (instancetype)initWithDelegate:(id)delegate;
 
-
+- (void)start;
+- (void)cancelRequest;
 
 @end

@@ -140,7 +140,7 @@
 // returns:		none
 //
 
--(void) addRequest: (BRRequest *) request
+- (void)addRequest:(BRRequest *)request
 {
     request.delegate = self;
     
@@ -184,7 +184,7 @@
 // returns:		none
 //
 
--(void) addRequestInFront: (BRRequest *) request
+- (void)addRequestInFront:(BRRequest *)request
 {
     request.delegate = self;
     if(!request.password)
@@ -230,7 +230,7 @@
 // returns:		none
 //
 
--(void) addRequestsFromArray: (NSArray *) array
+- (void)addRequestsFromArray:(NSArray *)array
 {
     //TBD
 }
@@ -251,7 +251,7 @@
 // returns:		none
 //
 
--(void) removeRequestFromQueue: (BRRequest *) request
+- (void)removeRequestFromQueue:(BRRequest *)request
 {
     
     if ([headRequest isEqual:request]) 
@@ -286,7 +286,7 @@
 // returns:		none
 //
 
--(void) start
+- (void)start
 {
     [headRequest start];
 }
@@ -307,7 +307,7 @@
 // returns:		none
 //
 
--(void) requestCompleted: (BRRequest *) request
+- (void)requestCompleted:(BRRequest *)request
 {
     
     [self.queueDelegate requestCompleted:request];
@@ -342,7 +342,7 @@
 // returns:		none
 //
 
--(void) requestFailed: (BRRequest *) request
+- (void)requestFailed:(BRRequest *)request
 {
     [self.queueDelegate requestFailed:request];
     
@@ -368,7 +368,7 @@
 // returns:		Variable of type BOOL
 //
 
--(BOOL) shouldOverwriteFileWithRequest: (BRRequest *)request
+- (BOOL)shouldOverwriteFileWithRequest:(BRRequest *)request
 {
     if (![self.queueDelegate respondsToSelector:@selector(shouldOverwriteFileWithRequest:)]) 
     {

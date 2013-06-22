@@ -98,14 +98,10 @@
 
 
 @interface BRRequestListDirectory : BRRequest
-{
-    
-}
 
-@property NSArray * filesInfo;
-@property (strong) NSMutableData * receivedData;
+@property NSArray *filesInfo;
+@property (strong) NSMutableData *receivedData;
 
-+ (BRRequestListDirectory *) initWithDelegate: (id) inDelegate;
-- (BOOL) fileExists: (NSString *) fileNamePath;
+- (BOOL)fileExists:(NSString *)fileNamePath;
 
 @end

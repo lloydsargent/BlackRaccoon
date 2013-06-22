@@ -104,8 +104,7 @@
 }
 
 @property BRRequestListDirectory *listrequest;
-
-
-+ (BRRequestUpload *) initWithDelegate: (id) inDelegate;
+@property (nonatomic, copy) NSString *localFilepath;
+@property (nonatomic, readonly) NSString *fullRemotePath;
 
 @end

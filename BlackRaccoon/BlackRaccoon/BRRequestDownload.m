@@ -99,33 +99,6 @@
 @synthesize receivedData;
 
 
-
-//-----
-//
-//				initWithDelegate
-//
-// synopsis:	retval = [BRRequestDownload initWithDelegate:inDelegate];
-//					BRRequestDownload *retval	-
-//					id inDelegate            	-
-//
-// description:	initWithDelegate is designed to
-//
-// errors:		none
-//
-// returns:		Variable of type BRRequestDownload *
-//
-
-+ (BRRequestDownload *) initWithDelegate: (id) inDelegate
-{
-    BRRequestDownload *downloadFile = [[BRRequestDownload alloc] init];
-    if (downloadFile)
-        downloadFile.delegate = inDelegate;
-    
-    return downloadFile;
-}
-
-
-
 //-----
 //
 //				start
@@ -139,7 +112,7 @@
 // returns:		none
 //
 
--(void) start
+- (void)start
 {
     if (![self.delegate respondsToSelector:@selector(requestDataAvailable:)])
     {
@@ -223,8 +196,17 @@
             [self.streamInfo streamComplete: self];
         }
         break;
+
+        default:
+            break;
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+- (NSString *)fullRemotePath
+{
+    return [self.hostname stringByAppendingPathComponent:self.path];
+}
 
 @end

@@ -146,7 +146,7 @@
 // returns:		Variable of type NSString *
 //
 
--(NSString *) message
+- (NSString *)message
 {
     NSString * errorMessage;
     switch (self.errorCode) 

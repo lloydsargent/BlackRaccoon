@@ -98,10 +98,9 @@
 
 @interface BRRequestCreateDirectory : BRRequest
 {
+    
 }
 
 @property BRRequestListDirectory *listrequest;
-
-+ (BRRequestCreateDirectory *) initWithDelegate: (id) inDelegate;
 
 @end

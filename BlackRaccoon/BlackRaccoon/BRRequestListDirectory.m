@@ -100,33 +100,6 @@
 @synthesize receivedData;
 
 
-
-//-----
-//
-//				initWithDelegate
-//
-// synopsis:	retval = [self initWithDelegate:inDelegate];
-//					BRRequestListDirectory *retval	-
-//					id inDelegate                 	-
-//
-// description:	initWithDelegate is designed to
-//
-// errors:		none
-//
-// returns:		Variable of type BRRequestListDirectory *
-//
-
-+ (BRRequestListDirectory *) initWithDelegate: (id) inDelegate
-{
-    BRRequestListDirectory *listDir = [[BRRequestListDirectory alloc] init];
-    if (listDir)
-        listDir.delegate = inDelegate;
-    
-    return listDir;
-}
-
-
-
 //-----
 //
 //				fileExists
@@ -142,9 +115,10 @@
 // returns:		Variable of type BOOL
 //
 
-- (BOOL) fileExists: (NSString *) fileNamePath
+- (BOOL)fileExists:(NSString *)fileNamePath
 {
-    NSString *fileName = [[self.path lastPathComponent] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+    NSString *fileName = [[fileNamePath lastPathComponent] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+    //NSString *fileName = [[self.path lastPathComponent] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
 
     for (NSDictionary *file in self.filesInfo)
     {
@@ -174,7 +148,7 @@
 // returns:		Variable of type NSString *
 //
 
--(NSString *)path
+- (NSString *)path
 {
     //  the path will always point to a directory, so we add the final slash to it (if there was one before escaping/standardizing, it's *gone* now)
     NSString * directoryPath = [super path];
@@ -200,7 +174,7 @@
 // returns:		none
 //
 
--(void) start
+- (void)start
 {
     self.maximumSize = LONG_MAX;
     
@@ -305,6 +279,9 @@
             [self.streamInfo streamComplete: self];                             // perform callbacks and close out streams
         }
         break;
+        
+        default:
+            break;
     }
 }
 

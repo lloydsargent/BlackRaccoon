@@ -95,13 +95,10 @@
 
 //---------- classes
 
-@interface BRRequestDownload : BRRequest 
-{
-}
+@interface BRRequestDownload : BRRequest
 
-@property NSData * receivedData;
-
-
-+ (BRRequestDownload *) initWithDelegate: (id) inDelegate;
+@property NSData *receivedData;
+@property (nonatomic, copy) NSString *localFilepath;
+@property (nonatomic, readonly) NSString *fullRemotePath;
 
 @end
