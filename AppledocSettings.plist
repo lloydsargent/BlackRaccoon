@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>--ignore</key>
+	<array>
+		<string>ThirdParty</string>
+		<string>BlackRaccoonTestApp</string>
+		<string>Libraries</string>
+		<string>Frameworks</string>
+		<string>Testing</string>
+	</array>
+	<key>--logformat</key>
+	<integer>1</integer>
+	<key>--print-settings</key>
+	<true/>
+	<key>--project-name</key>
+	<string>BlackRaccoon</string>
+	<key>--repeat-first-par</key>
+	<false/>
+	<key>--verbose</key>
+	<integer>6</integer>
+	<key>--include</key>
+	<string>~/Projects/iOS/examplecode/genericselectiontest/Documentation/Images</string>
+	<key>--index-desc</key>
+	<string>Documentation/doc1.md</string>
+</dict>
+</plist>
