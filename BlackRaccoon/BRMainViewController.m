@@ -649,6 +649,20 @@
 
 
 
+//-----
+//
+//				clearLog
+//
+// synopsis:	retval = [self clearLog:button];
+//					IBAction retval	-
+//					id button      	-
+//
+// description:	clearLog is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type IBAction
+//
 
 - (IBAction) clearLog: (id) button
 {

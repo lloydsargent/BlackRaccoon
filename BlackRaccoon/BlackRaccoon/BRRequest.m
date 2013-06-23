@@ -441,15 +441,62 @@
     self.streamInfo.timeout = timeout;
 }
 
+
+
+//-----
+//
+//				cancelRequest
+//
+// synopsis:	[self cancelRequest];
+//
+// description:	cancelRequest is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 - (void)cancelRequest
 {
     self.streamInfo.cancelRequestFlag = TRUE;
 }
 
+
+
+//-----
+//
+//				setCancelDoesNotCallDelegate
+//
+// synopsis:	[self setCancelDoesNotCallDelegate:cancelDoesNotCallDelegate];
+//					BOOL cancelDoesNotCallDelegate	-
+//
+// description:	setCancelDoesNotCallDelegate is designed to
+//
+// errors:		none
+//
+// returns:		none
+//
+
 - (void)setCancelDoesNotCallDelegate:(BOOL)cancelDoesNotCallDelegate
 {
     self.streamInfo.cancelDoesNotCallDelegate = cancelDoesNotCallDelegate;
 }
+
+
+
+//-----
+//
+//				cancelDoesNotCallDelegate
+//
+// synopsis:	retval = [self cancelDoesNotCallDelegate];
+//					BOOL retval	-
+//
+// description:	cancelDoesNotCallDelegate is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type BOOL
+//
 
 - (BOOL)cancelDoesNotCallDelegate
 {

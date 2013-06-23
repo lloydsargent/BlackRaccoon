@@ -37,6 +37,35 @@
 //              THE SOFTWARE.
 //
 
+/// It also defines the protocol. The three required delegate methods for
+/// BlackRaccoon are:
+///
+/// * **requestCompleted:request** - this indicates that the request was completed
+/// successfully. Note, depending on the FTP server you may get a successful
+/// completion even though what you expected to happen failed. This is rare,
+/// fortunately.
+///
+/// * **requestFailed:request** - this indicates that the request failed. You can
+/// examine the **error** object for further details of why it failed.
+///
+/// * **shouldOverwriteFileWithRequest:request** - the users code should return a
+/// boolean value indicating whether or not is is okay to overwrite the data.
+/// TYPICALLY the user will return no.
+///
+/// There are also four **optional** delegate methods are:
+///
+/// * **percentCompleted:request** - this is called on every packet sent or
+/// recieved so the user can display, in real time, the percentage of the of the
+/// file uploaded/downloaded. If this is not required for the application, it is
+/// not required that it is implemented.
+///
+/// * **requestDataAvailable:request** -
+///
+/// * **requestDataSendSize:request** -
+///
+/// * **requestDataToSend:request** -
+///
+
 
 
 //---------- pragmas
@@ -96,8 +125,17 @@
 @protocol BRRequestDelegate  <NSObject>
 
 @required
+/// requestCompleted
+/// Indicates when a request has completed without errors.
+/// \param request The request object
 - (void)requestCompleted:(BRRequest *)request;
+
+/// requestFailed
+/// \param request The request object
 - (void)requestFailed:(BRRequest *)request;
+
+/// shouldOverwriteFileWithRequest
+/// \param request The request object;
 - (BOOL)shouldOverwriteFileWithRequest:(BRRequest *)request;
 
 @optional
@@ -109,19 +147,33 @@
 
 //---------- classes
 
+/// BRRequest is the main structure used throughout BlackRaccoon. It contains
+/// important items such as the username, password, hostname, percent complete,
+/// etc.
+
 @interface BRRequest : NSObject <NSStreamDelegate>
 {
 @protected
     NSString * path;
     NSString * hostname;
     
+    /// Error code and string.
     BRRequestError *error;
 }
+
 @property BOOL passiveMode;
 @property NSString *uuid;
+
+/// String used to log into the server.
 @property NSString *username;
+
+/// Password used to log into the server.
 @property NSString *password;
+
+/// Ftp host name.
 @property NSString *hostname;
+
+/// URL to the ftp host.
 @property (readonly) NSURL *fullURL;
 @property NSString *path;
 @property (strong) BRRequestError *error;

@@ -202,8 +202,22 @@
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+
+
+//-----
+//
+//				fullRemotePath
+//
+// synopsis:	retval = [self fullRemotePath];
+//					NSString *retval	-
+//
+// description:	fullRemotePath is designed to
+//
+// errors:		none
+//
+// returns:		Variable of type NSString *
+//
+
 - (NSString *)fullRemotePath
 {
     return [self.hostname stringByAppendingPathComponent:self.path];

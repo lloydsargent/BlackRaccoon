@@ -260,6 +260,10 @@
     
     switch (streamEvent)
     {
+        //----- XCode whines about this missing - which is why it is here
+        case NSStreamEventNone:
+            break;
+            
         case NSStreamEventOpenCompleted:
         {
             self.didOpenStream = YES;
@@ -288,6 +292,7 @@
             [self.streamInfo streamComplete: self];                             // perform callbacks and close out streams
         }
             break;
+
         default:
             break;
     }
