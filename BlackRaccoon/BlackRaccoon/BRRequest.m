@@ -97,7 +97,6 @@
 @implementation BRRequest
 
 @synthesize passiveMode;
-@synthesize uuid;
 @synthesize password;
 @synthesize username;
 @synthesize error;
@@ -132,7 +131,7 @@
     if (self)
     {
 		self.passiveMode = YES;
-        self.uuid     = nil;
+        self.userDictionary = [NSMutableDictionary dictionaryWithCapacity: 1];
         self.password = nil;
         self.username = nil;
         self.hostname = nil;

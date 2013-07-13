@@ -162,7 +162,8 @@
 }
 
 @property BOOL passiveMode;
-@property NSString *uuid;
+
+@property NSMutableDictionary *userDictionary;                                  // contains user values
 
 /// String used to log into the server.
 @property NSString *username;

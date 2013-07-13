@@ -29,6 +29,7 @@
 #import "BRRequestUpload.h"
 #import "BRRequestDownload.h"
 #import "BRRequestDelete.h"
+#import "BRRequest+_UserData.h"
 
 
 

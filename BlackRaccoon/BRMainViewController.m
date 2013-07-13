@@ -346,13 +346,15 @@
     if (uploadFile)
     {
         uploadFile.cancelDoesNotCallDelegate = TRUE;
-        [uploadFile cancelRequest];
+//        [uploadFile cancelRequest];
+        [uploadFile cancelRequestWithFlag];
     }
     
     if (downloadFile)
     {
         downloadFile.cancelDoesNotCallDelegate = TRUE;
-        [downloadFile cancelRequest];
+//        [downloadFile cancelRequest];
+        [downloadFile cancelRequestWithFlag];
     }
 }
 

@@ -66,9 +66,11 @@ used to assure that percentComplete is correct and not in actual transfer of dat
     
 Each block of data is returned as a block of NSData. When done, nil is returned.    
     
+### User Defined Functions
 
+There are cases where the user needs to have variables follow the BRRequest. In order to allow this a category was created called BRRequest+_UserData.m and BRRequest+_UserData.h These files have a couple of examples that show how you can add variables as well as methods to BRRequest.
 
-
+"Add variables? You can't add variables to a category" - technically, no, but you can make it APPEAR as if you did. See the example file for details.
 
 ### Usage
 
