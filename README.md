@@ -70,7 +70,11 @@ Each block of data is returned as a block of NSData. When done, nil is returned.
 
 There are cases where the user needs to have variables follow the BRRequest. In order to allow this a category was created called BRRequest+_UserData.m and BRRequest+_UserData.h These files have a couple of examples that show how you can add variables as well as methods to BRRequest.
 
-"Add variables? You can't add variables to a category" - technically, no, but you can make it APPEAR as if you did. See the example file for details.
+"Add variables? You can't add variables to a category" - technically, no, but you can make it APPEAR as if you did using a dictionary for that purpose. See the example file for details.
+
+### Required Frameworks
+
+BlackRaccoon requires the CFNetwork.framework in order to build correctly.
 
 ### Usage
 
@@ -96,10 +100,10 @@ The following code assumes the following:
 
 	- (IBAction) createDirectory:(id)sender
 	{
-    	createDir = [BRRequestCreateDirectory initWithDelegate: self];
+    	createDir = [[BRRequestCreateDirectory alloc] initWithDelegate: self];
 				
 		//----- for anonymous login just leave the username and password nil
-		createDir.path = @"/home/user/newdirectory/;
+		createDir.path = @"/home/user/newdirectory/";
 		createDir.hostname = @"192.168.1.100";
 		createDir.username = @"yourusername";
 		createDir.password = @"yourpassword";
@@ -112,10 +116,10 @@ The following code assumes the following:
 
 	- (IBAction) deleteDirectory:(id)sender
 	{
-		deleteDir = [BRRequestDelete initWithDelegate: self];
+		deleteDir = [[BRRequestDelete alloc] initWithDelegate: self];
 		
 		//----- for anonymous login just leave the username and password nil
-		deleteDir.path = @"/home/user/newdirectory/;
+		deleteDir.path = @"/home/user/newdirectory/";
 		deleteDir.hostname = @"192.168.1.100";
 		deleteDir.username = @"yourusername";
 		deleteDir.password = @"yourpassword";
@@ -128,10 +132,10 @@ The following code assumes the following:
 
 	- (IBAction) listDirectory:(id)sender
 	{
-		listDir = [BRRequestListDirectory initWithDelegate: self];	
+		listDir = [[BRRequestListDirectory alloc] initWithDelegate: self];	
 				
 		//----- for anonymous login just leave the username and password nil
-		listDir.path = @"/home/user/newdirectory/;
+		listDir.path = @"/home/user/newdirectory/";
 		listDir.hostname = @"192.168.1.100";
 		listDir.username = @"yourusername";
 		listDir.password = @"yourpassword";
@@ -145,7 +149,7 @@ The following code assumes the following:
 	{
         downloadData = [NSMutableData dataWithCapacity: 1];
     
-		downloadFile = [BRRequestDownload initWithDelegate: self];
+		downloadFile = [[BRRequestDownload alloc] initWithDelegate: self];
 		
 		//----- for anonymous login just leave the username and password nil
 		downloadFile.path = @"/home/user/myfile.txt";	
@@ -166,7 +170,7 @@ The following code assumes the following:
 		NSString *filepath = [NSString stringWithFormat: @"%@/%@", applicationDocumentsDir, @"file.text"];
 		uploadData = [NSData dataWithContentsOfFile: filepath];
 		
-		uploadFile = [BRRequestUpload initWithDelegate: self];
+		uploadFile = [[BRRequestUpload alloc] initWithDelegate: self];
 		
 		//----- for anonymous login just leave the username and password nil
 		uploadFile.sentData = dataToUpload;		
@@ -183,7 +187,7 @@ The following code assumes the following:
 
 	- (IBAction) deleteFile: (id) sender
 	{
-		deleteFile = [BRRequestDelete initWithDelegate: self];
+		deleteFile = [[BRRequestDelete alloc] initWithDelegate: self];
 				
 		//----- for anonymous login just leave the username and password nil
 		deleteFile.path = @"/home/user/myfile.txt";
