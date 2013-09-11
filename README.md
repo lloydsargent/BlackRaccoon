@@ -173,7 +173,6 @@ The following code assumes the following:
 		uploadFile = [[BRRequestUpload alloc] initWithDelegate: self];
 		
 		//----- for anonymous login just leave the username and password nil
-		uploadFile.sentData = dataToUpload;		
 		uploadFile.path = @"/home/user/myfile.txt";		
 		uploadFile.hostname = @"192.168.1.100";
 		uploadFile.username = @"yourusername";
