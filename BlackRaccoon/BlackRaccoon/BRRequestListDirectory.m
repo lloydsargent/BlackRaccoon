@@ -261,12 +261,14 @@
                 {
                     if (listingEntity != NULL)
                     {
+#ifndef __IPHONE_7_0
                         //----- July 10, 2012: CFFTPCreateParsedResourceListing had a bug that had the date over retained
                         //----- in order to fix this, we release it once. However, just as a precaution, we check to see what
                         //----- the retain count might be (this isn't guaranteed to work).
                         id date = [(__bridge NSDictionary *) listingEntity objectForKey: (id) kCFFTPResourceModDate];
                         if (CFGetRetainCount((__bridge CFTypeRef) date) >= 2)
                             CFRelease((__bridge CFTypeRef) date);
+#endif
                         
                         //----- transfer the directory into an ARC maintained array
                         self.filesInfo = [self.filesInfo arrayByAddingObject: (__bridge_transfer NSDictionary *) listingEntity];
