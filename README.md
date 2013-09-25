@@ -76,6 +76,12 @@ There are cases where the user needs to have variables follow the BRRequest. In 
 
 BlackRaccoon requires the CFNetwork.framework in order to build correctly.
 
+### iOS 6 and iOS 7
+
+Code has now been implemented to assure proper functionality under iOS 6 and iOS 7.
+
+Unlike some implementations, this checks what version is running before implementing the fix to the leak in Apple's iOS 5 and iOS 6.
+
 ### Usage
 
 The following code assumes the following:
