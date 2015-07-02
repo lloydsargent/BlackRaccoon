@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		6EACDC7217821C7900EB4C07 /* BRRequest+_UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EACDC7117821C7900EB4C07 /* BRRequest+_UserData.m */; };
+		6ECE623E1B45703200F3A050 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ECE623C1B45703200F3A050 /* Main.storyboard */; };
+		6ECE62401B457BBD00F3A050 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ECE623F1B457BBD00F3A050 /* Default-568h@2x.png */; };
+		6ECE62431B4580E500F3A050 /* BRButtonController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE62421B4580E500F3A050 /* BRButtonController.m */; };
+		6ECE62461B45962E00F3A050 /* CALayer+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE62451B45962E00F3A050 /* CALayer+Additions.m */; };
+		6ECE62481B45969B00F3A050 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECE62471B45969B00F3A050 /* QuartzCore.framework */; };
 		6EF0293115ADE4E100E01C96 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF0293015ADE4E100E01C96 /* UIKit.framework */; };
 		6EF0293315ADE4E100E01C96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF0293215ADE4E100E01C96 /* Foundation.framework */; };
 		6EF0293515ADE4E100E01C96 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF0293415ADE4E100E01C96 /* CoreGraphics.framework */; };
@@ -15,7 +20,6 @@
 		6EF0293D15ADE4E100E01C96 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0293C15ADE4E100E01C96 /* main.m */; };
 		6EF0294115ADE4E100E01C96 /* BRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0294015ADE4E100E01C96 /* BRAppDelegate.m */; };
 		6EF0294E15ADE5A600E01C96 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EF0294B15ADE58700E01C96 /* CFNetwork.framework */; };
-		6EF0295115ADE63100E01C96 /* GreenButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0295015ADE63100E01C96 /* GreenButton.png */; };
 		6EF0296915ADE66400E01C96 /* BRRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0295715ADE66400E01C96 /* BRRequest.m */; };
 		6EF0296A15ADE66400E01C96 /* BRRequestCreateDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0295915ADE66400E01C96 /* BRRequestCreateDirectory.m */; };
 		6EF0296B15ADE66400E01C96 /* BRRequestDelete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0295B15ADE66400E01C96 /* BRRequestDelete.m */; };
@@ -26,8 +30,6 @@
 		6EF0297015ADE66400E01C96 /* BRRequestUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0296515ADE66400E01C96 /* BRRequestUpload.m */; };
 		6EF0297115ADE66400E01C96 /* BRStreamInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0296715ADE66400E01C96 /* BRStreamInfo.m */; };
 		6EF0297415ADE67000E01C96 /* BRMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF0297315ADE67000E01C96 /* BRMainViewController.m */; };
-		6EF0297915ADE7C800E01C96 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0297515ADE7C800E01C96 /* MainStoryboard_iPad.storyboard */; };
-		6EF0297A15ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0297715ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard */; };
 		6EF0298E15AF102300E01C96 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0298B15AF102300E01C96 /* LICENSE.txt */; };
 		6EF0298F15AF102300E01C96 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0298C15AF102300E01C96 /* README.md */; };
 		6EF0299015AF102300E01C96 /* ReadMe.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0298D15AF102300E01C96 /* ReadMe.txt */; };
@@ -36,6 +38,13 @@
 /* Begin PBXFileReference section */
 		6EACDC7017821C7900EB4C07 /* BRRequest+_UserData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "BRRequest+_UserData.h"; path = "BlackRaccoon/BlackRaccoon/BRRequest+_UserData.h"; sourceTree = "<group>"; };
 		6EACDC7117821C7900EB4C07 /* BRRequest+_UserData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "BRRequest+_UserData.m"; path = "BlackRaccoon/BlackRaccoon/BRRequest+_UserData.m"; sourceTree = "<group>"; };
+		6ECE623D1B45703200F3A050 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6ECE623F1B457BBD00F3A050 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		6ECE62411B4580E500F3A050 /* BRButtonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRButtonController.h; sourceTree = "<group>"; };
+		6ECE62421B4580E500F3A050 /* BRButtonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRButtonController.m; sourceTree = "<group>"; };
+		6ECE62441B45962E00F3A050 /* CALayer+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+Additions.h"; sourceTree = "<group>"; };
+		6ECE62451B45962E00F3A050 /* CALayer+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+Additions.m"; sourceTree = "<group>"; };
+		6ECE62471B45969B00F3A050 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		6EF0292C15ADE4E100E01C96 /* BlackRaccoon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlackRaccoon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EF0293015ADE4E100E01C96 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6EF0293215ADE4E100E01C96 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -47,7 +56,6 @@
 		6EF0293F15ADE4E100E01C96 /* BRAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRAppDelegate.h; sourceTree = "<group>"; };
 		6EF0294015ADE4E100E01C96 /* BRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRAppDelegate.m; sourceTree = "<group>"; };
 		6EF0294B15ADE58700E01C96 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		6EF0295015ADE63100E01C96 /* GreenButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GreenButton.png; path = BlackRaccoon/GreenButton.png; sourceTree = "<group>"; };
 		6EF0295515ADE66400E01C96 /* BRGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BRGlobal.h; path = BlackRaccoon/BlackRaccoon/BRGlobal.h; sourceTree = "<group>"; };
 		6EF0295615ADE66400E01C96 /* BRRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BRRequest.h; path = BlackRaccoon/BlackRaccoon/BRRequest.h; sourceTree = "<group>"; };
 		6EF0295715ADE66400E01C96 /* BRRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BRRequest.m; path = BlackRaccoon/BlackRaccoon/BRRequest.m; sourceTree = "<group>"; };
@@ -69,8 +77,6 @@
 		6EF0296715ADE66400E01C96 /* BRStreamInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BRStreamInfo.m; path = BlackRaccoon/BlackRaccoon/BRStreamInfo.m; sourceTree = "<group>"; };
 		6EF0297215ADE67000E01C96 /* BRMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRMainViewController.h; sourceTree = "<group>"; };
 		6EF0297315ADE67000E01C96 /* BRMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRMainViewController.m; sourceTree = "<group>"; };
-		6EF0297615ADE7C800E01C96 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = BlackRaccoon/en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		6EF0297815ADE7C800E01C96 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = BlackRaccoon/en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		6EF0298B15AF102300E01C96 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		6EF0298C15AF102300E01C96 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		6EF0298D15AF102300E01C96 /* ReadMe.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMe.txt; sourceTree = "<group>"; };
@@ -81,10 +87,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EF0293515ADE4E100E01C96 /* CoreGraphics.framework in Frameworks */,
+				6ECE62481B45969B00F3A050 /* QuartzCore.framework in Frameworks */,
 				6EF0294E15ADE5A600E01C96 /* CFNetwork.framework in Frameworks */,
 				6EF0293115ADE4E100E01C96 /* UIKit.framework in Frameworks */,
 				6EF0293315ADE4E100E01C96 /* Foundation.framework in Frameworks */,
-				6EF0293515ADE4E100E01C96 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,8 +101,8 @@
 		6EF0292115ADE4E100E01C96 = {
 			isa = PBXGroup;
 			children = (
+				6ECE623F1B457BBD00F3A050 /* Default-568h@2x.png */,
 				6EF0297E15ADEE8100E01C96 /* Documentation */,
-				6EF0294F15ADE5C900E01C96 /* Images */,
 				6EF0293615ADE4E100E01C96 /* BlackRaccoon */,
 				6EF0292F15ADE4E100E01C96 /* Frameworks */,
 				6EF0292D15ADE4E100E01C96 /* Products */,
@@ -113,6 +120,7 @@
 		6EF0292F15ADE4E100E01C96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6ECE62471B45969B00F3A050 /* QuartzCore.framework */,
 				6EF0294B15ADE58700E01C96 /* CFNetwork.framework */,
 				6EF0293015ADE4E100E01C96 /* UIKit.framework */,
 				6EF0293215ADE4E100E01C96 /* Foundation.framework */,
@@ -124,12 +132,15 @@
 		6EF0293615ADE4E100E01C96 /* BlackRaccoon */ = {
 			isa = PBXGroup;
 			children = (
-				6EF0297515ADE7C800E01C96 /* MainStoryboard_iPad.storyboard */,
-				6EF0297715ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard */,
+				6ECE623C1B45703200F3A050 /* Main.storyboard */,
 				6EF0297215ADE67000E01C96 /* BRMainViewController.h */,
 				6EF0297315ADE67000E01C96 /* BRMainViewController.m */,
 				6EF0293F15ADE4E100E01C96 /* BRAppDelegate.h */,
 				6EF0294015ADE4E100E01C96 /* BRAppDelegate.m */,
+				6ECE62411B4580E500F3A050 /* BRButtonController.h */,
+				6ECE62421B4580E500F3A050 /* BRButtonController.m */,
+				6ECE62441B45962E00F3A050 /* CALayer+Additions.h */,
+				6ECE62451B45962E00F3A050 /* CALayer+Additions.m */,
 				6EF0295215ADE63A00E01C96 /* BlackRaccoonFTP */,
 				6EF0293715ADE4E100E01C96 /* Supporting Files */,
 			);
@@ -145,14 +156,6 @@
 				6EF0293E15ADE4E100E01C96 /* BlackRaccoon-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		6EF0294F15ADE5C900E01C96 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				6EF0295015ADE63100E01C96 /* GreenButton.png */,
-			);
-			name = Images;
 			sourceTree = "<group>";
 		};
 		6EF0295215ADE63A00E01C96 /* BlackRaccoonFTP */ = {
@@ -221,7 +224,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = BR;
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Canna Software Development";
 			};
 			buildConfigurationList = 6EF0292615ADE4E100E01C96 /* Build configuration list for PBXProject "BlackRaccoon" */;
@@ -247,9 +250,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EF0293B15ADE4E100E01C96 /* InfoPlist.strings in Resources */,
-				6EF0295115ADE63100E01C96 /* GreenButton.png in Resources */,
-				6EF0297915ADE7C800E01C96 /* MainStoryboard_iPad.storyboard in Resources */,
-				6EF0297A15ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard in Resources */,
+				6ECE62401B457BBD00F3A050 /* Default-568h@2x.png in Resources */,
+				6ECE623E1B45703200F3A050 /* Main.storyboard in Resources */,
 				6EF0298E15AF102300E01C96 /* LICENSE.txt in Resources */,
 				6EF0298F15AF102300E01C96 /* README.md in Resources */,
 				6EF0299015AF102300E01C96 /* ReadMe.txt in Resources */,
@@ -276,36 +278,28 @@
 				6EF0297115ADE66400E01C96 /* BRStreamInfo.m in Sources */,
 				6EF0297415ADE67000E01C96 /* BRMainViewController.m in Sources */,
 				6EACDC7217821C7900EB4C07 /* BRRequest+_UserData.m in Sources */,
+				6ECE62431B4580E500F3A050 /* BRButtonController.m in Sources */,
+				6ECE62461B45962E00F3A050 /* CALayer+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		6ECE623C1B45703200F3A050 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6ECE623D1B45703200F3A050 /* en */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		6EF0293915ADE4E100E01C96 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				6EF0293A15ADE4E100E01C96 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		6EF0297515ADE7C800E01C96 /* MainStoryboard_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6EF0297615ADE7C800E01C96 /* en */,
-			);
-			name = MainStoryboard_iPad.storyboard;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		6EF0297715ADE7C800E01C96 /* MainStoryboard_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6EF0297815ADE7C800E01C96 /* en */,
-			);
-			name = MainStoryboard_iPhone.storyboard;
-			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -315,16 +309,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -332,10 +330,14 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -345,18 +347,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -372,6 +381,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlackRaccoon/BlackRaccoon-Prefix.pch";
 				INFOPLIST_FILE = "BlackRaccoon/BlackRaccoon-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -383,6 +393,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlackRaccoon/BlackRaccoon-Prefix.pch";
 				INFOPLIST_FILE = "BlackRaccoon/BlackRaccoon-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

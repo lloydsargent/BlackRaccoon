@@ -160,7 +160,7 @@
         [self.streamInfo streamComplete: self];
     }
     
-    else 
+    else
     {
         //----- unsuccessful        
         [self.streamInfo streamError: self errorCode: kBRFTPClientCantDeleteFileOrDirectory];

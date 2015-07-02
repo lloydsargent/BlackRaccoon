@@ -24,9 +24,6 @@ added to the project.
 BlackRaccoon works correctly with ARC. A lot of time and effort went in to assure there
 were no leaks.
 
-BlackRaccoon, unlike WhiteRaccoon, breaks up files by objects. This is for this author's
-convenience. If you wish to combine them again, feel free.
-
 BlackRaccoon has been tested with an unencrypted FTP server. However, it has NOT been
 tested with all manner of usernames and passwords.
 
@@ -35,7 +32,7 @@ Added helper function *initWithDelegate* to major classes.
 All FTP operations will either call RequestCompleted for a positive response or
 RequestFailed if it is a negative response.
 
-Made the shouldOverwriteFileWithRequest a required implementation in the code. 
+The shouldOverwriteFileWithRequest method is now a required implementation in the code. 
 
 ### Added Features
 
@@ -81,6 +78,15 @@ BlackRaccoon requires the CFNetwork.framework in order to build correctly.
 Code has now been implemented to assure proper functionality under iOS 6 and iOS 7.
 
 Unlike some implementations, this checks what version is running before implementing the fix to the leak in Apple's iOS 5 and iOS 6.
+
+### iOS 8 and iOS 9
+
+Currently Black Raccoon (as does most of the Raccoons) deletes files using the *CFURLDestroyResource* method. This method was deprecated in iOS 7. It is this author's opinion that unencrypted FTP will eventually be removed as it poses a risk.
+
+### The Future
+
+If you are currently looking at FTP services, I would would look at full featured FTP packages that were written from the ground up to support FTP. However, if you wish to use Black Raccoon, then read below. 
+
 
 ### Usage
 

@@ -29,6 +29,16 @@
 
 
 //---------- enumerated data types
+enum enunButtons
+{
+    eButtonGetFile,
+    eButtonPutFile,
+    eButtonDeleteFile,
+    eButtonMakeDirectory,
+    eButtonListDirectory,
+    eButtonDeleteDirectory,
+    eButtonCancelAction
+};
 
 
 
@@ -94,7 +104,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
 }
 
 
@@ -144,6 +153,85 @@
     }
 }
 
+
+
+//-----
+//
+//				prepareForSegue
+//
+// synopsis:	[prepareForSegue: segue sender: sender];
+//					UIStoryboardSegue *segue    -
+//					id sender                   -
+//
+// description:	prepares for segue
+//
+// errors:		none
+//
+// returns:		none
+//
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"buttonSegue"])
+    {
+        BRButtonController *controller = segue.destinationViewController;
+        controller.delegate = self;
+    }
+}
+
+
+//-----
+//
+//              buttonWasPushed:button
+//
+// synopsis:    [self buttonWasPushed:controller button:button;];
+//                  BRButtonController *controller -
+//                  int button;                    -
+//
+// description: buttonWasPushed:button is designed to
+//
+// errors:      none
+//
+// returns:     none
+//
+
+- (void) buttonWasPushed: (BRButtonController *) controller button: (NSInteger) button;
+{
+    switch (button)
+    {
+        case eButtonGetFile:
+            [self downloadFile];
+            break;
+            
+        case eButtonPutFile:
+            [self uploadFile];
+            break;
+            
+        case eButtonDeleteFile:
+            [self deleteFile];
+            break;
+            
+        case eButtonMakeDirectory:
+            [self createDirectory];
+            break;
+            
+        case eButtonListDirectory:
+            [self listDirectory];
+            break;
+            
+        case eButtonDeleteDirectory:
+            [self deleteDirectory];
+            break;
+            
+        case eButtonCancelAction:
+            break;
+            
+        default:
+            break;
+    }
+
+}
+
 #pragma mark - FTP examples
 
 
@@ -152,18 +240,16 @@
 //
 //				createDirectory
 //
-// synopsis:	retval = [self createDirectory:sender];
-//					IBAction retval	-
-//					id sender      	-
+// synopsis:	[self createDirectory];
 //
 // description:	createDirectory is designed to
 //
 // errors:		none
 //
-// returns:		Variable of type IBAction
+// returns:		none
 //
 
-- (IBAction) createDirectory:(id)sender
+- (void) createDirectory
 {
     createDir = [[BRRequestCreateDirectory alloc] initWithDelegate:self];
     
@@ -181,18 +267,16 @@
 //
 //				deleteDirectory
 //
-// synopsis:	retval = [self deleteDirectory:sender];
-//					IBAction retval	-
-//					id sender      	-
+// synopsis:	[self deleteDirectory];
 //
 // description:	deleteDirectory is designed to
 //
 // errors:		none
 //
-// returns:		Variable of type IBAction
+// returns:		none
 //
 
-- (IBAction) deleteDirectory:(id)sender
+- (void) deleteDirectory
 {
     deleteDir = [[BRRequestDelete alloc] initWithDelegate:self];
         
@@ -210,18 +294,16 @@
 //
 //				listDirectory
 //
-// synopsis:	retval = [self listDirectory:sender];
-//					IBAction retval	-
-//					id sender      	-
+// synopsis:	[self listDirectory];
 //
 // description:	listDirectory is designed to
 //
 // errors:		none
 //
-// returns:		Variable of type IBAction
+// returns:		none
 //
 
-- (IBAction) listDirectory:(id)sender
+- (void) listDirectory
 {
     listDir = [[BRRequestListDirectory alloc] initWithDelegate:self];
     
@@ -239,18 +321,16 @@
 //
 //				downloadFile
 //
-// synopsis:	retval = [self downloadFile:sender];
-//					IBAction retval	-
-//					id sender      	-
+// synopsis:	[self downloadFile];
 //
 // description:	downloadFile is designed to
 //
 // errors:		none
 //
-// returns:		Variable of type IBAction
+// returns:		none
 //
 
-- (IBAction) downloadFile :(id)sender
+- (void) downloadFile
 {
     downloadData = [NSMutableData dataWithCapacity: 1];
     
@@ -269,18 +349,16 @@
 //
 //				uploadFile
 //
-// synopsis:	retval = [self uploadFile:sender];
-//					IBAction retval	-
-//					id sender      	-
+// synopsis:	[self uploadFile];
 //
 // description:	uploadFile is designed to
 //
 // errors:		none
 //
-// returns:		Variable of type IBAction
+// returns:		none
 //
 
-- (IBAction) uploadFile :(id)sender
+- (void) uploadFile
 {
     //----- get the file to upload as an NSData object
     NSString *applicationDocumentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -302,18 +380,16 @@
 //
 //				deleteFile
 //
-// synopsis:	retval = [self deleteFile:sender];
-//					IBAction retval	-
-//					id sender      	-
+// synopsis:	[self deleteFile];
 //
 // description:	deleteFile is designed to
 //
 // errors:		none
 //
-// returns:		Variable of type IBAction
+// returns:		none
 //
 
-- (IBAction) deleteFile: (id) sender
+- (void) deleteFile
 {
     deleteFile = [[BRRequestDelete alloc] initWithDelegate:self];
     deleteFile.hostname = host.text;
@@ -330,30 +406,26 @@
 //
 //				cancelAction
 //
-// synopsis:	retval = [self cancelAction:sender];
-//					IBAction retval	-
-//					id sender      	-
+// synopsis:	[self cancelAction];
 //
 // description:	cancelAction is designed to
 //
 // errors:		none
 //
-// returns:		Variable of type IBAction
+// returns:		none
 //
 
-- (IBAction) cancelAction :(id)sender
+- (void) cancelAction
 {
     if (uploadFile)
     {
         uploadFile.cancelDoesNotCallDelegate = TRUE;
-//        [uploadFile cancelRequest];
         [uploadFile cancelRequestWithFlag];
     }
     
     if (downloadFile)
     {
         downloadFile.cancelDoesNotCallDelegate = TRUE;
-//        [downloadFile cancelRequest];
         [downloadFile cancelRequestWithFlag];
     }
 }

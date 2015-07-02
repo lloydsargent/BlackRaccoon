@@ -30,6 +30,7 @@
 #import "BRRequestDownload.h"
 #import "BRRequestDelete.h"
 #import "BRRequest+_UserData.h"
+#import "BRButtonController.h"
 
 
 
@@ -79,7 +80,7 @@
 
 //---------- classes
 
-@interface BRMainViewController : UIViewController <BRRequestDelegate>
+@interface BRMainViewController : UIViewController <BRRequestDelegate, BRButtonControllerProtocol>
 {
     BRRequestCreateDirectory *createDir;
     BRRequestDelete * deleteDir;
@@ -89,16 +90,26 @@
     BRRequestUpload *uploadFile;
     BRRequestDelete *deleteFile;
     
-    IBOutlet UITextField *host;
-    IBOutlet UITextField *path;
-    IBOutlet UITextField *username;
-    IBOutlet UITextField *password;
+    __weak IBOutlet UITextField *host;
+    __weak IBOutlet UITextField *path;
+    __weak IBOutlet UITextField *username;
+    __weak IBOutlet UITextField *password;
     
-    IBOutlet UITextView *logview;
+    __weak IBOutlet UITextView *logview;
+    
+    __weak IBOutlet UIView *buttonContainerView;
     
     NSMutableData *downloadData;
     NSData *uploadData;
 }
+
+- (void) createDirectory;
+- (void) deleteDirectory;
+- (void) listDirectory;
+- (void) downloadFile;
+- (void) uploadFile;
+- (void) deleteFile;
+- (void) cancelAction;
 
 
 @end

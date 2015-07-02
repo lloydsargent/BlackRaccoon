@@ -113,7 +113,7 @@
     BRRequest *tailRequest;
 }
 
-@property id <BRQueueDelegate> queueDelegate;
+@property __weak id <BRQueueDelegate> queueDelegate;
 
 - (void)addRequest:(BRRequest *)request;
 - (void)addRequestInFront:(BRRequest *)request;
